@@ -86,7 +86,7 @@ public class Simulation {
         for (int i=0; i<4; i++) {
             poses[i] = new Pose2d(corners[i].plus(pose.getTranslation()),new Rotation2d(0));
         }
-        field.getObject("Mecanum Wheels").setPoses(poses);
+        //field.getObject("Mecanum Wheels").setPoses(poses);
         
         // calculate the robot's speed and angle (we only care about angle here)
         var temp = kinematics.toChassisSpeeds(wheelSpeeds);

@@ -26,7 +26,7 @@ public class Drivetrain implements Subsystem {
         motors[1].setInverted(true);
         motors[3].setInverted(true);
     
-        m_robotDrive = new MecanumDrive(motors[0], motors[1], motors[2], motors[3]);
+        m_robotDrive = new MecanumDrive(motors[0], motors[2], motors[1], motors[3]);
     }
 
     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
