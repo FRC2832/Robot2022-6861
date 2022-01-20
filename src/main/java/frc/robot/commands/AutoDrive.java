@@ -5,6 +5,7 @@ import frc.robot.Drivetrain;
 
 public class AutoDrive extends CommandBase {
     private Drivetrain drive;
+    private double startPos;
 
     public AutoDrive(Drivetrain drive) {
         this.drive = drive;
@@ -13,7 +14,7 @@ public class AutoDrive extends CommandBase {
 
     @Override
     public void initialize() {
-        
+        startPos = drive.getDistance(0);
     }
 
     @Override
@@ -23,6 +24,10 @@ public class AutoDrive extends CommandBase {
 
     @Override
     public boolean isFinished() {
+        //FL wheel traveled 1 meter
+        if((drive.getDistance(0) - startPos) > 1.7) {
+            return true;
+        }
         return false;
     }
 
