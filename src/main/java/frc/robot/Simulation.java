@@ -59,8 +59,7 @@ public class Simulation {
     public void periodic() {
         boolean reset = SmartDashboard.getBoolean("Reset Position", false);
         if (reset == true) {
-            // set the robot to x=0.5m, y=4m, rot=0*
-            odometry.resetPosition(new Pose2d(0.5, 4, new Rotation2d()), new Rotation2d());
+            odometry.resetPosition(new Pose2d(6.5, 4.72, Rotation2d.fromDegrees(135)), drive.getAngle());
             SmartDashboard.putBoolean("Reset Position", false);
         }
 

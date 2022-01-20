@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.AutoDrive;
 import frc.robot.commands.DriveStick;
 
 /** This is a demo program showing how to use Mecanum control with the MecanumDrive class. */
@@ -23,8 +24,15 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopPeriodic() {
+  public void autonomousInit() {
+    CommandScheduler.getInstance().cancelAll();
 
+    CommandScheduler.getInstance().schedule(new AutoDrive(drive));
+  }
+
+  @Override
+  public void teleopInit() {
+    CommandScheduler.getInstance().cancelAll();
   }
 
   @Override
