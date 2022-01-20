@@ -4,9 +4,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
-import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Drivetrain implements Subsystem {
+public class Drivetrain extends SubsystemBase {
     private static final int kFrontLeftChannel = 2;
     private static final int kRearLeftChannel = 3;
     private static final int kFrontRightChannel = 1;

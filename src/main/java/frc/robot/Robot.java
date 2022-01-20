@@ -4,13 +4,12 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.DriveStick;
 
 /** This is a demo program showing how to use Mecanum control with the MecanumDrive class. */
-public class Robot extends TimedRobot {
-  private static final int kJoystickChannel = 0;
-  private Joystick m_stick;
+public class Robot extends TimedRobot {  
   private Drivetrain drive;
   private static Simulation sim;
   
@@ -18,15 +17,19 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     drive = new Drivetrain();
     drive.register();
-
-    m_stick = new Joystick(kJoystickChannel);
+    drive.setDefaultCommand(new DriveStick(drive));
+    
     sim = new Simulation(drive);
   }
 
   @Override
   public void teleopPeriodic() {
-    //axis 0 = left stick left/right, 1 = left stick up/down, 4 = right stick left/right
-     drive.drive(m_stick.getRawAxis(0), -m_stick.getRawAxis(1), m_stick.getRawAxis(4), false);
+
+  }
+
+  @Override
+  public void robotPeriodic() {
+    CommandScheduler.getInstance().run();
   }
 
   @Override
