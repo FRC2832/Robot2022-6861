@@ -45,6 +45,21 @@ public class Drivetrain extends SubsystemBase {
         }
     }
 
+    /**
+     * Returns distance traveled by a wheel
+     * @param wheel wheel to query
+     * @return distance in meters
+     */
+    public double getDistance(int wheel) {
+        if (Robot.isReal()) {
+            //get real encoder
+            return 0;
+        }
+        else {
+            return Robot.getSim().getDistance(wheel);
+        }
+    }
+
     public double getMotorVoltage(int wheel) {
         return motors[wheel].get() * RobotController.getBatteryVoltage();
     }

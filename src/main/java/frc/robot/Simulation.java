@@ -19,6 +19,7 @@ public class Simulation {
     private Field2d field = new Field2d();
     private Drivetrain drive;
     private Rotation2d rotation = new Rotation2d(0);
+    private double encoders[] = new double[4];
     private Translation2d corners[];
     public Simulation(Drivetrain drivetrain)
     {
@@ -70,6 +71,7 @@ public class Simulation {
             var volt = drive.getMotorVoltage(i);
             driveSim[i].setInputVoltage(drive.getMotorVoltage(i));
             driveSim[i].update(Robot.kDefaultPeriod);
+            encoders[i] += driveSim[i].getAngularVelocityRadPerSec() * Robot.kDefaultPeriod;
             SmartDashboard.putNumber("MecanumWheel_" + i + "/rawVolt", volt);
             SmartDashboard.putNumber("MecanumWheel_" + i + "/rawAngRadSec", driveSim[i].getAngularVelocityRadPerSec());
         }
@@ -99,5 +101,9 @@ public class Simulation {
 
     public Rotation2d getAngle() {
         return rotation;
+    }
+
+    public double getDistance(int wheel) {
+        return encoders[wheel];
     }
 }
