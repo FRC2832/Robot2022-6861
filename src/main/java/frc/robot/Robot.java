@@ -5,6 +5,9 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.AutoDrive;
@@ -18,6 +21,7 @@ import frc.robot.commands.DriveStick;
 public class Robot extends TimedRobot {
     private Drivetrain drive;
     private static Simulation sim;
+    private SendableChooser<Command> m_chooser;
 
     @Override
     public void robotInit() {
@@ -26,18 +30,40 @@ public class Robot extends TimedRobot {
         // drive.setDefaultCommand(new DriveStick(drive));
 
         sim = new Simulation(drive);
+
+        SequentialCommandGroup backUpShoot = new SequentialCommandGroup(
+            new AutoDrive(drive),
+            new AutoShoot(),
+            new AutoDrive(drive)
+        );
+
+        SequentialCommandGroup grab3 = new SequentialCommandGroup(
+            new AutoDrive(drive),
+            new AutoShoot(),
+            new AutoDrive(drive)
+        );
+
+        // A chooser for autonomous commands
+        m_chooser = new SendableChooser<>();
+
+        // Add commands to the autonomous command chooser
+        m_chooser.setDefaultOption("Back Up and Shoot", backUpShoot);
+        m_chooser.addOption("Grab 3", grab3);
+
+        // Put the chooser on the dashboard
+        SmartDashboard.putData(m_chooser);
     }
 
     @Override
     public void autonomousInit() {
         CommandScheduler.getInstance().cancelAll();
+        
+        Command m_autonomousCommand = m_chooser.getSelected();
 
-        SequentialCommandGroup command = new SequentialCommandGroup(
-            new AutoDrive(drive),
-            new AutoShoot(),
-            new AutoDrive(drive)
-        );
-        CommandScheduler.getInstance().schedule(command);
+        // schedule the autonomous command (example)
+        if (m_autonomousCommand != null) {
+            m_autonomousCommand.schedule();
+        }
     }
 
     @Override
