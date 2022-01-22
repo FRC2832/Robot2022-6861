@@ -1,0 +1,4 @@
+Check drive motors go forward
+Check encoder count up when forward
+Check intake motor direction
+Check gyro angle
