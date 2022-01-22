@@ -4,15 +4,18 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AutoDrive;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.DriveStick;
+import frc.robot.commands.IntakeBall;
 
 /**
  * This is a demo program showing how to use Mecanum control with the
@@ -20,13 +23,24 @@ import frc.robot.commands.DriveStick;
  */
 public class Robot extends TimedRobot {
     private Drivetrain drive;
+    private Intake intake;
     private static Simulation sim;
+    private Joystick driverController;
     private SendableChooser<Command> m_chooser;
 
     @Override
     public void robotInit() {
+        //initialize subsystems
         drive = new Drivetrain();
         drive.register();
+        intake = new Intake();
+        intake.register();
+
+        //setup driver controller
+        driverController = new Joystick(0);
+        JoystickButton xButton = new JoystickButton(driverController, 3); // 3 = X button
+        xButton.whenHeld(new IntakeBall(intake));
+
         // drive.setDefaultCommand(new DriveStick(drive));
 
         sim = new Simulation(drive);
@@ -69,7 +83,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         CommandScheduler.getInstance().cancelAll();
-        CommandScheduler.getInstance().schedule(new DriveStick(drive));
+        CommandScheduler.getInstance().schedule(new DriveStick(drive,driverController));
     }
 
     @Override

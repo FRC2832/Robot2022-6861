@@ -8,9 +8,9 @@ public class DriveStick extends CommandBase {
     private Joystick m_stick;
     private Drivetrain drive;
 
-    public DriveStick(Drivetrain drive) {
+    public DriveStick(Drivetrain drive, Joystick stick) {
         this.drive = drive;
-        m_stick = new Joystick(0);
+        m_stick = stick;
         addRequirements(drive);
     }
 

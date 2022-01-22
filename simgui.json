@@ -3,6 +3,7 @@
     "types": {
       "/FMSInfo": "FMSInfo",
       "/LiveWindow/Drivetrain": "Subsystem",
+      "/LiveWindow/Intake": "Subsystem",
       "/LiveWindow/Ungrouped/ADXRS450_Gyro[0]": "Gyro",
       "/LiveWindow/Ungrouped/MecanumDrive[1]": "MecanumDrive",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
@@ -24,6 +25,16 @@
     }
   },
   "NetworkTables": {
+    "FMSInfo": {
+      "open": true
+    },
+    "LiveWindow": {
+      "Ungrouped": {
+        "MecanumDrive[1]": {
+          "open": true
+        }
+      }
+    },
     "SmartDashboard": {
       "SendableChooser[0]": {
         "open": true
