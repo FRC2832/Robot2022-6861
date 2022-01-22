@@ -35,6 +35,17 @@ public class Drivetrain extends SubsystemBase {
         m_robotDrive.driveCartesian(ySpeed, xSpeed, rot, 0.0);
     }
 
+    public static double deadband(double input) {
+        final double DEADBAND = 0.13; 
+        double abs = Math.abs(input);
+
+        if (abs > DEADBAND) {
+            return Math.signum(input) * ((abs-DEADBAND)/(1-DEADBAND));
+        } else {
+            return 0;
+        }
+    }
+
     public Rotation2d getAngle() {
         if (Robot.isReal()) {
             //Add Pigeon or other gyro
