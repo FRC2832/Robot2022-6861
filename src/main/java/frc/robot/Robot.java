@@ -46,15 +46,15 @@ public class Robot extends TimedRobot {
         sim = new Simulation(drive);
 
         SequentialCommandGroup backUpShoot = new SequentialCommandGroup(
-            new AutoDrive(drive),
+            new AutoDrive(drive,1.7),
             new AutoShoot(),
-            new AutoDrive(drive)
+            new AutoDrive(drive,1)
         );
 
         SequentialCommandGroup grab3 = new SequentialCommandGroup(
-            new AutoDrive(drive),
+            new AutoDrive(drive,1.7),
             new AutoShoot(),
-            new AutoDrive(drive)
+            new AutoDrive(drive,10)
         );
 
         // A chooser for autonomous commands
