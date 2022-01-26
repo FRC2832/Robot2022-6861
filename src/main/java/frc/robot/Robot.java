@@ -10,10 +10,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AutoDrive;
+import frc.robot.commands.AutoDriveDiagonal;
 import frc.robot.commands.AutoShoot;
+import frc.robot.commands.AutoTurn;
 import frc.robot.commands.DriveStick;
 import frc.robot.commands.IntakeBall;
 
@@ -41,20 +45,29 @@ public class Robot extends TimedRobot {
         JoystickButton xButton = new JoystickButton(driverController, 3); // 3 = X button
         xButton.whenHeld(new IntakeBall(intake));
 
-        // drive.setDefaultCommand(new DriveStick(drive));
+        drive.setDefaultCommand(new DriveStick(drive,driverController));
 
         sim = new Simulation(drive);
 
+        //ParallelGroup must wait till ALL finish, ParallelRace waits for FIRST to finish, Deadline waits for the specified command to finish
         SequentialCommandGroup backUpShoot = new SequentialCommandGroup(
-            new AutoDrive(drive),
+            new AutoDrive(drive,1.7),
             new AutoShoot(),
-            new AutoDrive(drive)
+            new AutoDrive(drive,1)
         );
 
         SequentialCommandGroup grab3 = new SequentialCommandGroup(
-            new AutoDrive(drive),
+            new ParallelRaceGroup(
+                new AutoDrive(drive,1.8),
+                new IntakeBall(intake)
+            ),
+            new AutoDriveDiagonal(drive, 0.46, -0.385, 0.5),  //should be 60% power
             new AutoShoot(),
-            new AutoDrive(drive)
+            new AutoTurn(drive, 110),
+            new ParallelRaceGroup(
+                new AutoDrive(drive,1.0),
+                new IntakeBall(intake)
+            )
         );
 
         // A chooser for autonomous commands
@@ -83,7 +96,6 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         CommandScheduler.getInstance().cancelAll();
-        CommandScheduler.getInstance().schedule(new DriveStick(drive,driverController));
     }
 
     @Override

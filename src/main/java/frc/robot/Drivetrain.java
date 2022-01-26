@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
@@ -35,14 +36,18 @@ public class Drivetrain extends SubsystemBase {
         m_robotDrive.driveCartesian(ySpeed, xSpeed, rot, 0.0);
     }
 
-    public Rotation2d getAngle() {
+    public double getAngle() {
         if (Robot.isReal()) {
             //Add Pigeon or other gyro
-            return Rotation2d.fromDegrees(0);
+            return 0;
         }
         else {
-            return Robot.getSim().getAngle();
+            return -Robot.getSim().getAngle();
         }
+    }
+
+    public Rotation2d getRotation() {
+        return Rotation2d.fromDegrees(getAngle());
     }
 
     /**
@@ -62,5 +67,10 @@ public class Drivetrain extends SubsystemBase {
 
     public double getMotorVoltage(int wheel) {
         return motors[wheel].get() * RobotController.getBatteryVoltage();
+    }
+
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Gyro Angle", getRotation().getDegrees());
     }
 }

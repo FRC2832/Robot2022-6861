@@ -1,34 +1,37 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Drivetrain;
 
-public class AutoDrive extends CommandBase {
+public class AutoDriveDiagonal extends CommandBase {
     private Drivetrain drive;
-    private double startPos;
-    private double distance;
+    private double startTime;
+    private double xSpeed,ySpeed;
+    private double time;
+    
 
-    public AutoDrive(Drivetrain drive, double distance) {
+    public AutoDriveDiagonal(Drivetrain drive, double xSpeed, double ySpeed, double time) {
         this.drive = drive;
         addRequirements(drive);
-        this.distance = distance;
+        this.xSpeed = xSpeed;
+        this.ySpeed = ySpeed;
+        this.time = time;
     }
 
     @Override
     public void initialize() {
-        //get the FL wheel distance when we start
-        startPos = drive.getDistance(0);
+        startTime = Timer.getFPGATimestamp();
     }
 
     @Override
     public void execute() {
-        drive.drive(0, 0.6, 0, false);
+        drive.drive(xSpeed, ySpeed, 0, false);
     }
 
     @Override
     public boolean isFinished() {
-        //FL wheel traveled 1 meter
-        if((drive.getDistance(0) - startPos) > distance) {
+        if((Timer.getFPGATimestamp() - startTime) > time) {
             return true;
         }
         return false;

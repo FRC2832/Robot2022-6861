@@ -3,32 +3,30 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Drivetrain;
 
-public class AutoDrive extends CommandBase {
+public class AutoTurn extends CommandBase {
     private Drivetrain drive;
-    private double startPos;
-    private double distance;
+    private double startAngle;
+    private double angle;
 
-    public AutoDrive(Drivetrain drive, double distance) {
+    public AutoTurn(Drivetrain drive, double angle) {
         this.drive = drive;
         addRequirements(drive);
-        this.distance = distance;
+        this.angle = angle;
     }
 
     @Override
     public void initialize() {
-        //get the FL wheel distance when we start
-        startPos = drive.getDistance(0);
+        startAngle = drive.getAngle();
     }
 
     @Override
     public void execute() {
-        drive.drive(0, 0.6, 0, false);
+        drive.drive(0, 0, 0.6, false);
     }
 
     @Override
     public boolean isFinished() {
-        //FL wheel traveled 1 meter
-        if((drive.getDistance(0) - startPos) > distance) {
+        if((drive.getAngle() - startAngle) > angle) {
             return true;
         }
         return false;

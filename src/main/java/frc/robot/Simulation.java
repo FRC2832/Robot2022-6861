@@ -19,6 +19,7 @@ public class Simulation {
     private Field2d field = new Field2d();
     private Drivetrain drive;
     private Rotation2d rotation = new Rotation2d(0);
+    private double angle = 0;
     private double encoders[] = new double[4];
     private Translation2d corners[];
     public Simulation(Drivetrain drivetrain)
@@ -40,7 +41,7 @@ public class Simulation {
                  corners[1],
                  corners[2],
                  corners[3]);
-        odometry = new MecanumDriveOdometry(kinematics, drive.getAngle());
+        odometry = new MecanumDriveOdometry(kinematics, drive.getRotation());
         SmartDashboard.putBoolean("Reset Position", false);
 
         driveSim = new FlywheelSim[4];
@@ -57,12 +58,35 @@ public class Simulation {
         SmartDashboard.putData("Field", field);
     }
 
+    private String lastAuto = "";
     public void periodic() {
         boolean reset = SmartDashboard.getBoolean("Reset Position", false);
-        if (reset == true) {
-            odometry.resetPosition(new Pose2d(6.5, 4.72, Rotation2d.fromDegrees(135)), drive.getAngle());
+        String currentAuto = SmartDashboard.getString("SendableChooser[0]/active", "");
+
+        if ( (reset == true) || !(lastAuto.equals(currentAuto)) ) {
+            //find autonomous selected option
+            String[] options = SmartDashboard.getStringArray("SendableChooser[0]/options", new String[] {""});
+            int i=0;
+            //loop through to find the selected value
+            for(i=0; i<options.length; i++) {
+                if(options[i].equals(currentAuto)) break;
+            }
+            //if not found, set the index to the first element on the list
+            if (i==options.length) i=0;
+
+            if(i==0) {
+                //drive back and shoot
+                odometry.resetPosition(new Pose2d(6.5, 4.72, Rotation2d.fromDegrees(135)), drive.getRotation());
+            } else if (i==1) {
+                //grab 3
+                odometry.resetPosition(new Pose2d(7.3, 2.56, Rotation2d.fromDegrees(270)), drive.getRotation());
+            } else {
+                //default in starting zone
+                odometry.resetPosition(new Pose2d(6.5, 4.72, Rotation2d.fromDegrees(135)), drive.getRotation());
+            }
             SmartDashboard.putBoolean("Reset Position", false);
         }
+        lastAuto = currentAuto;
 
         double rate = Robot.kDefaultPeriod;
         MecanumDriveWheelSpeeds wheelSpeeds = new MecanumDriveWheelSpeeds();
@@ -79,7 +103,7 @@ public class Simulation {
         wheelSpeeds.frontRightMetersPerSecond = driveSim[1].getAngularVelocityRadPerSec();
         wheelSpeeds.rearLeftMetersPerSecond = driveSim[2].getAngularVelocityRadPerSec();
         wheelSpeeds.rearRightMetersPerSecond = driveSim[3].getAngularVelocityRadPerSec();
-        odometry.update(drive.getAngle(), wheelSpeeds);
+        odometry.update(getRotation(), wheelSpeeds);
         var pose = odometry.getPoseMeters();
 
         field.setRobotPose(pose);
@@ -93,13 +117,18 @@ public class Simulation {
         var temp = kinematics.toChassisSpeeds(wheelSpeeds);
         double omega = temp.omegaRadiansPerSecond;
         // set the IMU to the calculated robot rotation
-        double angle = Math.toDegrees(omega * rate);
-        rotation = rotation.plus(Rotation2d.fromDegrees(angle));
+        double deltaAngle = Math.toDegrees(omega * rate);
+        rotation = rotation.plus(Rotation2d.fromDegrees(deltaAngle));
+        angle += deltaAngle;
         SmartDashboard.putNumber("DrivetrainSim/omega", omega);
-        SmartDashboard.putNumber("DrivetrainSim/angle", angle);
+        SmartDashboard.putNumber("DrivetrainSim/angle", deltaAngle);
     }
 
-    public Rotation2d getAngle() {
+    public double getAngle() {
+        return angle;
+    }
+
+    public Rotation2d getRotation() {
         return rotation;
     }
 

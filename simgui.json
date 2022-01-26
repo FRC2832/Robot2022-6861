@@ -25,9 +25,6 @@
     }
   },
   "NetworkTables": {
-    "FMSInfo": {
-      "open": true
-    },
     "LiveWindow": {
       "Ungrouped": {
         "MecanumDrive[1]": {
