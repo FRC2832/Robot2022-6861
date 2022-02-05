@@ -1,9 +1,12 @@
 package frc.robot;
 
+import com.ctre.phoenix.sensors.PigeonIMU;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -12,15 +15,16 @@ public class Drivetrain extends SubsystemBase {
     private static final int kRearLeftChannel = 3;
     private static final int kFrontRightChannel = 1;
     private static final int kRearRightChannel = 0;
-    private PWMSparkMax motors[];
+    private CANSparkMax motors[];
     private MecanumDrive m_robotDrive;
+    private final PigeonIMU pigeon = new PigeonIMU(13);
     
     public Drivetrain() {
-        motors = new PWMSparkMax[4];
-        motors[0] = new PWMSparkMax(kFrontLeftChannel);
-        motors[1] = new PWMSparkMax(kFrontRightChannel);
-        motors[2] = new PWMSparkMax(kRearLeftChannel);
-        motors[3] = new PWMSparkMax(kRearRightChannel);
+        motors = new CANSparkMax[4];
+        motors[0] = new CANSparkMax(kFrontLeftChannel,MotorType.kBrushless);
+        motors[1] = new CANSparkMax(kFrontRightChannel,MotorType.kBrushless);
+        motors[2] = new CANSparkMax(kRearLeftChannel,MotorType.kBrushless);
+        motors[3] = new CANSparkMax(kRearRightChannel,MotorType.kBrushless);
     
         // Invert the right side motors.
         // You may need to change or remove this to match your robot.
@@ -38,8 +42,9 @@ public class Drivetrain extends SubsystemBase {
 
     public double getAngle() {
         if (Robot.isReal()) {
-            //Add Pigeon or other gyro
-            return 0;
+            double[] ypr_deg = new double[3];
+            pigeon.getYawPitchRoll(ypr_deg);
+            return ypr_deg[0];
         }
         else {
             return -Robot.getSim().getAngle();
@@ -57,8 +62,7 @@ public class Drivetrain extends SubsystemBase {
      */
     public double getDistance(int wheel) {
         if (Robot.isReal()) {
-            //get real encoder
-            return 0;
+            return motors[wheel].getEncoder().getPosition();
         }
         else {
             return Robot.getSim().getDistance(wheel);
