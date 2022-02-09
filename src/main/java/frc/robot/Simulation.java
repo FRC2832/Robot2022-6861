@@ -95,11 +95,13 @@ public class Simulation {
     }
 
     private String lastAuto = "";
+    private Alliance lastAlli = Alliance.Red;
     public void periodic() {
         boolean reset = SmartDashboard.getBoolean("Reset Position", false);
         String currentAuto = SmartDashboard.getString("SendableChooser[0]/active", "");
-
-        if ( (reset == true) || !(lastAuto.equals(currentAuto)) ) {
+        Alliance curAlli = DriverStation.getAlliance();
+        
+        if ( (reset == true) || !(lastAuto.equals(currentAuto)) || (lastAlli != curAlli)) {
             //find autonomous selected option
             String[] options = SmartDashboard.getStringArray("SendableChooser[0]/options", new String[] {""});
             int i=0;
@@ -110,19 +112,37 @@ public class Simulation {
             //if not found, set the index to the first element on the list
             if (i==options.length) i=0;
 
-            if(i==0) {
-                //drive back and shoot
-                odometry.resetPosition(new Pose2d(6.5, 4.72, Rotation2d.fromDegrees(135)), drive.getRotation());
-            } else if (i==1) {
-                //grab 3
-                odometry.resetPosition(new Pose2d(7.3, 2.56, Rotation2d.fromDegrees(270)), drive.getRotation());
-            } else {
-                //default in starting zone
-                odometry.resetPosition(new Pose2d(6.5, 4.72, Rotation2d.fromDegrees(135)), drive.getRotation());
+            if(curAlli == Alliance.Blue)
+            {
+                if(i==0) {
+                    //drive back and shoot
+                    odometry.resetPosition(new Pose2d(6.5, 4.72, Rotation2d.fromDegrees(135)), drive.getRotation());
+                } else if (i==1) {
+                    //grab 3
+                    odometry.resetPosition(new Pose2d(7.3, 2.56, Rotation2d.fromDegrees(270)), drive.getRotation());
+                } else {
+                    //default in starting zone
+                    odometry.resetPosition(new Pose2d(6.5, 4.72, Rotation2d.fromDegrees(135)), drive.getRotation());
+                }
+            }
+            else 
+            {
+                //red
+                if(i==0) {
+                    //drive back and shoot
+                    odometry.resetPosition(new Pose2d(9.4, 3.4, Rotation2d.fromDegrees(320)), drive.getRotation());
+                } else if (i==1) {
+                    //grab 3
+                    odometry.resetPosition(new Pose2d(8.45, 5.9, Rotation2d.fromDegrees(90)), drive.getRotation());
+                } else {
+                    //default in starting zone
+                    odometry.resetPosition(new Pose2d(6.5, 4.72, Rotation2d.fromDegrees(135)), drive.getRotation());
+                }
             }
             SmartDashboard.putBoolean("Reset Position", false);
         }
         lastAuto = currentAuto;
+        lastAlli = curAlli;
 
         double rate = Robot.kDefaultPeriod;
         MecanumDriveWheelSpeeds wheelSpeeds = new MecanumDriveWheelSpeeds();

@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -14,12 +15,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.AutoDrive;
-import frc.robot.commands.AutoDriveDiagonal;
-import frc.robot.commands.AutoShoot;
-import frc.robot.commands.AutoTurn;
-import frc.robot.commands.DriveStick;
-import frc.robot.commands.IntakeBall;
+import frc.robot.commands.*;
 
 /**
  * This is a demo program showing how to use Mecanum control with the
@@ -28,6 +24,11 @@ import frc.robot.commands.IntakeBall;
 public class Robot extends TimedRobot {
     private Drivetrain drive;
     private Intake intake;
+    private final Shooter shooter = new Shooter();
+    private final Pi pi = new Pi();
+	
+    private boolean lastEnabled = false;
+	
     private static Simulation sim;
     private Joystick driverController;
     private SendableChooser<Command> m_chooser;
@@ -39,11 +40,14 @@ public class Robot extends TimedRobot {
         drive.register();
         intake = new Intake();
         intake.register();
+        shooter.setDefaultCommand(new NoShoot(shooter));
 
         //setup driver controller
         driverController = new Joystick(0);
         JoystickButton xButton = new JoystickButton(driverController, 3); // 3 = X button
         xButton.whenHeld(new IntakeBall(intake));
+		JoystickButton selectButton = new JoystickButton(driverController, 7);  //7 = select button
+        selectButton.whenHeld(new DashboardShoot(shooter));
 
         drive.setDefaultCommand(new DriveStick(drive,driverController));
 
@@ -84,7 +88,9 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         CommandScheduler.getInstance().cancelAll();
-        
+        //rehome hood if needed
+        CommandScheduler.getInstance().schedule(new HomeHood(shooter));
+
         Command m_autonomousCommand = m_chooser.getSelected();
 
         // schedule the autonomous command (example)
@@ -96,11 +102,29 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         CommandScheduler.getInstance().cancelAll();
+        //rehome hood if needed
+        CommandScheduler.getInstance().schedule(new HomeHood(shooter));
     }
 
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
+		
+		// automatically turn on/off recording
+        if (lastEnabled != isEnabled()) {
+            // we know the enabled status changed
+            if (lastEnabled == false) {
+                // robot started, start recording
+                Shuffleboard.startRecording();
+            } else {
+                // robot stopped, stop recording
+                Shuffleboard.stopRecording();
+            }
+        }
+        // save the result for next loop
+        lastEnabled = isEnabled();
+
+        pi.sendAlliance();
     }
 
     @Override
