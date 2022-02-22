@@ -193,6 +193,10 @@ public class Simulation {
         return encoders[wheel];
     }
 
+    public double getVelocity(int wheel) {
+        return driveSim[wheel].getAngularVelocityRadPerSec();
+    }
+
     public void updateVision(Pose2d robot) {
         Translation2d balls[];
         final double MAX_SIGHT_DIST = 1.219;  //48"

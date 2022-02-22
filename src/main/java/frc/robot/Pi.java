@@ -15,7 +15,25 @@ public class Pi {
     private NetworkTableEntry cargoCenterX;
     private NetworkTableEntry cargoCenterY;
     private NetworkTableEntry allianceColor;
-    private static ArrayList<Pair<Double,Double>> distTable;
+    private NetworkTableEntry targetCenterX;
+    private NetworkTableEntry targetCenterY;
+    private NetworkTableEntry targetWidth;
+    private NetworkTableEntry targetHeight;
+    private NetworkTableEntry targetArea;
+    private Number[] targetCenterXArray;
+    private Number[] targetCenterYArray;
+    private Number[] targetWidthArray;
+    private Number[] targetHeightArray;
+    private Number[] targetAreaArray;
+    private final double CAM_X_RES = 640;
+    private final double CAM_Y_RES = 480;
+    public final double TARGET_CENTER_X = 320;
+    private static boolean targetMoveRight;
+    private static boolean targetMoveLeft;
+    private static boolean cargoMoveRight;
+    private static boolean cargoMoveLeft;
+    private double centerYOutput;
+    private double centerXOutput;
 
     public Pi() {
         netTableInstance = NetworkTableInstance.getDefault();
@@ -23,22 +41,12 @@ public class Pi {
         cargoCenterX = table.getEntry("cargoX");
         cargoCenterY = table.getEntry("cargoY");
         allianceColor = table.getEntry("alliance");
-
-        distTable = new ArrayList<Pair<Double,Double>>();
-        //table is input: pixel width, output: meters from target
-        distTable.add(new Pair<Double, Double>(94.0, 7.7724));
-        distTable.add(new Pair<Double, Double>(100.0, 7.112));
-        distTable.add(new Pair<Double, Double>(112.0, 6.35));
-        distTable.add(new Pair<Double, Double>(126.0, 5.4864));
-        distTable.add(new Pair<Double, Double>(130.0, 5.3086));
-        distTable.add(new Pair<Double, Double>(142.0, 4.8768));
-        distTable.add(new Pair<Double, Double>(158.0, 4.3688));
-        distTable.add(new Pair<Double, Double>(167.0, 4.064));
-        distTable.add(new Pair<Double, Double>(188.0, 3.5814));
-        distTable.add(new Pair<Double, Double>(211.0, 3.1496));
-        distTable.add(new Pair<Double, Double>(245.0, 2.667));
-        distTable.add(new Pair<Double, Double>(298.0, 2.1336));
-        distTable.add(new Pair<Double, Double>(372.0, 1.651));
+        targetCenterX = table.getEntry("targetX");
+        targetCenterY = table.getEntry("targetY");
+        targetWidth = table.getEntry("targetWidth");
+        targetHeight = table.getEntry("targetHeight");
+        targetArea = table.getEntry("targetArea");
+        centerYOutput = -1;
     }
 
     // sends alliance color to the python code so it knows what color cargo to look for
@@ -54,8 +62,84 @@ public class Pi {
     public void processCargo() {
         Number[] cargoCenterXArray = cargoCenterX.getNumberArray(new Number[0]);
         Number[] cargoCenterYArray = cargoCenterY.getNumberArray(new Number[0]);
-        System.out.println("cargo x: " + cargoCenterXArray);
-        System.out.println("cargo y: " + cargoCenterYArray);
+        if (cargoCenterXArray.length == 0) {
+            cargoMoveRight = false;
+            cargoMoveLeft = false;
+            return;
+        }
+        // currently just taking the first cargo but considering taking the cargo with the largest y value becuase it should be closest to the robot
+        double cargoX = (double) cargoCenterXArray[0];
+        if (cargoX < (CAM_X_RES / 2) - (CAM_X_RES * 0.05)) {
+            cargoMoveRight = false;
+            cargoMoveLeft = true;
+        } else if (cargoX > (CAM_X_RES / 2) + (CAM_X_RES * 0.05)) {
+            cargoMoveLeft = false;
+            cargoMoveRight = true;
+        } else {
+            cargoMoveRight = false;
+            cargoMoveLeft = false;
+        }
+    }
+
+    public void processTargets() {
+        targetCenterXArray = targetCenterX.getNumberArray(new Number[0]);
+        targetCenterYArray = targetCenterY.getNumberArray(new Number[0]);
+        targetWidthArray = targetWidth.getNumberArray(new Number[0]);
+        targetHeightArray = targetHeight.getNumberArray(new Number[0]);
+        targetAreaArray = targetArea.getNumberArray(new Number[0]);
+        if (targetCenterXArray.length == 0) {
+            targetMoveRight = false;
+            targetMoveLeft = false;
+            centerYOutput = -1;
+            centerXOutput = -1;
+            return;
+        }
+        sortTargets();
+        // pick a target just right of center so the cargo hopefully doesn't bounce out
+        int index = 0;
+        if(targetCenterXArray.length <= 3) {
+            index = targetCenterXArray.length - 1;
+        } else {
+            index = (int) ((targetCenterXArray.length / 2) + 1);
+        }
+        double targetX = (double) targetCenterXArray[index];
+        centerYOutput = (double) targetCenterYArray[index];
+        centerXOutput = targetX;
+        if (targetX < ((CAM_X_RES / 2) - (CAM_X_RES * 0.05))) {
+            targetMoveRight = false;
+            targetMoveLeft = true;
+        } else if (targetX > ((CAM_X_RES / 2) + (CAM_X_RES * 0.05))) {
+            targetMoveLeft = false;
+            targetMoveRight = true;
+        } else {
+            targetMoveRight = false;
+            targetMoveLeft = false;
+        }
+    }
+    
+    public void sortTargets() {
+        int size = targetCenterXArray.length;
+        for (int i = 1; i < size; ++i) {
+            double keyX = targetCenterXArray[i].doubleValue();
+            double keyY = targetCenterYArray[i].doubleValue();
+            double keyH = targetHeightArray[i].doubleValue();
+            double keyW = targetWidthArray[i].doubleValue();
+            double keyA = targetAreaArray[i].doubleValue();
+            int j = i - 1;
+            while (j >= 0 && targetCenterXArray[j].doubleValue() > keyX) {
+                targetCenterXArray[j + 1] = targetCenterXArray[j];
+                targetCenterYArray[j + 1] = targetCenterYArray[j];
+                targetHeightArray[j + 1] = targetHeightArray[j];
+                targetWidthArray[j + 1] = targetWidthArray[j];
+                targetAreaArray[j + 1] = targetAreaArray[j];
+                j = j - 1;
+            }
+            targetCenterXArray[j + 1] = keyX;
+            targetCenterYArray[j + 1] = keyY;
+            targetHeightArray[j + 1] = keyH;
+            targetWidthArray[j + 1] = keyW;
+            targetAreaArray[j + 1] = keyA;
+        }
     }
 
     public static double LinearInterp(ArrayList<Pair<Double,Double>> list, double input) {
@@ -80,5 +164,37 @@ public class Pi {
         }
         //should never happen...
         return Double.NaN;
+    }
+
+    public static boolean isCargoCentered() {
+        return !cargoMoveRight && !cargoMoveLeft;
+    }
+
+    public static boolean getCargoMoveRight() {
+        return cargoMoveRight;
+    }
+
+    public static boolean getCargoMoveLeft() {
+        return cargoMoveLeft;
+    }
+
+    public static boolean isTargetCentered() {
+        return !targetMoveRight && !targetMoveLeft;
+    }
+
+    public static boolean getTargetMoveRight() {
+        return targetMoveRight;
+    }
+
+    public static boolean getTargetMoveLeft() {
+        return targetMoveLeft;
+    }
+
+    public double getCenterY() {
+        return centerYOutput;
+    }
+
+    public double getCenterX() {
+        return centerXOutput;
     }
 }

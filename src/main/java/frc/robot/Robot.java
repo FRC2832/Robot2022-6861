@@ -6,12 +6,12 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -24,8 +24,8 @@ import frc.robot.commands.*;
 public class Robot extends TimedRobot {
     private Drivetrain drive;
     private Intake intake;
-    private final Shooter shooter = new Shooter();
-    private final Pi pi = new Pi();
+    private Shooter shooter;
+    private Pi pi;
 	
     private boolean lastEnabled = false;
 	
@@ -35,28 +35,39 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-        //initialize subsystems
+		ShooterConstants.LoadConstants();
+		pi = new Pi();
+        shooter = new Shooter(pi);
+		driverController = new Joystick(0);
+        
+		//initialize subsystems
         drive = new Drivetrain();
         drive.register();
+        drive.setDefaultCommand(new DriveStick(drive,driverController));
         intake = new Intake();
         intake.register();
         shooter.setDefaultCommand(new NoShoot(shooter));
 
         //setup driver controller
-        driverController = new Joystick(0);
         JoystickButton xButton = new JoystickButton(driverController, 3); // 3 = X button
-        xButton.whenHeld(new IntakeBall(intake));
-		JoystickButton selectButton = new JoystickButton(driverController, 7);  //7 = select button
-        selectButton.whenHeld(new DashboardShoot(shooter));
+        xButton.whileActiveContinuous(new IntakeBall(intake));
 
-        drive.setDefaultCommand(new DriveStick(drive,driverController));
+		JoystickButton selectButton = new JoystickButton(driverController, 7);  //7 = select button
+        selectButton.whileActiveContinuous(new DashboardShoot(shooter));
+		
+		JoystickButton startButton = new JoystickButton(driverController, 8);  //7 = select button
+        startButton.whileActiveContinuous(new AutoShoot(drive,shooter,pi));
+
+        // this.setNetworkTablesFlushEnabled(true); //turn off 20ms Dashboard update
+        // rate
+        LiveWindow.setEnabled(false);
 
         sim = new Simulation(drive);
 
         //ParallelGroup must wait till ALL finish, ParallelRace waits for FIRST to finish, Deadline waits for the specified command to finish
         SequentialCommandGroup backUpShoot = new SequentialCommandGroup(
             new AutoDrive(drive,1.7),
-            new AutoShoot(),
+            new AutoShoot(drive,shooter,pi),
             new AutoDrive(drive,1)
         );
 
@@ -66,7 +77,7 @@ public class Robot extends TimedRobot {
                 new IntakeBall(intake)
             ),
             new AutoDriveDiagonal(drive, 0.46, -0.385, 0.5),  //should be 60% power
-            new AutoShoot(),
+            new AutoShoot(drive,shooter,pi),
             new AutoTurn(drive, 110),
             new ParallelRaceGroup(
                 new AutoDrive(drive,1.0),
@@ -86,6 +97,10 @@ public class Robot extends TimedRobot {
     }
 
     @Override
+    public void disabledInit() {
+    }
+
+    @Override
     public void autonomousInit() {
         CommandScheduler.getInstance().cancelAll();
         //rehome hood if needed
@@ -97,6 +112,15 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.schedule();
         }
+    }
+
+    @Override
+    public void autonomousPeriodic() {
+
+    }
+
+    @Override
+    public void teleopPeriodic() {
     }
 
     @Override
@@ -125,6 +149,8 @@ public class Robot extends TimedRobot {
         lastEnabled = isEnabled();
 
         pi.sendAlliance();
+		pi.processCargo();
+        pi.processTargets();
     }
 
     @Override
