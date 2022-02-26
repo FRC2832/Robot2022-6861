@@ -16,7 +16,7 @@ public class IntakeBall extends CommandBase {
 
     @Override
     public void execute() {
-        intake.setIntake(0.50);
+        intake.setIntake(intake.INTAKE_SPEED);
         intake.setUpMotor(0);
     }
 

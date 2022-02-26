@@ -16,8 +16,8 @@ public class IntakeBoth extends CommandBase {
 
     @Override
     public void execute() {
-        intake.setIntake(0.50);
-        intake.setUpMotor(0.25);
+        intake.setIntake(intake.INTAKE_SPEED);
+        intake.setUpMotor(intake.UP_SPEED);
     }
 
     @Override

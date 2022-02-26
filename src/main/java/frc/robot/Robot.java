@@ -40,7 +40,6 @@ public class Robot extends TimedRobot {
     public void robotInit() {
 		ShooterConstants.LoadConstants();
 		pi = new Pi();
-        shooter = new Shooter(pi);
 		driverController = new Joystick(0);
         operatorController = new XboxController(2);
 
@@ -50,18 +49,12 @@ public class Robot extends TimedRobot {
         drive.setDefaultCommand(new DriveStick(drive,driverController));
         intake = new Intake();
         intake.register();
+        intake.setDefaultCommand(new DriveIntake(intake, driverController, operatorController));
+        shooter = new Shooter(pi);
         shooter.setDefaultCommand(new NoShoot(shooter));
         climber = new Climber();
         climber.register();
         climber.setDefaultCommand(new DriveClimber(climber,driverController));
-        
-        //setup driver controller
-        JoystickButton trigger = new JoystickButton(driverController, 1); // 1= Joystick trigger
-        trigger.whileActiveContinuous(new IntakeBall(intake));
-
-        //6 = right bumper
-        JoystickButton rightBumper = new JoystickButton(operatorController, 6);  //7 = select button
-        rightBumper.whileActiveContinuous(new IntakeBoth(intake));
 
 		JoystickButton selectButton = new JoystickButton(driverController, 7);  //7 = select button
         selectButton.whileActiveContinuous(new DashboardShoot(shooter));
