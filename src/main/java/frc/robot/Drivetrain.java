@@ -15,23 +15,27 @@ public class Drivetrain extends SubsystemBase {
     private static final int kRearLeftChannel = 34;
     private static final int kFrontRightChannel = 20;
     private static final int kRearRightChannel = 21;
+    public static final int FL = 0;
+    public static final int FR = 1;
+    public static final int RL = 2;
+    public static final int RR = 3;
     private CANSparkMax motors[];
     private MecanumDrive m_robotDrive;
     private final PigeonIMU pigeon = new PigeonIMU(13);
     
     public Drivetrain() {
         motors = new CANSparkMax[4];
-        motors[0] = new CANSparkMax(kFrontLeftChannel,MotorType.kBrushless);
-        motors[1] = new CANSparkMax(kFrontRightChannel,MotorType.kBrushless);
-        motors[2] = new CANSparkMax(kRearLeftChannel,MotorType.kBrushless);
-        motors[3] = new CANSparkMax(kRearRightChannel,MotorType.kBrushless);
+        motors[FL] = new CANSparkMax(kFrontLeftChannel,MotorType.kBrushless);
+        motors[FR] = new CANSparkMax(kFrontRightChannel,MotorType.kBrushless);
+        motors[RL] = new CANSparkMax(kRearLeftChannel,MotorType.kBrushless);
+        motors[RR] = new CANSparkMax(kRearRightChannel,MotorType.kBrushless);
     
         // Invert the right side motors.
         // You may need to change or remove this to match your robot.
-        motors[1].setInverted(true);
-        motors[3].setInverted(true);
+        motors[FR].setInverted(true);
+        motors[RR].setInverted(true);
     
-        m_robotDrive = new MecanumDrive(motors[0], motors[2], motors[1], motors[3]);
+        m_robotDrive = new MecanumDrive(motors[FL], motors[RL], motors[FR], motors[RR]);
     }
 
     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
@@ -40,6 +44,37 @@ public class Drivetrain extends SubsystemBase {
         m_robotDrive.driveCartesian(ySpeed, xSpeed, rot, 0.0);
     }
 
+    public void driveMechanumTank(double inputX0, double inputY0, double inputX1, double inputY1) {
+        //0 is left stick, 1 is right stick
+
+        double[] wheelSpeeds = new double[motors.length];
+        
+        wheelSpeeds[FL] = -inputY0 + inputX0;
+        wheelSpeeds[FR] = -inputY1 - inputX1;
+        wheelSpeeds[RL] = -inputY0 - inputX0;
+        wheelSpeeds[RR] = -inputY1 + inputX1;
+    
+        normalize(wheelSpeeds);
+        for(int i=0; i<motors.length; i++) {
+            motors[i].set(wheelSpeeds[i]);
+        }
+    }
+
+    private void normalize(double[] wheelSpeeds) {
+        double maxMagnitude = Math.abs(wheelSpeeds[0]);
+        for (int i = 1; i < wheelSpeeds.length; i++) {
+          double temp = Math.abs(wheelSpeeds[i]);
+          if (maxMagnitude < temp) {
+            maxMagnitude = temp;
+          }
+        }
+        if (maxMagnitude > 1.0) {
+          for (int i = 0; i < wheelSpeeds.length; i++) {
+            wheelSpeeds[i] = wheelSpeeds[i] / maxMagnitude;
+          }
+        }
+      }
+    
     public double getAngle() {
         if (Robot.isReal()) {
             double[] ypr_deg = new double[3];

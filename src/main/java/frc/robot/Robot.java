@@ -32,7 +32,8 @@ public class Robot extends TimedRobot {
     private boolean lastEnabled = false;
 	
     private static Simulation sim;
-    private Joystick driverController;
+    private Joystick leftStick;
+    private Joystick rightStick;
     private XboxController operatorController;
     private SendableChooser<Command> m_chooser;
 
@@ -40,26 +41,27 @@ public class Robot extends TimedRobot {
     public void robotInit() {
 		ShooterConstants.LoadConstants();
 		pi = new Pi();
-		driverController = new Joystick(0);
+		leftStick = new Joystick(0);
+        rightStick = new Joystick(1);
         operatorController = new XboxController(2);
 
 		//initialize subsystems
         drive = new Drivetrain();
         drive.register();
-        drive.setDefaultCommand(new DriveStick(drive,driverController));
+        drive.setDefaultCommand(new DriveStick(drive,leftStick,rightStick));
         intake = new Intake();
         intake.register();
-        intake.setDefaultCommand(new DriveIntake(intake, driverController, operatorController));
+        intake.setDefaultCommand(new DriveIntake(intake, rightStick, operatorController));
         shooter = new Shooter(pi);
         shooter.setDefaultCommand(new NoShoot(shooter));
         climber = new Climber();
         climber.register();
-        climber.setDefaultCommand(new DriveClimber(climber,driverController));
+        climber.setDefaultCommand(new DriveClimber(climber,leftStick));
 
-		JoystickButton selectButton = new JoystickButton(driverController, 7);  //7 = select button
+		JoystickButton selectButton = new JoystickButton(leftStick, 7);  //7 = select button
         selectButton.whileActiveContinuous(new DashboardShoot(shooter));
 		
-		JoystickButton startButton = new JoystickButton(driverController, 8);  //7 = select button
+		JoystickButton startButton = new JoystickButton(leftStick, 8);  //7 = select button
         startButton.whileActiveContinuous(new AutoShoot(drive,shooter,pi));
 
         // this.setNetworkTablesFlushEnabled(true); //turn off 20ms Dashboard update

@@ -5,12 +5,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Drivetrain;
 
 public class DriveStick extends CommandBase {
-    private Joystick m_stick;
+    private Joystick leftStick;
+    private Joystick rightStick;
     private Drivetrain drive;
 
-    public DriveStick(Drivetrain drive, Joystick stick) {
+    public DriveStick(Drivetrain drive, Joystick leftStick, Joystick rightStick) {
         this.drive = drive;
-        m_stick = stick;
+        this.leftStick = leftStick;
+        this.rightStick = rightStick;
         addRequirements(drive);
     }
 
@@ -23,11 +25,18 @@ public class DriveStick extends CommandBase {
     public void execute() {
         //axis 0 = left stick left/right, 1 = left stick up/down, 2 = right stick left/right
 
-        double xSpeed = curveDriveStick(deadband(m_stick.getRawAxis(0)));
-        double ySpeed = curveDriveStick(deadband(m_stick.getRawAxis(1)));
-        double rot = curveDriveStick(deadband(m_stick.getRawAxis(2)));
-        
+        /* old 1 stick
+        double xSpeed = curveDriveStick(deadband(leftStick.getRawAxis(0)));
+        double ySpeed = curveDriveStick(deadband(leftStick.getRawAxis(1)));
+        double rot = curveDriveStick(deadband(leftStick.getRawAxis(2)));
         drive.drive(xSpeed, -ySpeed, rot*0.5, false);
+        */
+
+        double xSpeed0 = curveDriveStick(deadband(leftStick.getRawAxis(0)));
+        double ySpeed0 = curveDriveStick(deadband(leftStick.getRawAxis(1)));
+        double xSpeed1 = curveDriveStick(deadband(rightStick.getRawAxis(0)));
+        double ySpeed1 = curveDriveStick(deadband(rightStick.getRawAxis(1)));
+        drive.driveMechanumTank(xSpeed0, ySpeed0, xSpeed1, ySpeed1);
     }
 
     private static double curveDriveStick (double input) {
