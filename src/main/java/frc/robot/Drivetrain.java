@@ -11,10 +11,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
-    private static final int kFrontLeftChannel = 2;
-    private static final int kRearLeftChannel = 3;
-    private static final int kFrontRightChannel = 1;
-    private static final int kRearRightChannel = 0;
+    private static final int kFrontLeftChannel = 35;
+    private static final int kRearLeftChannel = 34;
+    private static final int kFrontRightChannel = 20;
+    private static final int kRearRightChannel = 21;
     private CANSparkMax motors[];
     private MecanumDrive m_robotDrive;
     private final PigeonIMU pigeon = new PigeonIMU(13);

@@ -10,14 +10,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Climber extends SubsystemBase 
 {
     private CANSparkMax middleClimb;
-    private CANSparkMax reachClimb;
+    private CANSparkMax leftClimb;
+    //right climb is 22
 
     public Climber() {
-        middleClimb = new CANSparkMax(20,MotorType.kBrushless);
+        middleClimb = new CANSparkMax(32,MotorType.kBrushless);
         middleClimb.setIdleMode(IdleMode.kBrake);
+        middleClimb.setInverted(true);
 
-        reachClimb = new CANSparkMax(22,MotorType.kBrushless);
-        reachClimb.setIdleMode(IdleMode.kBrake);
+        leftClimb = new CANSparkMax(33,MotorType.kBrushless);
+        leftClimb.setIdleMode(IdleMode.kBrake);
     }
 
     @Override
@@ -31,7 +33,7 @@ public class Climber extends SubsystemBase
     }
 
     public void setReachClimbPower(double pct) {
-        reachClimb.set(pct);
+        leftClimb.set(pct);
     }
 
     public double getMiddleClimbPosition() {
@@ -39,6 +41,6 @@ public class Climber extends SubsystemBase
     }
 
     public double getReachClimbPosition() {
-        return reachClimb.getEncoder().getPosition();
+        return leftClimb.getEncoder().getPosition();
     }
 }

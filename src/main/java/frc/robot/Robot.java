@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -25,12 +26,14 @@ public class Robot extends TimedRobot {
     private Drivetrain drive;
     private Intake intake;
     private Shooter shooter;
+    private Climber climber;
     private Pi pi;
 	
     private boolean lastEnabled = false;
 	
     private static Simulation sim;
     private Joystick driverController;
+    private XboxController operatorController;
     private SendableChooser<Command> m_chooser;
 
     @Override
@@ -39,7 +42,8 @@ public class Robot extends TimedRobot {
 		pi = new Pi();
         shooter = new Shooter(pi);
 		driverController = new Joystick(0);
-        
+        operatorController = new XboxController(2);
+
 		//initialize subsystems
         drive = new Drivetrain();
         drive.register();
@@ -47,10 +51,17 @@ public class Robot extends TimedRobot {
         intake = new Intake();
         intake.register();
         shooter.setDefaultCommand(new NoShoot(shooter));
-
+        climber = new Climber();
+        climber.register();
+        climber.setDefaultCommand(new DriveClimber(climber,driverController));
+        
         //setup driver controller
-        JoystickButton xButton = new JoystickButton(driverController, 3); // 3 = X button
-        xButton.whileActiveContinuous(new IntakeBall(intake));
+        JoystickButton trigger = new JoystickButton(driverController, 1); // 1= Joystick trigger
+        trigger.whileActiveContinuous(new IntakeBall(intake));
+
+        //6 = right bumper
+        JoystickButton rightBumper = new JoystickButton(operatorController, 6);  //7 = select button
+        rightBumper.whileActiveContinuous(new IntakeBoth(intake));
 
 		JoystickButton selectButton = new JoystickButton(driverController, 7);  //7 = select button
         selectButton.whileActiveContinuous(new DashboardShoot(shooter));

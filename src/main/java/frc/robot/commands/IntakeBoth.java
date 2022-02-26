@@ -3,10 +3,10 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Intake;
 
-public class IntakeBall extends CommandBase {
+public class IntakeBoth extends CommandBase {
     private Intake intake;
 
-    public IntakeBall(Intake intake) {
+    public IntakeBoth(Intake intake) {
         this.intake = intake;
         addRequirements(intake);
     }
@@ -17,7 +17,7 @@ public class IntakeBall extends CommandBase {
     @Override
     public void execute() {
         intake.setIntake(0.50);
-        intake.setUpMotor(0);
+        intake.setUpMotor(0.25);
     }
 
     @Override
@@ -26,5 +26,6 @@ public class IntakeBall extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         intake.setIntake(0);
+        intake.setUpMotor(0);
     }
 }

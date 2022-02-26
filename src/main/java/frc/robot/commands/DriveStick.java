@@ -21,13 +21,13 @@ public class DriveStick extends CommandBase {
 
     @Override
     public void execute() {
-        //axis 0 = left stick left/right, 1 = left stick up/down, 4 = right stick left/right
+        //axis 0 = left stick left/right, 1 = left stick up/down, 2 = right stick left/right
 
         double xSpeed = curveDriveStick(deadband(m_stick.getRawAxis(0)));
         double ySpeed = curveDriveStick(deadband(m_stick.getRawAxis(1)));
-        double rot = curveDriveStick(deadband(m_stick.getRawAxis(4)));
+        double rot = curveDriveStick(deadband(m_stick.getRawAxis(2)));
         
-        drive.drive(xSpeed, -ySpeed, rot, false);
+        drive.drive(xSpeed, -ySpeed, rot*0.5, false);
     }
 
     private static double curveDriveStick (double input) {
