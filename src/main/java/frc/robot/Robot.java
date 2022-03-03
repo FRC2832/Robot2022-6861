@@ -56,7 +56,7 @@ public class Robot extends TimedRobot {
         shooter.setDefaultCommand(new NoShoot(shooter));
         climber = new Climber();
         climber.register();
-        climber.setDefaultCommand(new DriveClimber(climber,leftStick));
+        climber.setDefaultCommand(new DriveClimber(climber,leftStick,rightStick));
 
 		JoystickButton selectButton = new JoystickButton(leftStick, 7);  //7 = select button
         selectButton.whileActiveContinuous(new DashboardShoot(shooter));
