@@ -28,6 +28,7 @@ public class Robot extends TimedRobot {
     private Shooter shooter;
     private Climber climber;
     private Pi pi;
+    private Turret turret;
 	
     private boolean lastEnabled = false;
 	
@@ -57,6 +58,9 @@ public class Robot extends TimedRobot {
         climber = new Climber();
         climber.register();
         climber.setDefaultCommand(new DriveClimber(climber,leftStick,rightStick));
+        turret = new Turret();
+        turret.register();
+        turret.setDefaultCommand(new DriveTurret(turret,operatorController));
 
 		JoystickButton selectButton = new JoystickButton(leftStick, 7);  //7 = select button
         selectButton.whileActiveContinuous(new DashboardShoot(shooter));
