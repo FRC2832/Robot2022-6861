@@ -13,9 +13,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Shooter extends SubsystemBase 
 {
     final double SENSOR_UNITS_TO_RPM = 3.414;
+    final int HOOD_SENSOR_ACTIVE = 700;
+    final int MAX_ANGLE_COUNTS = 400;
+    final int MIN_ANGLE = 20;
+    final int MAX_ANGLE = 70;
+
     TalonFX shooterFx;
     TalonSRX hoodMotor;
     boolean isHomed;    //report if hood has been homed
+    boolean lastHomed;
     double hoodSensorOffset;
     Pi pi;
     private double distance;
@@ -32,10 +38,10 @@ public class Shooter extends SubsystemBase
         this.pi = pi;
         isHomed = false;
         // Example usage of a TalonSRX motor controller
-        shooterFx = new TalonFX(0); // creates a new TalonSRX with ID 0
+        shooterFx = new TalonFX(23); // creates a new TalonSRX with ID 0
         shooterFx.setNeutralMode(NeutralMode.Coast);
         shooterFx.setInverted(false);
-        hoodMotor = new TalonSRX(2);
+        hoodMotor = new TalonSRX(25);
         hoodMotor.setNeutralMode(NeutralMode.Brake);
 
         TalonFXConfiguration config = new TalonFXConfiguration();
@@ -56,12 +62,16 @@ public class Shooter extends SubsystemBase
         SmartDashboard.putNumber("Shot Distance", getShotDist());
         SmartDashboard.putNumber("Calc RPM", getTargetRpm());
         SmartDashboard.putNumber("Calc Hood Angle", getTargetHoodAngle());
+        SmartDashboard.putBoolean("Hood Bottom", hoodBottom());
+        SmartDashboard.putNumber("Hood Sensor", hoodMotor.getSensorCollection().getAnalogInRaw());
+        SmartDashboard.putBoolean("IsHomed", isHomed);
 
-        //if the limit switch is pressed, reset the hood angle position
-        if (hoodMotor.isRevLimitSwitchClosed() > 0) {
+        //when we exit the home position, save the zero position
+        if (lastHomed == true && !hoodBottom()){
             hoodMotor.setSelectedSensorPosition(0);
             isHomed = true;
         }
+        lastHomed = hoodBottom();
     }
 
     public void setShootPct(double percent) {
@@ -85,15 +95,31 @@ public class Shooter extends SubsystemBase
     }
 
     public double getHoodAngle() {
-        //TODO: add angle scale factor and zeroing
-        return hoodMotor.getSelectedSensorPosition();
+        double sensor = hoodMotor.getSelectedSensorPosition();
+        return (sensor/MAX_ANGLE_COUNTS)*(MAX_ANGLE-MIN_ANGLE) + MIN_ANGLE;
     }
 
     public void setHoodSpeedPct(double pct) { 
         //allow control if homed or only down if not homed
-        if(isHomed == true || pct < 0) {
+        if(hoodBottom()) {
+            if(pct > 0.1) {
+                //if driving down, stop at home
+                hoodMotor.set(ControlMode.PercentOutput, 0);
+            } else {
+                //slowly drive out to get accurate home
+                hoodMotor.set(ControlMode.PercentOutput, 0.18);
+            }
+        }
+        else if(hoodMotor.getSelectedSensorPosition() > MAX_ANGLE_COUNTS && pct > 0){
+            hoodMotor.set(ControlMode.PercentOutput, 0);
+        }
+        else {
             hoodMotor.set(ControlMode.PercentOutput, pct);
         }
+    }
+
+    public boolean hoodBottom() {
+        return hoodMotor.getSensorCollection().getAnalogInRaw() > HOOD_SENSOR_ACTIVE;
     }
 
     public void setHoodAngle(double position) {

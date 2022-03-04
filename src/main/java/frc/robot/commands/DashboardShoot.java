@@ -15,7 +15,8 @@ public class DashboardShoot extends CommandBase {
     
     @Override
     public void execute() {
-        double rpm = SmartDashboard.getNumber("Target RPM", 2000);
+        double rpm = SmartDashboard.getNumber("Target RPM", 2400);
         shooter.setShooterRpm(rpm);
+        shooter.setHoodSpeedPct(0);
     }
 }

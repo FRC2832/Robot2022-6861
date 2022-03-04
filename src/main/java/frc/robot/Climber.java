@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase 
 {
-    public static final double MIDDLE_CLIMB_SPEED = 0.25;
-    public static final double REACH_CLIMB_SPEED = 0.25;
+    public static final double MIDDLE_CLIMB_SPEED = 0.5;
+    public static final double REACH_CLIMB_SPEED = 0.5;
 
     private CANSparkMax middleClimb;
     private CANSparkMax leftClimb;

@@ -21,7 +21,7 @@ public class Drivetrain extends SubsystemBase {
     public static final int RR = 3;
     private CANSparkMax motors[];
     private MecanumDrive m_robotDrive;
-    private final PigeonIMU pigeon = new PigeonIMU(13);
+    private final PigeonIMU pigeon = new PigeonIMU(0);
     
     public Drivetrain() {
         motors = new CANSparkMax[4];
@@ -36,6 +36,7 @@ public class Drivetrain extends SubsystemBase {
         motors[RR].setInverted(true);
     
         m_robotDrive = new MecanumDrive(motors[FL], motors[RL], motors[FR], motors[RR]);
+        m_robotDrive.setSafetyEnabled(false);
     }
 
     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {

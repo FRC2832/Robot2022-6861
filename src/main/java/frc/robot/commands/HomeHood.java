@@ -18,7 +18,7 @@ public class HomeHood extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return shooter.isHoodHomed();
+        return true;
     }
 
     @Override

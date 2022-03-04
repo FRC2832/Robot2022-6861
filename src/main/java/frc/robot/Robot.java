@@ -54,7 +54,7 @@ public class Robot extends TimedRobot {
         intake.register();
         intake.setDefaultCommand(new DriveIntake(intake, rightStick, operatorController));
         shooter = new Shooter(pi);
-        shooter.setDefaultCommand(new NoShoot(shooter));
+        shooter.setDefaultCommand(new DriveHood(shooter,operatorController));
         climber = new Climber();
         climber.register();
         climber.setDefaultCommand(new DriveClimber(climber,leftStick,rightStick));
@@ -62,10 +62,10 @@ public class Robot extends TimedRobot {
         turret.register();
         turret.setDefaultCommand(new DriveTurret(turret,operatorController));
 
-		JoystickButton selectButton = new JoystickButton(leftStick, 7);  //7 = select button
+		JoystickButton selectButton = new JoystickButton(operatorController, 7);  //7 = select button
         selectButton.whileActiveContinuous(new DashboardShoot(shooter));
 		
-		JoystickButton startButton = new JoystickButton(leftStick, 8);  //7 = select button
+		JoystickButton startButton = new JoystickButton(operatorController, 8);  //7 = select button
         startButton.whileActiveContinuous(new AutoShoot(drive,shooter,pi));
 
         // this.setNetworkTablesFlushEnabled(true); //turn off 20ms Dashboard update
@@ -161,6 +161,8 @@ public class Robot extends TimedRobot {
         pi.sendAlliance();
 		pi.processCargo();
         pi.processTargets();
+        SmartDashboard.putNumber("Vision CenterX", pi.getCenterX());
+        SmartDashboard.putNumber("Vision CenterY", pi.getCenterY());
     }
 
     @Override

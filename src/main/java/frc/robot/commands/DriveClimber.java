@@ -9,9 +9,10 @@ public class DriveClimber extends CommandBase{
     private Joystick leftStick;
     private Joystick rightStick;
 
-    public DriveClimber(Climber climber, Joystick leftStick, Joystick rightJoystick) {
+    public DriveClimber(Climber climber, Joystick leftStick, Joystick rightStick) {
         this.climber = climber;
         this.leftStick = leftStick;
+        this.rightStick = rightStick;
         addRequirements(climber);
     }
     

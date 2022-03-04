@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
     public final double INTAKE_SPEED = 0.5;
-    public final double UP_SPEED = 0.25;    //if you change this, all shooting calibrations must be checked
+    public final double UP_SPEED = 0.35;    //if you change this, all shooting calibrations must be checked
 
     private CANSparkMax intakeMotor;
     private CANSparkMax upMotor;
@@ -29,7 +29,7 @@ public class Intake extends SubsystemBase {
         intakeMotor.set(voltPct);
     }
 
-    public void setUpMotor(double pct) {
+    public void  setUpMotor(double pct) {
         upMotor.set(pct);
     }
 
