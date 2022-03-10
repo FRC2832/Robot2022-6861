@@ -13,20 +13,17 @@ public class Pi {
     private NetworkTableInstance netTableInstance;
     private NetworkTable table;
     private NetworkTableEntry cargoCenterX;
-    private NetworkTableEntry cargoCenterY;
+    //private NetworkTableEntry cargoCenterY;
     private NetworkTableEntry allianceColor;
     private NetworkTableEntry targetCenterX;
     private NetworkTableEntry targetCenterY;
-    private NetworkTableEntry targetWidth;
-    private NetworkTableEntry targetHeight;
-    private NetworkTableEntry targetArea;
     private Number[] targetCenterXArray;
     private Number[] targetCenterYArray;
     private Number[] targetWidthArray;
     private Number[] targetHeightArray;
     private Number[] targetAreaArray;
     private final double CAM_X_RES = 640;
-    private final double CAM_Y_RES = 480;
+    //private final double CAM_Y_RES = 480;
     public final double TARGET_CENTER_X = 320;
     private static boolean targetMoveRight;
     private static boolean targetMoveLeft;
@@ -39,13 +36,10 @@ public class Pi {
         netTableInstance = NetworkTableInstance.getDefault();
         table = netTableInstance.getTable("vision");
         cargoCenterX = table.getEntry("cargoX");
-        cargoCenterY = table.getEntry("cargoY");
+        //cargoCenterY = table.getEntry("cargoY");
         allianceColor = table.getEntry("alliance");
         targetCenterX = table.getEntry("targetX");
         targetCenterY = table.getEntry("targetY");
-        targetWidth = table.getEntry("targetWidth");
-        targetHeight = table.getEntry("targetHeight");
-        targetArea = table.getEntry("targetArea");
         centerYOutput = -1;
     }
 
@@ -61,7 +55,7 @@ public class Pi {
 
     public void processCargo() {
         Number[] cargoCenterXArray = cargoCenterX.getNumberArray(new Number[0]);
-        Number[] cargoCenterYArray = cargoCenterY.getNumberArray(new Number[0]);
+        //Number[] cargoCenterYArray = cargoCenterY.getNumberArray(new Number[0]);
         if (cargoCenterXArray.length == 0) {
             cargoMoveRight = false;
             cargoMoveLeft = false;
@@ -84,9 +78,7 @@ public class Pi {
     public void processTargets() {
         targetCenterXArray = targetCenterX.getNumberArray(new Number[0]);
         targetCenterYArray = targetCenterY.getNumberArray(new Number[0]);
-        targetWidthArray = targetWidth.getNumberArray(new Number[0]);
-        targetHeightArray = targetHeight.getNumberArray(new Number[0]);
-        targetAreaArray = targetArea.getNumberArray(new Number[0]);
+
         int size = targetCenterXArray.length;
         //check if vision saw a target
         if (size == 0) {
@@ -96,29 +88,9 @@ public class Pi {
             centerXOutput = -1;
             return;
         }
-        //consistency check
-        if(  size == targetCenterYArray.length
-          && size == targetWidthArray.length
-          && size == targetHeightArray.length
-          && size == targetAreaArray.length
-          )
-        {
-            sortTargets();
-        }
-        else {
-            //unknown order, skip this loop
-            return;
-        }
 
-        // pick a target just right of center so the cargo hopefully doesn't bounce out
-        int index = 0;
-        if(size <= 3) {
-            index = size - 1;
-        } else {
-            index = (int) ((size / 2) + 1);
-        }
-        double targetX = (double) targetCenterXArray[index];
-        centerYOutput = (double) targetCenterYArray[index];
+        double targetX = average(targetCenterXArray);
+        centerYOutput = average(targetCenterYArray);
         centerXOutput = targetX;
         if (targetX < ((CAM_X_RES / 2) - (CAM_X_RES * 0.05))) {
             targetMoveRight = false;
@@ -130,6 +102,16 @@ public class Pi {
             targetMoveRight = false;
             targetMoveLeft = false;
         }
+    }
+
+    public static double average(Number[] numbers) {
+        if(numbers.length == 0) return 0;
+
+        double sum = 0;
+        for(int i=0; i<numbers.length; i++) {
+            sum += numbers[i].doubleValue();
+        }
+        return sum/numbers.length;
     }
     
     public void sortTargets() {
