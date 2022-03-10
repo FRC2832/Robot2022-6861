@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -37,6 +38,19 @@ public class Drivetrain extends SubsystemBase {
     
         m_robotDrive = new MecanumDrive(motors[FL], motors[RL], motors[FR], motors[RR]);
         m_robotDrive.setSafetyEnabled(false);
+    }
+
+    public void setBrakeMode(boolean brake) {
+        IdleMode idleMode;
+
+        if(brake) {
+            idleMode = IdleMode.kBrake;
+        } else {
+            idleMode = IdleMode.kCoast;
+        }
+        for(int i=0; i<motors.length; i++) {
+            motors[i].setIdleMode(idleMode);
+        }
     }
 
     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {

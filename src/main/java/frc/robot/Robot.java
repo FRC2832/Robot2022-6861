@@ -108,13 +108,13 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledInit() {
+        drive.setBrakeMode(false);
     }
 
     @Override
     public void autonomousInit() {
+        drive.setBrakeMode(true);
         CommandScheduler.getInstance().cancelAll();
-        //rehome hood if needed
-        CommandScheduler.getInstance().schedule(new HomeHood(shooter));
 
         Command m_autonomousCommand = m_chooser.getSelected();
 
@@ -135,9 +135,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        drive.setBrakeMode(true);
         CommandScheduler.getInstance().cancelAll();
-        //rehome hood if needed
-        CommandScheduler.getInstance().schedule(new HomeHood(shooter));
     }
 
     @Override
