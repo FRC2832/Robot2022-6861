@@ -6,12 +6,14 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase 
 {
+    public final double DEFAULT_SHOT_RPM=2400;
+    public final double DEFAULT_SHOT_ANGLE=40;
+
     final double SENSOR_UNITS_TO_RPM = 3.414;
     final int HOOD_SENSOR_ACTIVE = 700;
     final int MAX_ANGLE_COUNTS = 400;

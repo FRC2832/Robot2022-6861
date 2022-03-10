@@ -10,12 +10,12 @@ public class DashboardShoot extends CommandBase {
     public DashboardShoot(Shooter shooter) {
         this.shooter = shooter;
         addRequirements(shooter);
-        SmartDashboard.putNumber("Target RPM", 2000);
+        SmartDashboard.putNumber("Target RPM", shooter.DEFAULT_SHOT_RPM);
     }
     
     @Override
     public void execute() {
-        double rpm = SmartDashboard.getNumber("Target RPM", 2400);
+        double rpm = SmartDashboard.getNumber("Target RPM", shooter.DEFAULT_SHOT_RPM);
         shooter.setShooterRpm(rpm);
         shooter.setHoodSpeedPct(0);
     }

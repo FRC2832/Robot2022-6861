@@ -137,6 +137,7 @@ public class Robot extends TimedRobot {
     public void teleopInit() {
         drive.setBrakeMode(true);
         CommandScheduler.getInstance().cancelAll();
+        SmartDashboard.putNumber("Target RPM", shooter.DEFAULT_SHOT_RPM);
     }
 
     @Override
