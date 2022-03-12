@@ -60,7 +60,7 @@ public class Robot extends TimedRobot {
         drive.setDefaultCommand(new DriveStick(drive,leftStick,rightStick));
         intake = new Intake();
         intake.register();
-        intake.setDefaultCommand(new DriveIntake(intake, rightStick, operatorController));
+        intake.setDefaultCommand(new DriveIntake(intake, operatorController));
         shooter = new Shooter(pi);
         shooter.setDefaultCommand(new DriveHood(shooter,operatorController));
         climber = new Climber();
@@ -74,7 +74,11 @@ public class Robot extends TimedRobot {
         this.addPeriodic(() -> {
             intake.updateColorSensor();
         }, 0.02, 0.005);
-		JoystickButton selectButton = new JoystickButton(operatorController, 7);  //7 = select button
+
+        JoystickButton triggerButton = new JoystickButton(rightStick, 1);  //1 = trigger
+        triggerButton.whileActiveContinuous(new SmartIntake(intake));
+		
+        JoystickButton selectButton = new JoystickButton(operatorController, 7);  //7 = select button
         selectButton.whileActiveContinuous(new DashboardShoot(shooter));
 		
 		JoystickButton startButton = new JoystickButton(operatorController, 8);  //7 = select button
