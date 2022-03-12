@@ -4,15 +4,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.*;
 
-public class AutoShoot extends CommandBase {
+public class SmartShot extends CommandBase {
     private Drivetrain drive;
     private Shooter shooter;
     private Pi pi;
+    private Intake intake;
+    private Turret turret;
 
-    public AutoShoot(Drivetrain drive, Shooter shooter, Pi pi) {
+    public SmartShot(Drivetrain drive, Shooter shooter, Pi pi, Intake intake, Turret turret) {
         this.drive = drive;
         this.shooter = shooter;
         this.pi = pi;
+        this.intake = intake;
+        this.turret = turret;
 
         addRequirements(drive);
         addRequirements(shooter);
@@ -23,11 +27,11 @@ public class AutoShoot extends CommandBase {
         String error = "";
 
         //check hood angle is more than 3* off
-        //shooter.setHoodAngle(shooter.getTargetHoodAngle());
-        if(Math.abs(shooter.getHoodAngle()-shooter.getTargetHoodAngle()) > 3)
+        shooter.setHoodAngle(shooter.getTargetHoodAngle());
+        if(Math.abs(shooter.getHoodAngle()-shooter.getTargetHoodAngle()) > 0.5)
         {
             //TODO: turned off hood since it's broke
-            //error = String.join(error, "Hood ");
+            error = String.join(error, "Hood ");
         }
 
         //check shot speed is within 30 RPM
@@ -42,19 +46,19 @@ public class AutoShoot extends CommandBase {
             if(Pi.getTargetMoveLeft()) {
                 error = String.join(error, "TurnL ");
                 //left is positive turn
-                drive.drive(0, 0, 0.3, false);
+                turret.setTurretSpeed(0.10);
             } else if (Pi.getTargetMoveRight()) {
                 error = String.join(error, "TurnR ");
-                drive.drive(0, 0, -0.3, false);
+                turret.setTurretSpeed(-0.10);
             } else {
                 //robot centered, stop driving
-                drive.drive(0, 0, 0, false);
+                turret.setTurretSpeed(0);
             }
         } else {
             //pi is not seeing hub
             //TODO: Rumble driver controller?
             error = String.join(error, "Vision ");
-            drive.drive(0, 0, 0, false);
+            turret.setTurretSpeed(0);
         }
 
         //check for driving (0.15m/s == 6in/s)
@@ -66,6 +70,8 @@ public class AutoShoot extends CommandBase {
         if(error.length() ==0) {
             //TODO: SHOOT!!!
             error = "SHOOT!!!";
+            intake.setIntake(intake.INTAKE_SPEED);
+            intake.setUpMotor(intake.UP_SPEED);
         }
         SmartDashboard.putString("Auto Shoot Error", error);
     }

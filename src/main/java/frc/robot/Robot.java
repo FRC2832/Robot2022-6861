@@ -84,8 +84,8 @@ public class Robot extends TimedRobot {
         JoystickButton selectButton = new JoystickButton(operatorController, 7);  //7 = select button
         selectButton.whileActiveContinuous(new DashboardShoot(shooter));
 		
-		JoystickButton startButton = new JoystickButton(operatorController, 8);  //7 = select button
-        startButton.whileActiveContinuous(new AutoShoot(drive,shooter,pi));
+		JoystickButton startButton = new JoystickButton(operatorController, 8);  //8 = start button
+        startButton.whileActiveContinuous(new SmartShot(drive,shooter,pi,intake,turret));
 
         // this.setNetworkTablesFlushEnabled(true); //turn off 20ms Dashboard update
         // rate
@@ -108,7 +108,7 @@ public class Robot extends TimedRobot {
         //Deadline waits for the specified command to finish
         SequentialCommandGroup backUpShoot = new SequentialCommandGroup(
             new AutoDrive(drive,1.7),
-            new AutoShoot(drive,shooter,pi),
+            new SmartShot(drive,shooter,pi,intake,turret),
             new AutoDrive(drive,1)
         );
 
@@ -118,7 +118,7 @@ public class Robot extends TimedRobot {
                 new IntakeBall(intake)
             ),
             new AutoDriveDiagonal(drive, 0.46, -0.385, 0.5),  //should be 60% power
-            new AutoShoot(drive,shooter,pi),
+            new SmartShot(drive,shooter,pi,intake,turret),
             new AutoTurn(drive, 110),
             new ParallelRaceGroup(
                 new AutoDrive(drive,1.0),
