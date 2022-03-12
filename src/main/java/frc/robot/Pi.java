@@ -92,10 +92,10 @@ public class Pi {
         double targetX = average(targetCenterXArray);
         centerYOutput = average(targetCenterYArray);
         centerXOutput = targetX;
-        if (targetX < ((CAM_X_RES / 2) - (CAM_X_RES * 0.05))) {
+        if (targetX < ((CAM_X_RES / 2) - (CAM_X_RES * 0.04))) {
             targetMoveRight = false;
             targetMoveLeft = true;
-        } else if (targetX > ((CAM_X_RES / 2) + (CAM_X_RES * 0.05))) {
+        } else if (targetX > ((CAM_X_RES / 2) + (CAM_X_RES * 0.04))) {
             targetMoveLeft = false;
             targetMoveRight = true;
         } else {

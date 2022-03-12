@@ -36,7 +36,7 @@ public class SmartShot extends CommandBase {
 
         //check shot speed is within 30 RPM
         shooter.setShooterRpm(shooter.getTargetRpm());
-        if(Math.abs(shooter.getShooterVelocity()-shooter.getTargetRpm()) > 30)
+        if(Math.abs(shooter.getShooterVelocity()-shooter.getTargetRpm()) > 20)
         {
             error = String.join(error, "RPM ");
         }
@@ -46,10 +46,10 @@ public class SmartShot extends CommandBase {
             if(Pi.getTargetMoveLeft()) {
                 error = String.join(error, "TurnL ");
                 //left is positive turn
-                turret.setTurretSpeed(0.10);
+                turret.setTurretSpeed(0.08);
             } else if (Pi.getTargetMoveRight()) {
                 error = String.join(error, "TurnR ");
-                turret.setTurretSpeed(-0.10);
+                turret.setTurretSpeed(-0.08);
             } else {
                 //robot centered, stop driving
                 turret.setTurretSpeed(0);
