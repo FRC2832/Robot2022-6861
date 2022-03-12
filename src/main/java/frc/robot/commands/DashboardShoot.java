@@ -18,6 +18,6 @@ public class DashboardShoot extends CommandBase {
     public void execute() {
         double rpm = SmartDashboard.getNumber("Target RPM", ShooterConstants.DEFAULT_SHOT_RPM);
         shooter.setShooterRpm(rpm);
-        shooter.setHoodSpeedPct(0);
+        shooter.setHoodAngle(ShooterConstants.DEFAULT_SHOT_ANGLE);
     }
 }

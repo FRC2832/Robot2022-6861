@@ -77,7 +77,10 @@ public class Robot extends TimedRobot {
 
         JoystickButton triggerButton = new JoystickButton(rightStick, 1);  //1 = trigger
         triggerButton.whileActiveContinuous(new SmartIntake(intake));
-		
+
+        JoystickButton lbButton = new JoystickButton(operatorController, 5);  //5 = left bumper button
+        lbButton.whileActiveContinuous(new LowShot(shooter,intake));
+
         JoystickButton selectButton = new JoystickButton(operatorController, 7);  //7 = select button
         selectButton.whileActiveContinuous(new DashboardShoot(shooter));
 		
