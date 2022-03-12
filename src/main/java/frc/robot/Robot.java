@@ -4,7 +4,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -37,6 +42,9 @@ public class Robot extends TimedRobot {
     private Joystick rightStick;
     private XboxController operatorController;
     private SendableChooser<Command> m_chooser;
+    private PowerDistribution pdp;
+    private DoubleLogEntry[] pdpChannels;
+    private DoubleLogEntry pdpBatteryVoltage;
 
     @Override
     public void robotInit() {
@@ -72,9 +80,21 @@ public class Robot extends TimedRobot {
         // rate
         LiveWindow.setEnabled(false);
 
-        sim = new Simulation(drive);
-
-        //ParallelGroup must wait till ALL finish, ParallelRace waits for FIRST to finish, Deadline waits for the specified command to finish
+        // Starts recording to data log
+        DataLogManager.start();
+        DataLog log = DataLogManager.getLog();
+        // Record both DS control and joystick data
+        DriverStation.startDataLog(DataLogManager.getLog());
+        pdp = new PowerDistribution();
+        pdpChannels = new DoubleLogEntry[pdp.getNumChannels()];
+        pdpBatteryVoltage = new DoubleLogEntry(log, "/pdp/Vbat");
+        for(int i=0; i<pdpChannels.length;i++){
+            pdpChannels[i] = new DoubleLogEntry(log, "/pdp/channel" + i);
+        }
+        
+        //ParallelGroup must wait till ALL finish, 
+        //ParallelRace waits for FIRST to finish, 
+        //Deadline waits for the specified command to finish
         SequentialCommandGroup backUpShoot = new SequentialCommandGroup(
             new AutoDrive(drive,1.7),
             new AutoShoot(drive,shooter,pi),
@@ -130,14 +150,24 @@ public class Robot extends TimedRobot {
     }
 
     @Override
-    public void teleopPeriodic() {
-    }
-
-    @Override
     public void teleopInit() {
         drive.setBrakeMode(true);
         CommandScheduler.getInstance().cancelAll();
         SmartDashboard.putNumber("Target RPM", shooter.DEFAULT_SHOT_RPM);
+    }
+
+    @Override
+    public void teleopPeriodic() {
+    }
+
+    @Override
+    public void testInit() {
+        teleopInit();
+    }
+
+    @Override
+    public void testPeriodic() {
+        teleopPeriodic();
     }
 
     @Override
@@ -163,10 +193,17 @@ public class Robot extends TimedRobot {
         pi.processTargets();
         SmartDashboard.putNumber("Vision CenterX", pi.getCenterX());
         SmartDashboard.putNumber("Vision CenterY", pi.getCenterY());
+
+        //log battery voltage
+        pdpBatteryVoltage.append(pdp.getVoltage());
+        for(int i=0; i<pdpChannels.length;i++){
+            pdpChannels[i].append(pdp.getCurrent(i));
+        }
     }
 
     @Override
     public void simulationInit() {
+        sim = new Simulation(drive);
         sim.init();
     }
 
