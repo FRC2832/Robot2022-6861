@@ -70,6 +70,10 @@ public class Robot extends TimedRobot {
         turret.register();
         turret.setDefaultCommand(new DriveTurret(turret,operatorController));
 
+        //move color sensor read to seperate thread since it sometimes locks up
+        this.addPeriodic(() -> {
+            intake.updateColorSensor();
+        }, 0.02, 0.005);
 		JoystickButton selectButton = new JoystickButton(operatorController, 7);  //7 = select button
         selectButton.whileActiveContinuous(new DashboardShoot(shooter));
 		
