@@ -6,6 +6,7 @@ import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,6 +25,7 @@ public class Intake extends SubsystemBase {
     private final Color kRedTarget = new Color(0.499, 0.362, 0.138);
     private CargoColor colorMatch;
     private Color color;
+    private DigitalInput proxSensor;
 
     public enum CargoColor {
         Red,
@@ -43,6 +45,8 @@ public class Intake extends SubsystemBase {
         m_colorMatcher.addColorMatch(kRedTarget);
         colorMatch = CargoColor.Unknown;
         color = Color.kBlack;
+
+        proxSensor = new DigitalInput(0);
     }
 
     public void setIntake(double voltPct) {
@@ -55,6 +59,10 @@ public class Intake extends SubsystemBase {
 
     public CargoColor getColorSensor() {
         return colorMatch;
+    }
+
+    public boolean getProxSensor() {
+        return !proxSensor.get();
     }
 
     public void updateColorSensor() {
@@ -74,6 +82,7 @@ public class Intake extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putNumber("Intake Speed%", intakeMotor.get());
         SmartDashboard.putString("Ball Color", colorMatch.toString());
+        SmartDashboard.putBoolean("Prox Sensor", getProxSensor());
         if(DriverStation.isTest()) {
             SmartDashboard.putNumber("Sense Red", color.red);
             SmartDashboard.putNumber("Sense Green", color.green);
