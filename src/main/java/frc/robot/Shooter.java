@@ -2,9 +2,11 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.SlotConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -52,6 +54,16 @@ public class Shooter extends SubsystemBase
         config.slot0.integralZone = 65;
         config.closedloopRamp = 0.1;         //take 100ms to ramp to max power
         shooterFx.configAllSettings(config); // apply the config settings; this selects the quadrature encoder
+
+        TalonSRXConfiguration hoodConfig = new TalonSRXConfiguration();
+        hoodMotor.getAllConfigs(hoodConfig);
+        hoodConfig.slot0.kP = 9;
+        hoodConfig.slot0.kI = 0.1;
+        hoodConfig.slot0.kD = 90;
+        hoodConfig.slot0.integralZone = 30;
+        hoodConfig.slot0.allowableClosedloopError = 2;
+        hoodConfig.slot0.closedLoopPeakOutput = 0.5;
+        hoodMotor.configAllSettings(hoodConfig);
     }
 
     @Override
@@ -122,7 +134,8 @@ public class Shooter extends SubsystemBase
     }
 
     public void setHoodAngle(double position) {
-        //TODO: set hood angle
+        double value = (position-MIN_ANGLE) * MAX_ANGLE_COUNTS/ (MAX_ANGLE-MIN_ANGLE);
+        hoodMotor.set(ControlMode.Position, value);
     }
 
     public void calcShot() {
