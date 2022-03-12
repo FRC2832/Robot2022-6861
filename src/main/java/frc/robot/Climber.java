@@ -40,7 +40,7 @@ public class Climber extends SubsystemBase
 
     public void setReachClimbPower(double pct) {
         leftClimb.set(pct);
-        rightClimb.set(pct);
+        rightClimb.set(-pct);
     }
 
     public double getMiddleClimbPosition() {
