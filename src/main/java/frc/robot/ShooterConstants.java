@@ -8,6 +8,13 @@ public class ShooterConstants {
     public final static ArrayList<Pair<Double,Double>> DIST_RPM_TABLE = new ArrayList<Pair<Double,Double>>();
     public final static ArrayList<Pair<Double,Double>> DIST_HOOD_TABLE = new ArrayList<Pair<Double,Double>>();
 
+    public final static double DEFAULT_SHOT_RPM=2400;
+    public final static double DEFAULT_SHOT_ANGLE=40;
+    public final static double LOW_SHOT_RPM=600;
+    public final static double LOW_SHOT_ANGLE=65;
+    public final static double LOW_SHOT_RPM_ERROR=30;
+    public final static double LOW_SHOT_ANGLE_ERROR=1;
+
     public static void LoadConstants() {
         //table is input: pixel Y, output: inches from target
         VISION_DIST_TABLE.add(new Pair<Double, Double>(54.5, 70.));
