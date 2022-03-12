@@ -23,6 +23,7 @@ public class Intake extends SubsystemBase {
     private ColorMatch m_colorMatcher = new ColorMatch();
     private final Color kBlueTarget = new Color(0.171, 0.421, 0.406);
     private final Color kRedTarget = new Color(0.499, 0.362, 0.138);
+    private final Color kUnknownTarget = new Color(0.269, 0.481, 0.249);
     private CargoColor colorMatch;
     private Color color;
     private DigitalInput proxSensor;
@@ -43,6 +44,7 @@ public class Intake extends SubsystemBase {
         colorSensor = new ColorSensorV3(Port.kOnboard);
         m_colorMatcher.addColorMatch(kBlueTarget);
         m_colorMatcher.addColorMatch(kRedTarget);
+        m_colorMatcher.addColorMatch(kUnknownTarget);
         colorMatch = CargoColor.Unknown;
         color = Color.kBlack;
 
