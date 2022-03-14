@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -103,26 +104,31 @@ public class Robot extends TimedRobot {
             pdpChannels[i] = new DoubleLogEntry(log, "/pdp/channel" + i);
         }
         
-        //ParallelGroup must wait till ALL finish, 
+        //ParallelCommandGroup must wait till ALL finish, 
         //ParallelRace waits for FIRST to finish, 
         //Deadline waits for the specified command to finish
         SequentialCommandGroup backUpShoot = new SequentialCommandGroup(
-            new AutoDrive(drive,1.7),
+            new ParallelCommandGroup(
+                new AutoDrive(drive,2.0),
+                new SmartIntake(intake),
+                new AutoTurret(turret, 50.)
+            ),
+            new AutoTurn(drive, 110),
             new SmartShot(drive,shooter,pi,intake,turret),
-            new AutoDrive(drive,1)
+            new AutoDrive(drive,-1)
         );
 
         SequentialCommandGroup grab3 = new SequentialCommandGroup(
             new ParallelRaceGroup(
                 new AutoDrive(drive,1.8),
-                new IntakeBall(intake)
+                new SmartIntake(intake)
             ),
             new AutoDriveDiagonal(drive, 0.46, -0.385, 0.5),  //should be 60% power
             new SmartShot(drive,shooter,pi,intake,turret),
             new AutoTurn(drive, 110),
             new ParallelRaceGroup(
                 new AutoDrive(drive,1.0),
-                new IntakeBall(intake)
+                new SmartIntake(intake)
             )
         );
 
@@ -202,6 +208,7 @@ public class Robot extends TimedRobot {
         pi.sendAlliance();
 		pi.processCargo();
         pi.processTargets();
+        shooter.calcShot();
         SmartDashboard.putNumber("Vision CenterX", pi.getCenterX());
         SmartDashboard.putNumber("Vision CenterY", pi.getCenterY());
 
