@@ -36,6 +36,11 @@ public class Drivetrain extends SubsystemBase {
         motors[FR].setInverted(true);
         motors[RR].setInverted(true);
     
+        for(int i=0; i<motors.length;i++) {
+            //encoders set to meters traveled
+            motors[i].getEncoder().setPositionConversionFactor(1/21.);
+            motors[i].getEncoder().setPosition(0);
+        }
         m_robotDrive = new MecanumDrive(motors[FL], motors[RL], motors[FR], motors[RR]);
         m_robotDrive.setSafetyEnabled(false);
     }
@@ -94,7 +99,7 @@ public class Drivetrain extends SubsystemBase {
         if (Robot.isReal()) {
             double[] ypr_deg = new double[3];
             pigeon.getYawPitchRoll(ypr_deg);
-            return ypr_deg[0];
+            return -ypr_deg[0];
         }
         else {
             return -Robot.getSim().getAngle();
@@ -140,5 +145,9 @@ public class Drivetrain extends SubsystemBase {
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Gyro Angle", getRotation().getDegrees());
+        SmartDashboard.putNumber("Drive FL Encoder", getDistance(FL));
+        SmartDashboard.putNumber("Drive FR Encoder", getDistance(FR));
+        SmartDashboard.putNumber("Drive RL Encoder", getDistance(RL));
+        SmartDashboard.putNumber("Drive RR Encoder", getDistance(RR));
     }
 }
