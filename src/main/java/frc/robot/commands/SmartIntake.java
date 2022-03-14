@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Intake;
 
@@ -30,5 +31,13 @@ public class SmartIntake extends CommandBase{
         
         intake.setIntake(intakeSpeed);
         intake.setUpMotor(upSpeed);
+    }
+
+    @Override
+    public boolean isFinished() {
+        if(DriverStation.isAutonomous()) {
+            return intake.getProxSensor();
+        }
+        return false;
     }
 }

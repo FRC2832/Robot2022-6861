@@ -1,8 +1,10 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.*;
+import frc.robot.Intake.CargoColor;
 
 public class SmartShot extends CommandBase {
     private Drivetrain drive;
@@ -10,6 +12,7 @@ public class SmartShot extends CommandBase {
     private Pi pi;
     private Intake intake;
     private Turret turret;
+    private byte counts;
 
     public SmartShot(Drivetrain drive, Shooter shooter, Pi pi, Intake intake, Turret turret) {
         this.drive = drive;
@@ -22,8 +25,13 @@ public class SmartShot extends CommandBase {
         addRequirements(shooter);
     }
 
+    @Override
+    public void initialize() {
+        //get the FL wheel distance when we start
+        counts = 0;
+    }
+
     public void execute() {
-        shooter.calcShot();
         String error = "";
 
         //check hood angle is more than 3* off
@@ -62,6 +70,7 @@ public class SmartShot extends CommandBase {
         }
 
         //check for driving (0.15m/s == 6in/s)
+        drive.driveMechanumTank(0, 0, 0, 0);
         if(Math.abs(drive.getVelocity(0)) > 0.15) {
             error = String.join(error, "Driving ");
             //driving might be because of centering, so don't stop it
@@ -74,5 +83,25 @@ public class SmartShot extends CommandBase {
             intake.setUpMotor(intake.UP_SPEED);
         }
         SmartDashboard.putString("Auto Shoot Error", error);
+
+        //count how long we are empty
+        if(intake.getColorSensor() == CargoColor.Unknown) {
+            counts++;
+        } else {
+            counts = 0;
+        }
     }
+
+    @Override
+    public boolean isFinished() {
+        if(DriverStation.isAutonomous()) {
+            SmartDashboard.putNumber("SmartShot Counts", counts);
+            //50 counts = 1 second
+            return (counts > 120);
+        }
+        else {
+            return false;
+        }
+    }
+
 }
