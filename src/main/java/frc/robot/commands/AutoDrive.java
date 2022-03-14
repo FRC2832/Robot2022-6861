@@ -7,11 +7,13 @@ public class AutoDrive extends CommandBase {
     private Drivetrain drive;
     private double startPos;
     private double distance;
+    private double sign;
 
     public AutoDrive(Drivetrain drive, double distance) {
         this.drive = drive;
         addRequirements(drive);
-        this.distance = distance;
+        this.distance = Math.abs(distance);
+        sign = Math.signum(distance);
     }
 
     @Override
@@ -22,13 +24,13 @@ public class AutoDrive extends CommandBase {
 
     @Override
     public void execute() {
-        drive.drive(0, 0.6, 0, false);
+        drive.drive(0, 0.6 * sign, 0, false);
     }
 
     @Override
     public boolean isFinished() {
         //FL wheel traveled 1 meter
-        if((drive.getDistance(0) - startPos) > distance) {
+        if((drive.getDistance(0) - startPos) * sign > distance) {
             return true;
         }
         return false;
