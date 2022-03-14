@@ -16,11 +16,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
 
@@ -108,14 +104,13 @@ public class Robot extends TimedRobot {
         //ParallelRace waits for FIRST to finish, 
         //Deadline waits for the specified command to finish
         SequentialCommandGroup backUpShoot = new SequentialCommandGroup(
-            new ParallelCommandGroup(
+            new ParallelRaceGroup(
                 new AutoDrive(drive,2.0),
                 new SmartIntake(intake),
                 new AutoTurret(turret, 50.)
             ),
             new AutoTurn(drive, 110),
-            new SmartShot(drive,shooter,pi,intake,turret),
-            new AutoDrive(drive,-1)
+            new SmartShot(drive,shooter,pi,intake,turret)
         );
 
         SequentialCommandGroup grab3 = new SequentialCommandGroup(
