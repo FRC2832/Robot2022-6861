@@ -48,10 +48,10 @@ public class Shooter extends SubsystemBase
         TalonFXConfiguration config = new TalonFXConfiguration();
         //PID values from calibration on field, 6878 units/100ms = 32.3% power, 47.89% = 9892, 16.62%=3572 units=1046 rpm
         config.slot0.kP = 0.8;
-        config.slot0.kI = 0.001;
+        config.slot0.kI = 0.0015;
         config.slot0.kD = 16;
         config.slot0.kF = 0.05205;
-        config.slot0.integralZone = 65;
+        config.slot0.integralZone = 85;
         config.closedloopRamp = 0.1;         //take 100ms to ramp to max power
         shooterFx.configAllSettings(config); // apply the config settings; this selects the quadrature encoder
 
