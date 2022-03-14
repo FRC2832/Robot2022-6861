@@ -51,15 +51,14 @@ public class SmartShot extends CommandBase {
 
         //check if PI saw target
         if(pi.getCenterX() > 0) {
-            if(Pi.getTargetMoveLeft()) {
-                error = String.join(error, "TurnL ");
-                //left is positive turn
-                turret.setTurretSpeed(0.08);
-            } else if (Pi.getTargetMoveRight()) {
-                error = String.join(error, "TurnR ");
-                turret.setTurretSpeed(-0.08);
+            var delta =  (pi.TARGET_CENTER_X - pi.getCenterX());
+            //if this many pixels off from center, fix it
+            if(Math.abs(delta) > 20) {
+                //100px off = 10% power to turn
+                double p = delta /1000.;
+                turret.setTurretSpeed(p);
+                error = String.join(error, "Turret ");
             } else {
-                //robot centered, stop driving
                 turret.setTurretSpeed(0);
             }
         } else {
