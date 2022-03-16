@@ -60,12 +60,12 @@ public class Robot extends TimedRobot {
         intake.setDefaultCommand(new DriveIntake(intake, operatorController));
         shooter = new Shooter(pi);
         shooter.setDefaultCommand(new DriveHood(shooter,operatorController));
-        climber = new Climber();
-        climber.register();
-        climber.setDefaultCommand(new DriveClimber(climber,leftStick,rightStick));
         turret = new Turret();
         turret.register();
         turret.setDefaultCommand(new DriveTurret(turret,operatorController));
+        climber = new Climber();
+        climber.register();
+        climber.setDefaultCommand(new DriveClimber(climber,turret,leftStick,rightStick));
 
         //move color sensor read to seperate thread since it sometimes locks up
         this.addPeriodic(() -> {

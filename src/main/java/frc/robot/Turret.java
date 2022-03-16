@@ -29,6 +29,10 @@ public class Turret extends SubsystemBase {
         return turretMotor.getEncoder().getPosition();
     }
 
+    public boolean resetClimber() {
+        return getAngle() < 170;
+    }
+
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Turret Encoder", getAngle());
