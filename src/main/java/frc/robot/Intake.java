@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -40,6 +41,7 @@ public class Intake extends SubsystemBase {
         
         upMotor = new CANSparkMax(31,MotorType.kBrushless);
         upMotor.setInverted(true);
+        upMotor.setIdleMode(IdleMode.kBrake);
         
         colorSensor = new ColorSensorV3(Port.kOnboard);
         m_colorMatcher.addColorMatch(kBlueTarget);
