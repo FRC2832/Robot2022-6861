@@ -10,14 +10,18 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Intake.CargoColor;
+import frc.robot.LightDrive.LightDrivePWM;
 import frc.robot.commands.*;
 
 /**
@@ -42,6 +46,8 @@ public class Robot extends TimedRobot {
     private PowerDistribution pdp;
     private DoubleLogEntry[] pdpChannels;
     private DoubleLogEntry pdpBatteryVoltage;
+    private LightDrivePWM ldrive;
+    private REVDigitBoard digit;
 
     @Override
     public void robotInit() {
@@ -71,6 +77,10 @@ public class Robot extends TimedRobot {
         this.addPeriodic(() -> {
             intake.updateColorSensor();
         }, 0.02, 0.005);
+
+        //Initialize a new PWM LightDrive
+		ldrive = new LightDrivePWM(new Servo(7), new Servo(8));
+        digit = new REVDigitBoard();
 
         JoystickButton triggerButton = new JoystickButton(rightStick, 1);  //1 = trigger
         triggerButton.whileActiveContinuous(new SmartIntake(intake));
@@ -212,6 +222,36 @@ public class Robot extends TimedRobot {
         for(int i=0; i<pdpChannels.length;i++){
             pdpChannels[i].append(pdp.getCurrent(i));
         }
+
+        //run lights
+        CargoColor color = intake.getColorSensor();
+        Color output;
+        if (color == CargoColor.Blue) {
+            output = Color.kBlue;
+        } else if (color == CargoColor.Red) {
+            output = Color.kRed;
+        } else {
+            output = Color.kWhite;
+        }
+        ldrive.SetColor(1, output);
+
+        String msg;
+        if (DriverStation.isDisabled() && !shooter.hoodBottom()) {
+            output = Color.kCyan;
+            msg = "HOOD";
+        } else if (pi.piOn() == false) {
+            output = Color.kChartreuse;
+            msg = " PI ";
+        } else if (pi.getCenterX() < 0) {
+            output = Color.kYellow;
+            msg = "TURN";
+        } else {
+            output = Color.kGreen;
+            msg = "SHOT";
+        }
+        ldrive.SetColor(4, output);
+        ldrive.Update();
+        digit.display(msg);
     }
 
     @Override

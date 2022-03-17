@@ -112,21 +112,24 @@ public class Shooter extends SubsystemBase
 
     public void setHoodSpeedPct(double pct) { 
         //allow control if homed or only down if not homed
+        double percent;
         if(hoodBottom()) {
             if(pct > 0.1) {
                 //if driving down, stop at home
-                hoodMotor.set(ControlMode.PercentOutput, 0);
+                percent = 0;
             } else {
                 //slowly drive out to get accurate home
-                hoodMotor.set(ControlMode.PercentOutput, 0.18);
+                percent = 0.18;
             }
         }
         else if(hoodMotor.getSelectedSensorPosition() > MAX_ANGLE_COUNTS && pct > 0){
-            hoodMotor.set(ControlMode.PercentOutput, 0);
+            percent = 0;
         }
         else {
-            hoodMotor.set(ControlMode.PercentOutput, pct);
+            percent = pct;
         }
+        hoodMotor.set(ControlMode.PercentOutput, percent);
+        SmartDashboard.putNumber("Hood Pct", percent);
     }
 
     public boolean hoodBottom() {
@@ -136,6 +139,7 @@ public class Shooter extends SubsystemBase
     public void setHoodAngle(double position) {
         double value = (position-MIN_ANGLE) * MAX_ANGLE_COUNTS/ (MAX_ANGLE-MIN_ANGLE);
         hoodMotor.set(ControlMode.Position, value);
+        SmartDashboard.putNumber("Hood Position Command", value);
     }
 
     public void calcShot() {

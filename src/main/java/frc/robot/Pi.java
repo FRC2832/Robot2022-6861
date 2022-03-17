@@ -76,6 +76,7 @@ public class Pi {
     }
 
     public void processTargets() {
+        
         targetCenterXArray = targetCenterX.getNumberArray(new Number[0]);
         targetCenterYArray = targetCenterY.getNumberArray(new Number[0]);
 
@@ -193,5 +194,9 @@ public class Pi {
 
     public double getCenterX() {
         return centerXOutput;
+    }
+
+    public boolean piOn() {
+        return targetCenterX.exists();
     }
 }
