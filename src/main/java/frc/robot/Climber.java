@@ -16,7 +16,7 @@ public class Climber extends SubsystemBase
     public static final double REACH_CLIMB_SPEED = 0.5;
     public static final float CLIMB_BOTTOM = 34.4f;
     public static final float CLIMB_START = 42.125f;
-    public static final float CLIMB_TOP = 62.1f;
+    public static final float CLIMB_TOP = 62.68f;
     public static final float CLIMB_STEP = 0.2f;
 
     private CANSparkMax middleClimb;

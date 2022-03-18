@@ -12,12 +12,14 @@ public class DashboardShoot extends CommandBase {
         this.shooter = shooter;
         addRequirements(shooter);
         SmartDashboard.putNumber("Target RPM", ShooterConstants.DEFAULT_SHOT_RPM);
+        SmartDashboard.putNumber("Manual Hood", ShooterConstants.DEFAULT_SHOT_ANGLE);
     }
     
     @Override
     public void execute() {
         double rpm = SmartDashboard.getNumber("Target RPM", ShooterConstants.DEFAULT_SHOT_RPM);
+        double angle = SmartDashboard.getNumber("Manual Hood", ShooterConstants.DEFAULT_SHOT_ANGLE);
         shooter.setShooterRpm(rpm);
-        shooter.setHoodAngle(ShooterConstants.DEFAULT_SHOT_ANGLE);
+        shooter.setHoodAngle(angle);
     }
 }
