@@ -73,11 +73,6 @@ public class Robot extends TimedRobot {
         climber.register();
         climber.setDefaultCommand(new DriveClimber(climber,turret,leftStick,rightStick));
 
-        //move color sensor read to seperate thread since it sometimes locks up
-        this.addPeriodic(() -> {
-            intake.updateColorSensor();
-        }, 0.02, 0.005);
-
         //Initialize a new PWM LightDrive
 		ldrive = new LightDrivePWM(new Servo(7), new Servo(8));
         digit = new REVDigitBoard();

@@ -51,6 +51,10 @@ public class Intake extends SubsystemBase {
         color = Color.kBlack;
 
         proxSensor = new DigitalInput(0);
+
+        //move color sensor read to seperate thread since it sometimes locks up reading I2C
+        ReadColorSensorThread thread = new ReadColorSensorThread();
+        thread.start();
     }
 
     public void setIntake(double voltPct) {
@@ -69,16 +73,25 @@ public class Intake extends SubsystemBase {
         return !proxSensor.get();
     }
 
-    public void updateColorSensor() {
-        //moved to a seperate thread because the color sensor sometimes lags
-        color = colorSensor.getColor();
-        ColorMatchResult match = m_colorMatcher.matchClosestColor(color);
-        if (match.color == kBlueTarget) {
-            colorMatch = CargoColor.Blue;
-        } else if (match.color == kRedTarget) {
-            colorMatch = CargoColor.Red;
-        } else {
-            colorMatch = CargoColor.Unknown;
+    private class ReadColorSensorThread extends Thread {
+        public void run() {
+            while(true) {
+                //moved to a seperate thread because the color sensor sometimes lags
+                color = colorSensor.getColor();
+                ColorMatchResult match = m_colorMatcher.matchClosestColor(color);
+                if (match.color == kBlueTarget) {
+                    colorMatch = CargoColor.Blue;
+                } else if (match.color == kRedTarget) {
+                    colorMatch = CargoColor.Red;
+                } else {
+                    colorMatch = CargoColor.Unknown;
+                }
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException e) {
+                    // do nothing
+                }
+            }
         }
     }
 
