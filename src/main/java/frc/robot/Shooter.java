@@ -2,7 +2,6 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.SlotConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -22,7 +21,7 @@ public class Shooter extends SubsystemBase
     TalonFX shooterFx;
     TalonSRX hoodMotor;
     boolean isHomed;    //report if hood has been homed
-    boolean lastHomed;
+    boolean lastBottom;
     double hoodSensorOffset;
     Pi pi;
     private double distance;
@@ -78,11 +77,13 @@ public class Shooter extends SubsystemBase
         SmartDashboard.putBoolean("IsHomed", isHomed);
 
         //when we exit the home position, save the zero position
-        if (lastHomed == true && !hoodBottom()){
+        if(hoodBottom()) {
             hoodMotor.setSelectedSensorPosition(0);
+        }
+        if (lastBottom == true && !hoodBottom()){
             isHomed = true;
         }
-        lastHomed = hoodBottom();
+        lastBottom = hoodBottom();
     }
 
     public void setShootPct(double percent) {
@@ -114,22 +115,19 @@ public class Shooter extends SubsystemBase
         //allow control if homed or only down if not homed
         double percent;
         if(hoodBottom()) {
-            if(pct > 0.1) {
-                //if driving down, stop at home
+            setHoodAngle(22);  //get us out of the issue
+        }
+        else 
+        {
+            if(hoodMotor.getSelectedSensorPosition() > MAX_ANGLE_COUNTS && pct > 0){
                 percent = 0;
-            } else {
-                //slowly drive out to get accurate home
-                percent = 0.18;
             }
+            else {
+                percent = pct;
+            }
+            hoodMotor.set(ControlMode.PercentOutput, percent);
+            SmartDashboard.putNumber("Hood Pct", percent);
         }
-        else if(hoodMotor.getSelectedSensorPosition() > MAX_ANGLE_COUNTS && pct > 0){
-            percent = 0;
-        }
-        else {
-            percent = pct;
-        }
-        hoodMotor.set(ControlMode.PercentOutput, percent);
-        SmartDashboard.putNumber("Hood Pct", percent);
     }
 
     public boolean hoodBottom() {
