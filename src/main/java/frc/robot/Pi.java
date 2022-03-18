@@ -85,7 +85,7 @@ public class Pi {
         if (size == 0) {
             targetMoveRight = false;
             targetMoveLeft = false;
-            centerYOutput = -1;
+            //centerYOutput = -1;  //leave last known Y value for autoshot
             centerXOutput = -1;
             return;
         }
