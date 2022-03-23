@@ -63,9 +63,9 @@ public class DriveClimber extends CommandBase{
         pov = leftStick.getPOV();
         if( pov == 0) {
             //going up
-            climber.setReachClimbPower(Climber.REACH_CLIMB_SPEED);
+            climber.setReachClimbPower(-Climber.REACH_CLIMB_SPEED);
         } else if (pov == 180) {
-            climber.setReachClimbPower(-Climber.REACH_CLIMB_SPEED); 
+            climber.setReachClimbPower(Climber.REACH_CLIMB_SPEED); 
         } else {
             climber.setReachClimbPower(0);
         }
