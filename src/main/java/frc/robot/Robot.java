@@ -51,7 +51,10 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-		ShooterConstants.LoadConstants();
+        GitVersion vers = GitVersion.loadVersion();
+        vers.printVersions();
+        
+        ShooterConstants.LoadConstants();
 		pi = new Pi();
 		leftStick = new Joystick(0);
         rightStick = new Joystick(1);
