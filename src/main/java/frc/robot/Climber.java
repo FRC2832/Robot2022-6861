@@ -13,11 +13,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Climber extends SubsystemBase 
 {
     public static final double MIDDLE_CLIMB_SPEED = 0.5;
-    public static final double REACH_CLIMB_SPEED = 0.5;
+    public static final double REACH_CLIMB_SPEED = 0.75;
     public static final float CLIMB_BOTTOM = 34.4f;
     public static final float CLIMB_START = 42.125f;
     public static final float CLIMB_TOP = 62.68f;
-    public static final float CLIMB_STEP = 0.2f;
+    public static final float CLIMB_STEP = 0.4f;
 
     private CANSparkMax middleClimb;
     private CANSparkMax leftClimb;
@@ -36,7 +36,7 @@ public class Climber extends SubsystemBase
         middleClimb.setSoftLimit(SoftLimitDirection.kReverse, 33.5f);
         //high limit is 66", so we set it lower just in case
         middleClimb.setSoftLimit(SoftLimitDirection.kForward, 64.5f);
-        middleClimb.enableSoftLimit(SoftLimitDirection.kReverse, true);
+        middleClimb.enableSoftLimit(SoftLimitDirection.kReverse, false);
         middleClimb.enableSoftLimit(SoftLimitDirection.kForward, true);
         pid = middleClimb.getPIDController();
         pid.setP(8);

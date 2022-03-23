@@ -16,6 +16,6 @@ public class DriveTurret extends CommandBase{
     
     @Override
     public void execute() {
-        turret.setTurretSpeed(-operatorController.getRightX() * 0.25);
+        turret.setTurretSpeed(-operatorController.getLeftX() * 0.25);
     }
 }

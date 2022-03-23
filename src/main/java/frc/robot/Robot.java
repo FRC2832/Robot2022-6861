@@ -65,11 +65,11 @@ public class Robot extends TimedRobot {
         drive = new Drivetrain();
         drive.register();
         drive.setDefaultCommand(new DriveStick(drive,leftStick,rightStick));
-        intake = new Intake();
-        intake.register();
-        intake.setDefaultCommand(new DriveIntake(intake, operatorController));
         shooter = new Shooter(pi);
         shooter.setDefaultCommand(new DriveHood(shooter,operatorController));
+        intake = new Intake();
+        intake.register();
+        intake.setDefaultCommand(new DriveIntake(intake, shooter, operatorController));
         turret = new Turret();
         turret.register();
         turret.setDefaultCommand(new DriveTurret(turret,operatorController));
@@ -83,6 +83,9 @@ public class Robot extends TimedRobot {
 
         JoystickButton triggerButton = new JoystickButton(rightStick, 1);  //1 = trigger
         triggerButton.whileActiveContinuous(new SmartIntake(intake));
+
+        JoystickButton aButton = new JoystickButton(operatorController, 1);  //1 = A button
+        aButton.whileActiveContinuous(new DashboardSmart(shooter,operatorController));
 
         JoystickButton lbButton = new JoystickButton(operatorController, 5);  //5 = left bumper button
         lbButton.whileActiveContinuous(new LowShot(shooter,intake));
