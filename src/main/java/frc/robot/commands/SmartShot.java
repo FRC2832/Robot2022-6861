@@ -13,6 +13,7 @@ public class SmartShot extends CommandBase {
     private Intake intake;
     private Turret turret;
     private byte counts;
+    private boolean lastShot;
 
     public SmartShot(Drivetrain drive, Shooter shooter, Pi pi, Intake intake, Turret turret) {
         this.drive = drive;
@@ -20,6 +21,7 @@ public class SmartShot extends CommandBase {
         this.pi = pi;
         this.intake = intake;
         this.turret = turret;
+        lastShot = false;
 
         addRequirements(drive);
         addRequirements(shooter);
@@ -76,10 +78,15 @@ public class SmartShot extends CommandBase {
         } 
 
         if(error.length() ==0) {
-            //TODO: SHOOT!!!
             error = "SHOOT!!!";
             intake.setIntake(intake.INTAKE_SPEED);
             intake.setUpMotor(intake.UP_SPEED);
+            if(lastShot == false) {
+                Snapshot.TakeSnapshot();
+            }
+            lastShot = true;
+        } else {
+            lastShot = false;
         }
         SmartDashboard.putString("Auto Shoot Error", error);
 
