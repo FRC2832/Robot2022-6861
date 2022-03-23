@@ -31,6 +31,8 @@ public class Pi {
     private static boolean cargoMoveLeft;
     private double centerYOutput;
     private double centerXOutput;
+    private double centerXAverage;
+    public double centerYAverage;
 
     public Pi() {
         netTableInstance = NetworkTableInstance.getDefault();
@@ -41,6 +43,8 @@ public class Pi {
         targetCenterX = table.getEntry("targetX");
         targetCenterY = table.getEntry("targetY");
         centerYOutput = -1;
+        centerXAverage = 0;
+        centerYAverage = 0;
     }
 
     // sends alliance color to the python code so it knows what color cargo to look for
@@ -93,6 +97,7 @@ public class Pi {
         double targetX = average(targetCenterXArray);
         centerYOutput = average(targetCenterYArray);
         centerXOutput = targetX;
+        centerYAverage = (1.0-0.1) * centerYAverage + (0.1 * centerYOutput);
         if (targetX < ((CAM_X_RES / 2) - (CAM_X_RES * 0.04))) {
             targetMoveRight = false;
             targetMoveLeft = true;
@@ -189,7 +194,7 @@ public class Pi {
     }
 
     public double getCenterY() {
-        return centerYOutput;
+        return centerYAverage;
     }
 
     public double getCenterX() {
