@@ -8,8 +8,8 @@ public class ShooterConstants {
     public final static ArrayList<Pair<Double,Double>> DIST_RPM_TABLE = new ArrayList<Pair<Double,Double>>();
     public final static ArrayList<Pair<Double,Double>> DIST_HOOD_TABLE = new ArrayList<Pair<Double,Double>>();
 
-    public final static double DEFAULT_SHOT_RPM=2550;
-    public final static double DEFAULT_SHOT_ANGLE=33;
+    public final static double DEFAULT_SHOT_RPM=2400;
+    public final static double DEFAULT_SHOT_ANGLE=38;
     public final static double LOW_SHOT_RPM=400;
     public final static double LOW_SHOT_ANGLE=30;
     public final static double LOW_SHOT_RPM_ERROR=30;
