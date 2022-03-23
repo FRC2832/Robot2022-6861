@@ -16,7 +16,7 @@ public class DriveHood extends CommandBase{
     
     @Override
     public void execute() {
-        shooter.setHoodSpeedPct(-operatorController.getLeftY()*0.25);
+        shooter.setHoodSpeedPct(-operatorController.getRightY()*0.25);
         shooter.setShootPct(0);
     }
 }
