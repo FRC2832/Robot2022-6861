@@ -53,7 +53,8 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         GitVersion vers = GitVersion.loadVersion();
         vers.printVersions();
-        Snapshot.start("http://10.68.61.10:1181/stream.mjpg");
+        Snapshot.start("http://10.68.61.8:1181/stream.mjpg");
+        SmartDashboard.putBoolean("Take Snapshot", false);
 
         ShooterConstants.LoadConstants();
 		pi = new Pi();
@@ -219,6 +220,11 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Vision CenterX", pi.getCenterX());
         SmartDashboard.putNumber("Vision CenterY", pi.getCenterY());
 
+        boolean takeSnap = SmartDashboard.getBoolean("Take Snapshot", false);
+        if(takeSnap) {
+            SmartDashboard.putBoolean("Take Snapshot", false);
+            Snapshot.TakeSnapshot("MANUAL");
+        }
         //log battery voltage
         pdpBatteryVoltage.append(pdp.getVoltage());
         for(int i=0; i<pdpChannels.length;i++){

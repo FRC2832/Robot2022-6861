@@ -108,6 +108,24 @@ public class Pi {
             targetMoveRight = false;
             targetMoveLeft = false;
         }
+        double min = 480;
+        double max = 0;
+        for(int i=0; i<targetCenterYArray.length; i++) {
+            double num = targetCenterYArray[i].doubleValue();
+            if(num > max) {
+                max = num;
+            }
+            if(num < min) {
+                min = num;
+            }
+        }
+        if((max-min) > 300) {
+            Snapshot.TakeSnapshot("MAX");
+        } else if(targetCenterYArray.length > 5) {
+            Snapshot.TakeSnapshot("COUNT");
+        } else {
+            //do nothing
+        }
     }
 
     public static double average(Number[] numbers) {

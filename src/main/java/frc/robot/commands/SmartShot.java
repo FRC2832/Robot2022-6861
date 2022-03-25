@@ -82,7 +82,7 @@ public class SmartShot extends CommandBase {
             intake.setIntake(intake.INTAKE_SPEED);
             intake.setUpMotor(intake.UP_SPEED);
             if(lastShot == false) {
-                Snapshot.TakeSnapshot();
+                Snapshot.TakeSnapshot("SHOT");
             }
             lastShot = true;
         } else {

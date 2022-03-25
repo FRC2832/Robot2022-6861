@@ -25,6 +25,7 @@ public class Snapshot {
     private static boolean isUsb = false;
     private static boolean takeSnap = false;
     private static String m_cameraPath = null;
+    private static String filePrefix = "FRC";
 
     static {
         m_thread = new Thread(Snapshot::logMain, "Snapshot");
@@ -79,7 +80,7 @@ public class Snapshot {
                     continue;
                 }
                 LocalDateTime now = LocalDateTime.now(m_utc);
-                String fileName = "FRC_" + m_timeFormatter.format(now) + ".jpg";
+                String fileName = filePrefix + "_" + m_timeFormatter.format(now) + ".jpg";
 
                 try {
                     int prev = 0;
@@ -122,6 +123,11 @@ public class Snapshot {
     }
 
     public static void TakeSnapshot() {
+        TakeSnapshot("FRC");
+    }
+
+    public static void TakeSnapshot(String prefix) {
         takeSnap = true;
+        filePrefix = prefix;
     }
 }
