@@ -109,12 +109,21 @@ public class Pi {
                 min = num;
             }
         }
-        if((max-min) > 300) {
-            Snapshot.TakeSnapshot("MAX");
-        } else if(targetCenterYArray.length > 5) {
-            Snapshot.TakeSnapshot("COUNT");
+        
+        //take time between snapshots
+        if(lastSnap > MIN_SNAP_TIME) {
+            if((max-min) > 300) {
+                Snapshot.TakeSnapshot("MAX");
+                lastSnap = 0;
+            } else if(targetCenterYArray.length > 6) {
+                Snapshot.TakeSnapshot("COUNT");
+                lastSnap = 0;
+            } else {
+                //do nothing
+            }
         } else {
-            //do nothing
+            //last snap was too close, increment
+            lastSnap++;
         }
     }
 

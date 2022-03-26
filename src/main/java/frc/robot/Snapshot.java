@@ -76,7 +76,7 @@ public class Snapshot {
                 takeSnap = false;
                 String path = makeLogDir("");
                 if (!isUsb) {
-                    System.out.println("Unable to take snapshot, no USB stick!");
+                    DriverStation.reportWarning("Unable to take snapshot, no USB stick!",false);
                     continue;
                 }
                 LocalDateTime now = LocalDateTime.now(m_utc);
@@ -112,10 +112,10 @@ public class Snapshot {
                         FileOutputStream writer = new FileOutputStream(path + "/" + fileName);
                         jpgOut.writeTo(writer);
                         writer.close();
-                        System.out.println("Wrote snapshot to: " + fileName);
+                        DriverStation.reportWarning("Wrote snapshot to: " + fileName,false);
                     }
                 } catch (Exception e) {
-                    System.out.println("Unable to take snapshot!");
+                    DriverStation.reportWarning("Unable to take snapshot!",false);
                     e.toString();
                 }
             }
