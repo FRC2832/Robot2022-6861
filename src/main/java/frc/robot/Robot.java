@@ -227,6 +227,9 @@ public class Robot extends TimedRobot {
         if (DriverStation.isDisabled() && !shooter.hoodBottom()) {
             output = Color.kCyan;
             msg = "HOOD";
+        } else if (DriverStation.isDisabled() && intake.getColorSensor() == CargoColor.Unknown) {
+            output = Color.kPurple;
+            msg = "BALL";
         } else if (pi.piOn() == false) {
             output = Color.kChartreuse;
             msg = " PI ";
