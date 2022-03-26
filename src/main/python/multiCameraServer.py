@@ -12,7 +12,6 @@ import numpy as np
 import math
 import threading
 
-from cscore import CameraServer, VideoSource, UsbCamera, MjpegServer
 from networktables import NetworkTablesInstance, NetworkTables
 from enum import Enum
 
@@ -528,7 +527,7 @@ def extra_target_processing(pipeline):
     target_heights = []
     target_areas = []
 
-    # Find the bounding boxes of the contours to get x, y, width, and height
+   # Find the bounding boxes of the contours to get x, y, width, and height
     for contour in pipeline.filter_contours_output:
         x, y, w, h = cv2.boundingRect(contour)
         target_x_positions.append(x + w / 2)
@@ -537,21 +536,74 @@ def extra_target_processing(pipeline):
         target_heights.append(h)
         target_areas.append(w * h)
 
-    print('center target x', target_x_positions)
-    print('center target y', target_y_positions)
-    print('target width', target_widths)
-    print('target height', target_heights)
-    print('target area', target_areas)
-    if len(target_x_positions) == len(target_y_positions) and len(target_x_positions) == len(target_widths) and len(target_x_positions) == len(target_heights) and len(target_x_positions) == len(target_areas): 
-        # Publish to the '/vision/red_areas' network table
-        table = NetworkTables.getTable('vision')
-        table.putNumberArray('targetX', target_x_positions)
-        table.putNumberArray('targetY', target_y_positions)
-        table.putNumberArray('targetWidth', target_widths)
-        table.putNumberArray('targetHeight', target_heights)
-        table.putNumberArray('targetArea', target_areas)
+    #filter data
+    global configX,configY
+    centerX, configX = filterHubTargets(target_x_positions,configX)
+    centerY, configY = filterHubTargets(target_y_positions,configY)
 
+    # Publish to the '/vision/' network table
+    table = NetworkTables.getTable('vision')
+    table.putNumberArray('targetX', target_x_positions)
+    table.putNumberArray('targetY', target_y_positions)
+    table.putNumberArray('targetWidth', target_widths)
+    table.putNumberArray('targetHeight', target_heights)
+    table.putNumberArray('targetArea', target_areas)
+    table.putNumber('centerX', centerX)
+    table.putNumber('centerY', centerY)
+    print(f"hub center: {centerX}, {centerY}")
 
+configX = {}
+configX["maxFrames"] = 6
+configX["lastSeen"] = 0
+configX["lastCenter"] = 320
+configX["noiseStartPct"] = 0.6
+configX["pixelDist"] = 80
+configX["filterMulti"] = 1.15
+configY = {}
+configY["maxFrames"] = 6
+configY["lastSeen"] = 0
+configY["lastCenter"] = 240
+configY["noiseStartPct"] = 0.6
+configY["pixelDist"] = 80
+configY["filterMulti"] = 1.15
+# This filter removes outlier noise targets and averages out the center.
+# At first, we take an average of the scene, then when seen many frames, we filter out outliers
+# The average depends on how many frames we have seen consecutively.
+# Calibrations:
+# maxFrames - How many frames does the filter consider in history
+# noiseStartPct - How many seen frames do we start the removal filter
+#   EX: maxFrames = 15, noiseStartPct = 0.6, start at frame 9 with filter
+# pixelDist - how many pixels away from center do we ignore data from
+# filterMulti - adjust the weighted average gain, must be > 1.01
+#   Ex: filter gain = frames seen / (maxFrames * filterMulti)
+#   this means, if no frame seen, keep last value, max frames seen, take 1/filter loops to decay old data
+# Variables (no need to change):
+# lastSeen - number of frames seen in a row, changes +/-1 each loop, range 0-maxFrames
+# lastCenter - last value reported, could be tweaked at start
+def filterHubTargets(target_positions, cfg):
+    #filter out random noise after seen for X frames
+    keep = []
+    if(cfg["lastSeen"] > (cfg["maxFrames"]*cfg["noiseStartPct"])):
+        for target in target_positions: 
+            if abs(target-cfg["lastCenter"]) < cfg["pixelDist"]:
+                keep.append(target)
+    else:
+        keep = target_positions
+
+    #if there is any data, change the average
+    if(len(keep) > 0):
+        #constant changes based on how many frames we last saw an object
+        #const = cfg["lastSeen"] / (cfg["maxFrames"] * cfg["filterMulti"])
+        const = 0.75
+        #weighted average
+        centerX = ((1-const) * np.average(keep)) + (const * cfg["lastCenter"])
+        cfg["lastCenter"] = centerX
+        cfg["lastSeen"] = min(cfg["lastSeen"] + 1,cfg["maxFrames"])
+    else:
+        #else keep last known value
+        cfg["lastSeen"] = max(cfg["lastSeen"] - 1,0)
+
+    return cfg["lastCenter"], cfg
 
 team = None
 server = False
@@ -669,6 +721,8 @@ def readConfig():
 
 
 def startCamera(config):
+    from cscore import CameraServer, VideoSource, UsbCamera
+
     """Start running the camera."""
     print("Starting camera '{}' on {}".format(config.name, config.path))
     global inst
@@ -690,6 +744,7 @@ def startCamera(config):
 
 
 def startSwitchedCamera(config):
+    from cscore import CameraServer
     """Start running the switched camera."""
     print("Starting switched camera '{}' on {}".format(config.name, config.key))
     server = CameraServer.getInstance().addSwitchedCamera(config.name)

@@ -17,6 +17,8 @@ public class Pi {
     private NetworkTableEntry allianceColor;
     private NetworkTableEntry targetCenterX;
     private NetworkTableEntry targetCenterY;
+    private NetworkTableEntry filterCenterX;
+    private NetworkTableEntry filterCenterY;
     private Number[] targetCenterXArray;
     private Number[] targetCenterYArray;
     private Number[] targetWidthArray;
@@ -31,8 +33,8 @@ public class Pi {
     private static boolean cargoMoveLeft;
     private double centerYOutput;
     private double centerXOutput;
-    private double centerXAverage;
-    public double centerYAverage;
+    private int lastSnap;
+    private final int MIN_SNAP_TIME = 100;  //50 loops per sec
 
     public Pi() {
         netTableInstance = NetworkTableInstance.getDefault();
@@ -42,9 +44,9 @@ public class Pi {
         allianceColor = table.getEntry("alliance");
         targetCenterX = table.getEntry("targetX");
         targetCenterY = table.getEntry("targetY");
+        filterCenterX = table.getEntry("centerX");
+        filterCenterY = table.getEntry("centerY");
         centerYOutput = -1;
-        centerXAverage = 0;
-        centerYAverage = 0;
     }
 
     // sends alliance color to the python code so it knows what color cargo to look for
@@ -94,20 +96,8 @@ public class Pi {
             return;
         }
 
-        double targetX = average(targetCenterXArray);
-        centerYOutput = average(targetCenterYArray);
-        centerXOutput = targetX;
-        centerYAverage = (1.0-0.1) * centerYAverage + (0.1 * centerYOutput);
-        if (targetX < ((CAM_X_RES / 2) - (CAM_X_RES * 0.04))) {
-            targetMoveRight = false;
-            targetMoveLeft = true;
-        } else if (targetX > ((CAM_X_RES / 2) + (CAM_X_RES * 0.04))) {
-            targetMoveLeft = false;
-            targetMoveRight = true;
-        } else {
-            targetMoveRight = false;
-            targetMoveLeft = false;
-        }
+        centerXOutput = filterCenterX.getDouble(-1);
+        centerYOutput = filterCenterY.getDouble(-1);
         double min = 480;
         double max = 0;
         for(int i=0; i<targetCenterYArray.length; i++) {
@@ -212,7 +202,7 @@ public class Pi {
     }
 
     public double getCenterY() {
-        return centerYAverage;
+        return centerYOutput;
     }
 
     public double getCenterX() {

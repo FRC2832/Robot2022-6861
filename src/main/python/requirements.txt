@@ -1,0 +1,7 @@
+#run as pip install -r requirements.txt
+# python cannot be installed from Windows Store
+# must download/install https://sourceforge.net/projects/opencvlibrary/ too?
+opencv-python
+pynetworktables
+plotly
+robotpy-cscore
