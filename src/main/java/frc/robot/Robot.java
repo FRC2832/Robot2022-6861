@@ -4,12 +4,8 @@
 
 package frc.robot;
 
-import edu.wpi.first.util.datalog.DataLog;
-import edu.wpi.first.util.datalog.DoubleLogEntry;
-import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
@@ -43,11 +39,9 @@ public class Robot extends TimedRobot {
     private Joystick rightStick;
     private XboxController operatorController;
     private SendableChooser<Command> m_chooser;
-    private PowerDistribution pdp;
-    private DoubleLogEntry[] pdpChannels;
-    private DoubleLogEntry pdpBatteryVoltage;
     private LightDrivePWM ldrive;
     private REVDigitBoard digit;
+    private DataLogging datalog;
 
     @Override
     public void robotInit() {
@@ -81,6 +75,8 @@ public class Robot extends TimedRobot {
         //Initialize a new PWM LightDrive
 		ldrive = new LightDrivePWM(new Servo(7), new Servo(8));
         digit = new REVDigitBoard();
+        datalog = new DataLogging();
+        datalog.Init();
 
         JoystickButton triggerButton = new JoystickButton(rightStick, 1);  //1 = trigger
         triggerButton.whileActiveContinuous(new SmartIntake(intake));
@@ -100,18 +96,6 @@ public class Robot extends TimedRobot {
         // this.setNetworkTablesFlushEnabled(true); //turn off 20ms Dashboard update
         // rate
         LiveWindow.setEnabled(false);
-
-        // Starts recording to data log
-        DataLogManager.start();
-        DataLog log = DataLogManager.getLog();
-        // Record both DS control and joystick data
-        DriverStation.startDataLog(DataLogManager.getLog());
-        pdp = new PowerDistribution();
-        pdpChannels = new DoubleLogEntry[pdp.getNumChannels()];
-        pdpBatteryVoltage = new DoubleLogEntry(log, "/pdp/Vbat");
-        for(int i=0; i<pdpChannels.length;i++){
-            pdpChannels[i] = new DoubleLogEntry(log, "/pdp/channel" + i);
-        }
         
         //ParallelCommandGroup must wait till ALL finish, 
         //ParallelRace waits for FIRST to finish, 
@@ -171,7 +155,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousPeriodic() {
-
+        datalog.StartLoopTime();
     }
 
     @Override
@@ -183,6 +167,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
+        datalog.StartLoopTime();
     }
 
     @Override
@@ -225,11 +210,6 @@ public class Robot extends TimedRobot {
             SmartDashboard.putBoolean("Take Snapshot", false);
             Snapshot.TakeSnapshot("MANUAL");
         }
-        //log battery voltage
-        pdpBatteryVoltage.append(pdp.getVoltage());
-        for(int i=0; i<pdpChannels.length;i++){
-            pdpChannels[i].append(pdp.getCurrent(i));
-        }
 
         //run lights
         CargoColor color = intake.getColorSensor();
@@ -260,6 +240,9 @@ public class Robot extends TimedRobot {
         ldrive.SetColor(4, output);
         ldrive.Update();
         digit.display(msg);
+        
+        //must be at end
+        datalog.Periodic();
     }
 
     @Override
