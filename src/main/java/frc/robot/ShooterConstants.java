@@ -17,15 +17,16 @@ public class ShooterConstants {
 
     public static void LoadConstants() {
         //table is input: pixel Y, output: inches from target
-        VISION_DIST_TABLE.add(new Pair<Double, Double>(100., 70.));
-        VISION_DIST_TABLE.add(new Pair<Double, Double>(147., 80.));
-        VISION_DIST_TABLE.add(new Pair<Double, Double>(215., 95.));
-        VISION_DIST_TABLE.add(new Pair<Double, Double>(260., 110.));
-        VISION_DIST_TABLE.add(new Pair<Double, Double>(290., 125.));  //263 125?
-        VISION_DIST_TABLE.add(new Pair<Double, Double>(320., 140.));
-        VISION_DIST_TABLE.add(new Pair<Double, Double>(352., 155.));
-        VISION_DIST_TABLE.add(new Pair<Double, Double>(374., 166.));
-
+        VISION_DIST_TABLE.add(new Pair<Double, Double>(74., 70.));
+        VISION_DIST_TABLE.add(new Pair<Double, Double>(117.6, 80.));
+        VISION_DIST_TABLE.add(new Pair<Double, Double>(169.1, 95.));
+        VISION_DIST_TABLE.add(new Pair<Double, Double>(215.8, 110.));
+        VISION_DIST_TABLE.add(new Pair<Double, Double>(255.6, 125.));  //263 125?
+        VISION_DIST_TABLE.add(new Pair<Double, Double>(289.3, 140.));
+        VISION_DIST_TABLE.add(new Pair<Double, Double>(314.6, 155.));
+        VISION_DIST_TABLE.add(new Pair<Double, Double>(334.7, 166.));
+        VISION_DIST_TABLE.add(new Pair<Double, Double>(346., 178.));
+        
         //table is input: distance in inches, output: rpm
         DIST_RPM_TABLE.add(new Pair<Double, Double>(70., 2150d));
         DIST_RPM_TABLE.add(new Pair<Double, Double>(85., 2200d));

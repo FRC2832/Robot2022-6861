@@ -55,9 +55,9 @@ public class SmartShot extends CommandBase {
         if(pi.getCenterX() > 0) {
             var delta =  (pi.TARGET_CENTER_X - pi.getCenterX());
             //if this many pixels off from center, fix it
-            if(Math.abs(delta) > 30) {
+            if(Math.abs(delta) > 20) {
                 //100px off = 10% power to turn
-                double p = delta /1000.;
+                double p = delta /1800.;
                 turret.setTurretSpeed(p);
                 error = String.join(error, "Turret ");
             } else {
