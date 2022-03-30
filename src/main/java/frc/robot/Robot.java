@@ -138,6 +138,7 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledInit() {
         drive.setBrakeMode(false);
+        climber.resetClimberWarning();
     }
 
     @Override
@@ -222,6 +223,7 @@ public class Robot extends TimedRobot {
             output = Color.kWhite;
         }
         ldrive.SetColor(1, output);
+        ldrive.SetColor(2, output);
 
         String msg;
         if (DriverStation.isDisabled() && !shooter.hoodBottom()) {

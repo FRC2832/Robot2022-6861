@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -19,10 +20,15 @@ public class Climber extends SubsystemBase
     public static final float CLIMB_TOP = 62.68f;
     public static final float CLIMB_STEP = 0.4f;
 
+    private static final int WARN_CURRENT_COUNTS = 50*3;  //50 loops per second, 55 seconds
+    private static final int DROP_CURRENT_COUNTS = 50*60;
+
     private CANSparkMax middleClimb;
     private CANSparkMax leftClimb;
     private CANSparkMax rightClimb;
     private SparkMaxPIDController pid;
+
+    private static int currentCounts;
 
     public Climber() {
         middleClimb = new CANSparkMax(32,MotorType.kBrushless);
@@ -45,6 +51,7 @@ public class Climber extends SubsystemBase
         pid.setFF(0.);
         //stall current 80a, run limit 20a
         middleClimb.setSmartCurrentLimit(80, 20);
+        currentCounts = 0;
 
         leftClimb = new CANSparkMax(33,MotorType.kBrushless);
         leftClimb.setIdleMode(IdleMode.kBrake);
@@ -57,6 +64,18 @@ public class Climber extends SubsystemBase
     public void periodic() {
         SmartDashboard.putNumber("Middle Climb Position", getMiddleClimbPosition());
         SmartDashboard.putNumber("Reach Climb Position", getReachClimbPosition());
+
+        if (middleClimb.getOutputCurrent() > 6) {
+            currentCounts++;
+        }
+    }
+
+    public void resetClimberWarning() {
+        currentCounts = 0;
+    }
+
+    public static boolean isClimberWarning() {
+        return (WARN_CURRENT_COUNTS < currentCounts) && (currentCounts < DROP_CURRENT_COUNTS);
     }
 
     public void setMiddleClimbPower(double pct) {
@@ -64,7 +83,12 @@ public class Climber extends SubsystemBase
     }
 
     public void setMiddleClimbPosition(double position) {
-        pid.setReference(position, ControlType.kPosition);
+        if(DriverStation.isFMSAttached() || currentCounts < DROP_CURRENT_COUNTS) {
+            pid.setReference(position, ControlType.kPosition);
+        } else {
+            //current limit hit, drop robot slowly
+            setMiddleClimbPower(0);
+        }
     }
 
     public void setReachClimbPower(double pct) {
