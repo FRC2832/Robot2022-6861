@@ -27,7 +27,7 @@ public class DriveIntake extends CommandBase{
         if(operatorController.getRightTriggerAxis() > 0.5) {
             intakeSpeed = intake.INTAKE_SPEED;
             upSpeed = intake.UP_SPEED;
-            shooter.setShooterRpm(ShooterConstants.DEFAULT_SHOT_RPM);
+            //shooter.setShooterRpm(ShooterConstants.DEFAULT_SHOT_RPM);
         } else if (operatorController.getLeftTriggerAxis() > 0.5) {
             //if left trigger pressed, run balls out backwards
             intakeSpeed = -intake.INTAKE_SPEED;

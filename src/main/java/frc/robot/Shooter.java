@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
+import com.ctre.phoenix.music.Orchestra;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -27,6 +28,8 @@ public class Shooter extends SubsystemBase
     private double distance;
     private double hoodAngle;
     private double targetRpm;
+
+    private Orchestra warnSound;
 
     //TODO: write home hood method
     //Distance to Target
@@ -53,6 +56,10 @@ public class Shooter extends SubsystemBase
         config.slot0.integralZone = 85;
         config.closedloopRamp = 0.1;         //take 100ms to ramp to max power
         shooterFx.configAllSettings(config); // apply the config settings; this selects the quadrature encoder
+
+        warnSound = new Orchestra();
+        warnSound.addInstrument(shooterFx);
+        warnSound.loadMusic("Warning_Siren.chrp");
 
         TalonSRXConfiguration hoodConfig = new TalonSRXConfiguration();
         hoodMotor.getAllConfigs(hoodConfig);
@@ -84,6 +91,14 @@ public class Shooter extends SubsystemBase
             isHomed = true;
         }
         lastBottom = hoodBottom();
+
+        if(Climber.isClimberWarning()) {
+            if(warnSound.isPlaying() == false) {
+                warnSound.play();
+            }
+        } else {
+            warnSound.stop();
+        }
     }
 
     public void setShootPct(double percent) {
