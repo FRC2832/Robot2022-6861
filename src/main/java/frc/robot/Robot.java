@@ -82,7 +82,10 @@ public class Robot extends TimedRobot {
         triggerButton.whileActiveContinuous(new SmartIntake(intake));
 
         JoystickButton aButton = new JoystickButton(operatorController, 1);  //1 = A button
-        aButton.whileActiveContinuous(new DashboardSmart(shooter,operatorController));
+        aButton.whileActiveContinuous(new ManualShot(shooter,ShooterConstants.DEFAULT_SHOT_RPM,ShooterConstants.DEFAULT_SHOT_ANGLE));
+
+        JoystickButton bButton = new JoystickButton(operatorController, 2);  //1 = B button
+        bButton.whileActiveContinuous(new ManualShot(shooter,2550,40));
 
         JoystickButton lbButton = new JoystickButton(operatorController, 5);  //5 = left bumper button
         lbButton.whileActiveContinuous(new LowShot(shooter,intake));
