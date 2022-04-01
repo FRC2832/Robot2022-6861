@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Shooter;
 import frc.robot.ShooterConstants;
+import frc.robot.Snapshot;
 
 public class ManualShot extends CommandBase {
     private Shooter shooter;
@@ -15,6 +16,11 @@ public class ManualShot extends CommandBase {
         this.rpm = rpm;
         this.hood = hood;
         addRequirements(shooter);
+    }
+
+    @Override
+    public void initialize() {
+        Snapshot.TakeSnapshot("PAD");
     }
     
     @Override

@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Shooter;
 import frc.robot.ShooterConstants;
+import frc.robot.Snapshot;
 
 public class DashboardShoot extends CommandBase {
     private Shooter shooter;
@@ -15,6 +16,11 @@ public class DashboardShoot extends CommandBase {
         SmartDashboard.putNumber("Manual Hood", ShooterConstants.DEFAULT_SHOT_ANGLE);
     }
     
+    @Override
+    public void initialize() {
+        Snapshot.TakeSnapshot("DASH");
+    }
+
     @Override
     public void execute() {
         double rpm = SmartDashboard.getNumber("Target RPM", ShooterConstants.DEFAULT_SHOT_RPM);

@@ -31,6 +31,7 @@ public class SmartShot extends CommandBase {
     public void initialize() {
         //get the FL wheel distance when we start
         counts = 0;
+        Snapshot.TakeSnapshot("START");
     }
 
     public void execute() {
