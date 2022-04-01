@@ -4,106 +4,53 @@
       <property name="address" value="http://10.68.61.8:1181/stream.mjpg"/>
     </grip:Camera>
     <grip:MultiImageFile>
-      <property name="path[26]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005849012.jpg"/>
-      <property name="path[75]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010335577.jpg"/>
-      <property name="path[10]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005812879.jpg"/>
-      <property name="path[16]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005831312.jpg"/>
-      <property name="path[65]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010249237.jpg"/>
-      <property name="path[5]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\MANUAL_20220326_010007353.jpg"/>
-      <property name="path[55]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010054974.jpg"/>
-      <property name="path[45]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010034149.jpg"/>
-      <property name="path[94]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010427585.jpg"/>
-      <property name="path[35]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005929555.jpg"/>
-      <property name="path[84]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010410357.jpg"/>
-      <property name="path[25]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005848772.jpg"/>
-      <property name="path[74]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010334810.jpg"/>
-      <property name="path[15]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005829973.jpg"/>
-      <property name="path[64]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010248236.jpg"/>
-      <property name="path[4]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\MANUAL_20220326_010005755.jpg"/>
-      <property name="path[54]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010054415.jpg"/>
-      <property name="path[44]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010032834.jpg"/>
-      <property name="path[93]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010427460.jpg"/>
-      <property name="path[34]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005929453.jpg"/>
-      <property name="path[83]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010354099.jpg"/>
-      <property name="path[89]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010416692.jpg"/>
-      <property name="path[24]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005848512.jpg"/>
-      <property name="path[73]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010334696.jpg"/>
-      <property name="path[79]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010352459.jpg"/>
-      <property name="path[14]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005829872.jpg"/>
-      <property name="path[63]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010245341.jpg"/>
-      <property name="path[3]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\MANUAL_20220326_005930673.jpg"/>
-      <property name="path[69]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010310776.jpg"/>
-      <property name="path[53]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010054299.jpg"/>
-      <property name="path[9]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005812772.jpg"/>
-      <property name="path[59]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010134634.jpg"/>
-      <property name="path[43]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010032274.jpg"/>
-      <property name="path[92]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010426877.jpg"/>
-      <property name="path[49]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010050394.jpg"/>
-      <property name="path[33]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005928734.jpg"/>
-      <property name="path[82]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010353457.jpg"/>
-      <property name="path[39]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010002934.jpg"/>
-      <property name="path[88]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010415619.jpg"/>
-      <property name="path[23]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005847872.jpg"/>
-      <property name="path[72]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010334046.jpg"/>
-      <property name="path[29]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005911312.jpg"/>
-      <property name="path[78]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010351737.jpg"/>
-      <property name="path[13]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005815733.jpg"/>
-      <property name="path[62]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010138395.jpg"/>
-      <property name="path[2]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\MANUAL_20220326_005834313.jpg"/>
-      <property name="path[19]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005846736.jpg"/>
-      <property name="path[68]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010310596.jpg"/>
-      <property name="path[52]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010053523.jpg"/>
-      <property name="path[8]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\MAX_20220326_010346756.jpg"/>
-      <property name="path[58]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010111334.jpg"/>
-      <property name="path[42]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010030974.jpg"/>
-      <property name="path[91]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010426097.jpg"/>
-      <property name="path[48]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010035393.jpg"/>
-      <property name="path[97]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010428412.jpg"/>
-      <property name="path[32]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005927073.jpg"/>
-      <property name="path[81]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010353336.jpg"/>
-      <property name="path[38]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010002173.jpg"/>
-      <property name="path[87]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010415518.jpg"/>
-      <property name="path[22]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005847613.jpg"/>
-      <property name="path[71]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010333956.jpg"/>
-      <property name="path[28]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005910019.jpg"/>
-      <property name="path[77]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010351617.jpg"/>
-      <property name="path[12]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005815612.jpg"/>
-      <property name="path[61]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010136775.jpg"/>
-      <property name="path[1]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\MANUAL_20220326_005815854.jpg"/>
-      <property name="path[18]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005846573.jpg"/>
-      <property name="path[67]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010309639.jpg"/>
-      <property name="path[51]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010053414.jpg"/>
-      <property name="path[7]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\MANUAL_20220326_010418977.jpg"/>
-      <property name="path[57]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010109274.jpg"/>
-      <property name="path[41]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010004034.jpg"/>
-      <property name="path[90]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010425957.jpg"/>
-      <property name="path[47]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010035166.jpg"/>
-      <property name="path[96]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010428307.jpg"/>
-      <property name="path[31]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005914893.jpg"/>
-      <property name="path[80]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010352566.jpg"/>
-      <property name="path[37]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010000354.jpg"/>
-      <property name="path[86]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010414677.jpg"/>
-      <property name="path[21]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005847457.jpg"/>
-      <property name="path[70]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010312696.jpg"/>
-      <property name="path[27]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005909053.jpg"/>
-      <property name="path[76]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010335676.jpg"/>
-      <property name="path[11]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005814852.jpg"/>
-      <property name="path[60]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010136075.jpg"/>
-      <property name="numImages" value="98"/>
-      <property name="path[0]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\MANUAL_20220326_005801432.jpg"/>
-      <property name="path[17]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005832352.jpg"/>
-      <property name="path[66]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010307876.jpg"/>
-      <property name="path[50]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010050935.jpg"/>
-      <property name="path[6]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\MANUAL_20220326_010034934.jpg"/>
-      <property name="index" value="24"/>
-      <property name="path[56]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010107614.jpg"/>
-      <property name="path[40]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010003055.jpg"/>
-      <property name="path[46]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010035061.jpg"/>
-      <property name="path[95]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010428202.jpg"/>
-      <property name="path[30]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005912932.jpg"/>
-      <property name="path[36]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005930953.jpg"/>
-      <property name="path[85]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_010412777.jpg"/>
-      <property name="path[20]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\3_25\SHOT_20220326_005847352.jpg"/>
+      <property name="path[21]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234813846.jpg"/>
+      <property name="path[24]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234814925.jpg"/>
+      <property name="path[27]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234832505.jpg"/>
+      <property name="path[40]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220401_000812236.jpg"/>
+      <property name="path[0]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234630724.jpg"/>
+      <property name="path[43]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220401_000841439.jpg"/>
+      <property name="path[11]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234715884.jpg"/>
+      <property name="path[3]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234632384.jpg"/>
+      <property name="path[14]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234740544.jpg"/>
+      <property name="path[6]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234714384.jpg"/>
+      <property name="path[17]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234758564.jpg"/>
+      <property name="path[9]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234715000.jpg"/>
+      <property name="path[30]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220401_000704095.jpg"/>
+      <property name="path[33]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220401_000741196.jpg"/>
+      <property name="path[36]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220401_000741592.jpg"/>
+      <property name="path[39]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220401_000811277.jpg"/>
+      <property name="path[20]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234813306.jpg"/>
+      <property name="path[23]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234814521.jpg"/>
+      <property name="path[26]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234831605.jpg"/>
+      <property name="path[29]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220401_000703135.jpg"/>
+      <property name="path[42]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220401_000840711.jpg"/>
+      <property name="path[10]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234715785.jpg"/>
+      <property name="path[2]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234631577.jpg"/>
+      <property name="path[13]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234739832.jpg"/>
+      <property name="path[5]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234658366.jpg"/>
+      <property name="path[16]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234741484.jpg"/>
+      <property name="path[8]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234714884.jpg"/>
+      <property name="path[19]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234813186.jpg"/>
+      <property name="path[32]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220401_000740433.jpg"/>
+      <property name="path[35]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220401_000741478.jpg"/>
+      <property name="path[38]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220401_000810076.jpg"/>
+      <property name="index" value="37"/>
+      <property name="path[22]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234814406.jpg"/>
+      <property name="path[25]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234830566.jpg"/>
+      <property name="path[28]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234832606.jpg"/>
+      <property name="path[41]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220401_000840618.jpg"/>
+      <property name="path[1]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234631454.jpg"/>
+      <property name="path[44]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220401_000842958.jpg"/>
+      <property name="path[4]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234656806.jpg"/>
+      <property name="path[12]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234739704.jpg"/>
+      <property name="path[7]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234714504.jpg"/>
+      <property name="path[15]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234741384.jpg"/>
+      <property name="path[18]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220331_234759924.jpg"/>
+      <property name="numImages" value="45"/>
+      <property name="path[31]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220401_000704636.jpg"/>
+      <property name="path[34]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220401_000741318.jpg"/>
+      <property name="path[37]" value="C:\Users\racve\OneDrive\Documents\FIRST\Data\Macomb\SHOT_20220401_000742380.jpg"/>
     </grip:MultiImageFile>
   </sources>
   <steps>
@@ -121,19 +68,19 @@
       <grip:Input step="1" socket="0"/>
       <grip:Input step="1" socket="1">
         <value>
-          <double>62.82749919467412</double>
-          <double>110.35582303874988</double>
+          <double>59.59008912273168</double>
+          <double>93.6891563720832</double>
         </value>
       </grip:Input>
       <grip:Input step="1" socket="2">
         <value>
-          <double>94.61874530226565</double>
+          <double>96.91191076989155</double>
           <double>255.0</double>
         </value>
       </grip:Input>
       <grip:Input step="1" socket="3">
         <value>
-          <double>84.77866960163212</double>
+          <double>100.83082787501341</double>
           <double>255.0</double>
         </value>
       </grip:Input>
@@ -189,20 +136,20 @@
   </steps>
   <connections>
     <grip:Connection>
-      <grip:Output step="2" socket="0" previewed="false"/>
-      <grip:Input step="3" socket="0"/>
+      <grip:Output step="0" socket="0" previewed="false"/>
+      <grip:Input step="1" socket="0"/>
     </grip:Connection>
     <grip:Connection>
       <grip:Output step="1" socket="0" previewed="false"/>
       <grip:Input step="2" socket="0"/>
     </grip:Connection>
     <grip:Connection>
-      <grip:Output source="0" socket="0" previewed="true"/>
-      <grip:Input step="0" socket="0"/>
+      <grip:Output step="2" socket="0" previewed="false"/>
+      <grip:Input step="3" socket="0"/>
     </grip:Connection>
     <grip:Connection>
-      <grip:Output step="0" socket="0" previewed="false"/>
-      <grip:Input step="1" socket="0"/>
+      <grip:Output source="0" socket="0" previewed="true"/>
+      <grip:Input step="0" socket="0"/>
     </grip:Connection>
   </connections>
   <settings>
