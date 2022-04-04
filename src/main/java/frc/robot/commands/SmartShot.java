@@ -13,6 +13,7 @@ public class SmartShot extends CommandBase {
     private Intake intake;
     private Turret turret;
     private byte counts;
+    private short forceAutoShot;
     private boolean lastShot;
 
     public SmartShot(Drivetrain drive, Shooter shooter, Pi pi, Intake intake, Turret turret) {
@@ -31,6 +32,7 @@ public class SmartShot extends CommandBase {
     public void initialize() {
         //get the FL wheel distance when we start
         counts = 0;
+        forceAutoShot = 0;
         Snapshot.TakeSnapshot("START");
     }
 
@@ -78,8 +80,12 @@ public class SmartShot extends CommandBase {
             //driving might be because of centering, so don't stop it
         } 
 
-        if(error.length() ==0) {
-            error = "SHOOT!!!";
+        if(DriverStation.isAutonomous()) {
+            forceAutoShot++;
+        }
+
+        if(error.length() ==0 || forceAutoShot > 300) {
+            error += "SHOOT!!!";
             intake.setIntake(intake.INTAKE_SPEED);
             intake.setUpMotor(intake.UP_SPEED);
             if(lastShot == false) {
