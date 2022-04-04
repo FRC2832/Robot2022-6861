@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Intake.CargoColor;
 import frc.robot.LightDrive.LightDrivePWM;
+import frc.robot.LightDrive.LightDriveSerial;
 import frc.robot.commands.*;
 
 /**
@@ -39,7 +40,7 @@ public class Robot extends TimedRobot {
     private Joystick rightStick;
     private XboxController operatorController;
     private SendableChooser<Command> m_chooser;
-    private LightDrivePWM ldrive;
+    private LightDriveSerial ldrive;
     private REVDigitBoard digit;
     private DataLogging datalog;
 
@@ -73,7 +74,8 @@ public class Robot extends TimedRobot {
         climber.setDefaultCommand(new DriveClimber(climber,turret,leftStick,rightStick));
 
         //Initialize a new PWM LightDrive
-		ldrive = new LightDrivePWM(new Servo(7), new Servo(8));
+		//ldrive = new LightDrivePWM(new Servo(7), new Servo(8));
+        ldrive = new LightDriveSerial();
         digit = new REVDigitBoard();
         datalog = new DataLogging();
         datalog.Init();
