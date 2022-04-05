@@ -12,6 +12,7 @@ public class LightDriveSerial {
     public LightDriveSerial() {
         port = new SerialPort(115200, SerialPort.Port.kOnboard);
         port.setReadBufferSize(8);
+        port.enableTermination();
         this.m_tx = new byte[14];
         this.m_rx = new RxPacket();
     }
@@ -19,12 +20,19 @@ public class LightDriveSerial {
     public void Update() {
         //pack the structure
         this.m_tx[0] = (byte)0xAA;
-        
+        short check = 0;
         for(int i=0; i<this.m_tx.length-1; i++) {
-
+            check = (short)(check + this.m_tx[i]);
         }
-        port.write(this.m_tx, this.m_tx.length);
-        this.m_rx.SetBytes(port.read(8));
+        this.m_tx[this.m_tx.length-1] = (byte)check; 
+        byte test = this.m_tx[10];
+        int written = port.write(this.m_tx, this.m_tx.length);
+
+        //skip reading back the data for now, timeout is wrong
+        //byte[] buffer = port.read(8);
+        //if(buffer.length == 8) {
+        //    this.m_rx.SetBytes(port.read(8));
+        //}
     }
 
     public void SetColor(int ch, final Color color) {
@@ -33,30 +41,30 @@ public class LightDriveSerial {
         }
 
         ch = --ch * 3;
-        this.m_tx[ch + 1] = (byte)color.green;
-        this.m_tx[ch + 2] = (byte)color.red;
-        this.m_tx[ch + 3] = (byte)color.blue;
+        this.m_tx[ch + 1] = (byte)(color.green * 255);
+        this.m_tx[ch + 2] = (byte)(color.red * 255);
+        this.m_tx[ch + 3] = (byte)(color.blue * 255);
     }
 
     public void SetColor(int ch, final Color color, final double brightness) {
         if (ch < 1 || ch > 4) {
             return;
         }
-        byte red = (byte)(color.red * brightness);
-        byte green = (byte)(color.green * brightness);
-        byte blue = (byte)(color.blue * brightness);
+        byte red = (byte)(color.red * brightness * 255);
+        byte green = (byte)(color.green * brightness * 255);
+        byte blue = (byte)(color.blue * brightness * 255);
 
         ch = --ch * 3;
-        this.m_tx[ch + 1] = (byte)green;
-        this.m_tx[ch + 2] = (byte)red;
-        this.m_tx[ch + 3] = (byte)blue;
+        this.m_tx[ch + 1] = green;
+        this.m_tx[ch + 2] = red;
+        this.m_tx[ch + 3] = blue;
     }
 
     public void SetLevel(final int ch, final byte level) {
-        if (ch < 1 || ch > 12 || level < 0 || level > 255) {
+        if (ch < 1 || ch > 12) {
             return;
         }
-        this.m_tx[ch + 1] = level;
+        this.m_tx[ch] = level;
     }
     
     //from here down, identical to CAN version
