@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
@@ -31,8 +30,6 @@ public class Robot extends TimedRobot {
     private Climber climber;
     private Pi pi;
     private Turret turret;
-	
-    private boolean lastEnabled = false;
 	
     private static Simulation sim;
     private Joystick leftStick;
@@ -187,20 +184,6 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
-		
-		// automatically turn on/off recording
-        if (lastEnabled != isEnabled()) {
-            // we know the enabled status changed
-            if (lastEnabled == false) {
-                // robot started, start recording
-                Shuffleboard.startRecording();
-            } else {
-                // robot stopped, stop recording
-                Shuffleboard.stopRecording();
-            }
-        }
-        // save the result for next loop
-        lastEnabled = isEnabled();
 
         pi.sendAlliance();
 		pi.processCargo();
