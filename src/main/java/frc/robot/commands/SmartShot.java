@@ -15,6 +15,7 @@ public class SmartShot extends CommandBase {
     private byte counts;
     private short forceAutoShot;
     private boolean lastShot;
+    private double lastCenterX;
 
     public SmartShot(Drivetrain drive, Shooter shooter, Pi pi, Intake intake, Turret turret) {
         this.drive = drive;
@@ -26,6 +27,7 @@ public class SmartShot extends CommandBase {
 
         addRequirements(drive);
         addRequirements(shooter);
+        addRequirements(turret);
     }
 
     @Override
@@ -55,13 +57,17 @@ public class SmartShot extends CommandBase {
         }
 
         //check if PI saw target
-        if(pi.getCenterX() > 0) {
-            var delta =  (pi.TARGET_CENTER_X - pi.getCenterX());
+        double centerX = pi.getCenterX();
+        if(pi.canSeeHub()) {
             //if this many pixels off from center, fix it
-            if(Math.abs(delta) > 20) {
-                //100px off = 10% power to turn
-                double p = delta /1800.;
-                turret.setTurretSpeed(p);
+            if(!pi.centeredOnHub()) {
+                if (Math.abs(centerX - lastCenterX) > 1e-4) {
+                    //value changed, update the pid
+                    var delta =  (pi.TARGET_CENTER_X - centerX);
+                    double newAngle = turret.getAngle();
+                    newAngle += delta / (pi.CAM_X_RES/90);  //90 is Field of View of the camera
+                    turret.setTurretPosition(newAngle);
+                }
                 error = String.join(error, "Turret ");
             } else {
                 turret.setTurretSpeed(0);
@@ -70,8 +76,9 @@ public class SmartShot extends CommandBase {
             //pi is not seeing hub
             //TODO: Rumble driver controller?
             error = String.join(error, "Vision ");
-            turret.setTurretSpeed(0);
+            turret.setTurretPosition(90);
         }
+        lastCenterX = centerX;
 
         //check for driving (0.15m/s == 6in/s)
         drive.driveMechanumTank(0, 0, 0, 0);

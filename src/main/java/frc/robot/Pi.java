@@ -24,7 +24,7 @@ public class Pi {
     private Number[] targetWidthArray;
     private Number[] targetHeightArray;
     private Number[] targetAreaArray;
-    private final double CAM_X_RES = 640;
+    public final double CAM_X_RES = 640;
     //private final double CAM_Y_RES = 480;
     public final double TARGET_CENTER_X = 352;
     private static boolean targetMoveRight;
