@@ -73,6 +73,10 @@ public class Intake extends SubsystemBase {
         return !proxSensor.get();
     }
 
+    public boolean intakeFull() {
+        return getProxSensor() && (colorMatch != CargoColor.Unknown);
+    }
+
     private class ReadColorSensorThread extends Thread {
         public void run() {
             while(true) {

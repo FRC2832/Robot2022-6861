@@ -221,4 +221,13 @@ public class Pi {
     public boolean piOn() {
         return targetCenterX.exists();
     }
+
+    public boolean canSeeHub() {
+        return centerXOutput > 0;
+    }
+
+    public boolean centeredOnHub() {
+        var delta =  (TARGET_CENTER_X - centerXOutput);
+        return (Math.abs(delta) < 20);
+    }
 }

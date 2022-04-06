@@ -218,12 +218,14 @@ public class Robot extends TimedRobot {
         //run lights
         CargoColor color = intake.getColorSensor();
         Color output;
-        if (color == CargoColor.Blue) {
+        if(intake.intakeFull()) {
+            output = Color.kWhite;
+        } else if (color == CargoColor.Blue) {
             output = Color.kBlue;
         } else if (color == CargoColor.Red) {
             output = Color.kRed;
         } else {
-            output = Color.kWhite;
+            output = Color.kBlack;
         }
         ldrive.SetColor(1, output);
         ldrive.SetColor(2, output);
@@ -238,7 +240,10 @@ public class Robot extends TimedRobot {
         } else if (pi.piOn() == false) {
             output = Color.kChartreuse;
             msg = " PI ";
-        } else if (pi.getCenterX() < 0) {
+        } else if (pi.canSeeHub() == false) {
+            output = Color.kRed;
+            msg = "MISS";
+        } else if (pi.centeredOnHub() == false) {
             output = Color.kYellow;
             msg = "TURN";
         } else {
