@@ -39,6 +39,8 @@ public class Robot extends TimedRobot {
     private LightDrivePWM ldrive;
     private REVDigitBoard digit;
     private DataLogging datalog;
+    private boolean lastLsPressed;
+    private static boolean autoShotEnabled;
 
     @Override
     public void robotInit() {
@@ -52,6 +54,7 @@ public class Robot extends TimedRobot {
 		leftStick = new Joystick(0);
         rightStick = new Joystick(1);
         operatorController = new XboxController(2);
+        autoShotEnabled = false;
 
 		//initialize subsystems
         drive = new Drivetrain();
@@ -62,7 +65,7 @@ public class Robot extends TimedRobot {
         intake = new Intake();
         intake.register();
         intake.setDefaultCommand(new DriveIntake(intake, shooter, operatorController));
-        turret = new Turret();
+        turret = new Turret(pi);
         turret.register();
         turret.setDefaultCommand(new DriveTurret(turret,operatorController));
         climber = new Climber();
@@ -84,6 +87,9 @@ public class Robot extends TimedRobot {
         JoystickButton bButton = new JoystickButton(operatorController, 2);  //1 = B button
         bButton.whileActiveContinuous(new ManualShot(shooter,2550,40));
 
+        JoystickButton yButton = new JoystickButton(operatorController, 4);  //1 = B button
+        yButton.whileActiveContinuous(new ManualShot(shooter,1900,18));
+        
         JoystickButton lbButton = new JoystickButton(operatorController, 5);  //5 = left bumper button
         lbButton.whileActiveContinuous(new LowShot(shooter,intake));
 
@@ -93,8 +99,6 @@ public class Robot extends TimedRobot {
 		JoystickButton startButton = new JoystickButton(operatorController, 8);  //8 = start button
         startButton.whileActiveContinuous(new SmartShot(drive,shooter,pi,intake,turret));
 
-        // this.setNetworkTablesFlushEnabled(true); //turn off 20ms Dashboard update
-        // rate
         LiveWindow.setEnabled(false);
         
         //ParallelCommandGroup must wait till ALL finish, 
@@ -139,11 +143,13 @@ public class Robot extends TimedRobot {
     public void disabledInit() {
         drive.setBrakeMode(false);
         climber.resetClimberWarning();
+        autoShotEnabled = false;
     }
 
     @Override
     public void autonomousInit() {
         drive.setBrakeMode(true);
+        autoShotEnabled = true;
         CommandScheduler.getInstance().cancelAll();
 
         Command m_autonomousCommand = m_chooser.getSelected();
@@ -183,12 +189,15 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
+        //update these before schedule to make sure data is fresh
+        shooter.calcShot();
+        turret.updateTurretAimAngle();
+
         CommandScheduler.getInstance().run();
 
         pi.sendAlliance();
 		pi.processCargo();
         pi.processTargets();
-        shooter.calcShot();
         SmartDashboard.putNumber("Vision CenterX", pi.getCenterX());
         SmartDashboard.putNumber("Vision CenterY", pi.getCenterY());
 
@@ -236,7 +245,15 @@ public class Robot extends TimedRobot {
         ldrive.SetColor(4, output);
         ldrive.Update();
         digit.display(msg);
-        
+
+        //check to see if autoshot should be enabled
+        boolean lsPressed = operatorController.getRawButton(XboxController.Button.kLeftStick.value);
+        //rising edge check
+        if(lastLsPressed == false && lsPressed == true) {
+            autoShotEnabled = !autoShotEnabled;
+        }
+        lastLsPressed = lsPressed;
+
         //must be at end
         datalog.Periodic();
     }
@@ -254,5 +271,13 @@ public class Robot extends TimedRobot {
 
     public static Simulation getSim() {
         return sim;
+    }
+
+    public static boolean isAutoShootEnabled() {
+        return autoShotEnabled;
+    }
+
+    public static void setAutoShootEnabled(boolean value) {
+        autoShotEnabled = value;
     }
 }

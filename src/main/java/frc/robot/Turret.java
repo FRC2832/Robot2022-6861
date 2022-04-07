@@ -13,8 +13,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Turret extends SubsystemBase {
     private CANSparkMax turretMotor;
     private SparkMaxPIDController pid;
+    private double lastCenterX;
+    private Pi pi;
+    private double aimAngle;
+    public final double SAFE_CLIMB_ANGLE = 170;
 
-    public Turret() {
+    public Turret(Pi pi) {
+        this.pi = pi;
         turretMotor = new CANSparkMax(30,MotorType.kBrushless);
         turretMotor.getEncoder().setPositionConversionFactor(180./108.);
         turretMotor.getEncoder().setVelocityConversionFactor(1.0/31);
@@ -28,8 +33,8 @@ public class Turret extends SubsystemBase {
         // set PID coefficients
         pid.setP(0.012);
         pid.setI(5e-6); //1e-4
-        pid.setD(0.2); //1
-        pid.setIZone(7);
+        pid.setD(0.20); //1
+        pid.setIZone(20);
         pid.setFF(0);
         pid.setOutputRange(-0.3, 0.3);
 
@@ -54,7 +59,34 @@ public class Turret extends SubsystemBase {
     }
 
     public boolean resetClimber() {
-        return getAngle() < 170;
+        return getAngle() < SAFE_CLIMB_ANGLE;
+    }
+
+    public void updateTurretAimAngle() {
+        //check if PI saw target
+        double centerX = pi.getCenterX();
+        if(pi.canSeeHub()) {
+            //if this many pixels off from center, fix it
+            if(!pi.centeredOnHub()) {
+                if (Math.abs(centerX - lastCenterX) > 1e-4) {
+                    //value changed, update the pid
+                    var delta =  (pi.TARGET_CENTER_X - centerX);
+                    double newAngle = getAngle();
+                    newAngle += delta / (pi.CAM_X_RES/90);  //90 is Field of View of the camera
+                    aimAngle = newAngle;
+                }
+            } else {
+                aimAngle = -1;
+            }
+        } else {
+            //pi is not seeing hub
+            aimAngle = 90;
+        }
+        lastCenterX = centerX;
+    }
+
+    public double getTurretAimAngle() {
+        return aimAngle;
     }
 
     @Override

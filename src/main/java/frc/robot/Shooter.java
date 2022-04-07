@@ -94,7 +94,7 @@ public class Shooter extends SubsystemBase
 
         if(Climber.isClimberWarning()) {
             if(warnSound.isPlaying() == false) {
-                warnSound.play();
+                //warnSound.play();
             }
         } else {
             warnSound.stop();

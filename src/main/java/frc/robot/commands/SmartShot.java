@@ -15,7 +15,6 @@ public class SmartShot extends CommandBase {
     private byte counts;
     private short forceAutoShot;
     private boolean lastShot;
-    private double lastCenterX;
 
     public SmartShot(Drivetrain drive, Shooter shooter, Pi pi, Intake intake, Turret turret) {
         this.drive = drive;
@@ -45,7 +44,6 @@ public class SmartShot extends CommandBase {
         shooter.setHoodAngle(shooter.getTargetHoodAngle());
         if(Math.abs(shooter.getHoodAngle()-shooter.getTargetHoodAngle()) > 0.5)
         {
-            //TODO: turned off hood since it's broke
             error = String.join(error, "Hood ");
         }
 
@@ -57,28 +55,22 @@ public class SmartShot extends CommandBase {
         }
 
         //check if PI saw target
-        double centerX = pi.getCenterX();
+        double turretAim = turret.getTurretAimAngle();
+        if(turretAim > 0) {
+            turret.setTurretPosition(turretAim);
+        } else {
+            turret.setTurretSpeed(0);
+        }
         if(pi.canSeeHub()) {
-            //if this many pixels off from center, fix it
-            if(!pi.centeredOnHub()) {
-                if (Math.abs(centerX - lastCenterX) > 1e-4) {
-                    //value changed, update the pid
-                    var delta =  (pi.TARGET_CENTER_X - centerX);
-                    double newAngle = turret.getAngle();
-                    newAngle += delta / (pi.CAM_X_RES/90);  //90 is Field of View of the camera
-                    turret.setTurretPosition(newAngle);
-                }
-                error = String.join(error, "Turret ");
+            if(pi.centeredOnHub()) {
+                //pass condition, do nothing
             } else {
-                turret.setTurretSpeed(0);
+                error = String.join(error, "Turret ");
             }
         } else {
             //pi is not seeing hub
-            //TODO: Rumble driver controller?
             error = String.join(error, "Vision ");
-            turret.setTurretPosition(90);
         }
-        lastCenterX = centerX;
 
         //check for driving (0.15m/s == 6in/s)
         drive.driveMechanumTank(0, 0, 0, 0);

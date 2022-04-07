@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Climber;
+import frc.robot.Robot;
 import frc.robot.Turret;
 
 public class DriveClimber extends CommandBase{
@@ -48,7 +49,8 @@ public class DriveClimber extends CommandBase{
         boolean turretAtEnd = turret.resetClimber();
         if(newPosition!=position && turretAtEnd) {
             //we asked to climb, but turret is not at right position, so move turret instead
-            turret.setTurretSpeed(0.25);
+            turret.setTurretPosition(turret.SAFE_CLIMB_ANGLE + 3);
+            Robot.setAutoShootEnabled(false);
         } else if(turretAtEnd) {
             //turret moved, but climber not in position, so we need to move climber
             position = Climber.CLIMB_START;
