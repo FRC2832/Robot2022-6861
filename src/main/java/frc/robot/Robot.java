@@ -89,7 +89,7 @@ public class Robot extends TimedRobot {
 
         JoystickButton yButton = new JoystickButton(operatorController, 4);  //1 = B button
         yButton.whileActiveContinuous(new ManualShot(shooter,1900,18));
-        
+
         JoystickButton lbButton = new JoystickButton(operatorController, 5);  //5 = left bumper button
         lbButton.whileActiveContinuous(new LowShot(shooter,intake));
 
@@ -108,24 +108,39 @@ public class Robot extends TimedRobot {
             new ParallelRaceGroup(
                 new AutoDrive(drive,2.0),
                 new SmartIntake(intake),
-                new AutoTurret(turret, 50.)
+                new AutoTurret(turret, 120.)
             ),
-            new AutoTurn(drive, 110),
+            new ParallelRaceGroup(
+                new AutoTurn(drive, -90),
+                new AutoTurret(turret, 120.)
+            ),
             new SmartShot(drive,shooter,pi,intake,turret)
         );
 
-        SequentialCommandGroup grab3 = new SequentialCommandGroup(
+        SequentialCommandGroup grab4 = new SequentialCommandGroup(
             new ParallelRaceGroup(
                 new AutoDrive(drive,1.8),
-                new SmartIntake(intake)
+                new SmartIntake(intake),
+                new AutoTurret(turret, 140.)
             ),
-            new AutoDriveDiagonal(drive, 0.46, -0.385, 0.5),  //should be 60% power
-            new SmartShot(drive,shooter,pi,intake,turret),
-            new AutoTurn(drive, 110),
             new ParallelRaceGroup(
-                new AutoDrive(drive,1.0),
-                new SmartIntake(intake)
-            )
+                new AutoTurn(drive, -80),
+                new AutoTurret(turret, 140.)
+            ),
+            new AutoTurret(turret, 135.),
+            new SmartShot(drive,shooter,pi,intake,turret),
+            new AutoDrive(drive,3.5),
+            new AutoTurn(drive, 10),
+            //drive into ball
+            new AimDrive(drive, pi, 3.2),
+            new ParallelRaceGroup(
+                new SmartIntake(intake),
+                new WaitCommand(2)
+            ),
+            new AutoDrive(drive,-3.0),
+            new AutoTurn(drive, -110),
+            new AutoTurret(turret, 90.),
+            new SmartShot(drive,shooter,pi,intake,turret)
         );
 
         // A chooser for autonomous commands
@@ -133,7 +148,7 @@ public class Robot extends TimedRobot {
 
         // Add commands to the autonomous command chooser
         m_chooser.setDefaultOption("Back Up and Shoot", backUpShoot);
-        m_chooser.addOption("Grab 3", grab3);
+        m_chooser.addOption("Grab 4", grab4);
 
         // Put the chooser on the dashboard
         SmartDashboard.putData(m_chooser);

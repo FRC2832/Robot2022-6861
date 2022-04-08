@@ -35,6 +35,8 @@ public class Pi {
     private double centerXOutput;
     private int lastSnap;
     private final int MIN_SNAP_TIME = 100;  //50 loops per sec
+    private double cargoXout;
+
 
     public Pi() {
         netTableInstance = NetworkTableInstance.getDefault();
@@ -65,10 +67,12 @@ public class Pi {
         if (cargoCenterXArray.length == 0) {
             cargoMoveRight = false;
             cargoMoveLeft = false;
+            cargoXout = -1;
             return;
         }
         // currently just taking the first cargo but considering taking the cargo with the largest y value becuase it should be closest to the robot
         double cargoX = (double) cargoCenterXArray[0];
+        cargoXout = cargoX;
         if (cargoX < (CAM_X_RES / 2) - (CAM_X_RES * 0.05)) {
             cargoMoveRight = false;
             cargoMoveLeft = true;
@@ -184,6 +188,10 @@ public class Pi {
         }
         //should never happen...
         return Double.NaN;
+    }
+
+    public double getCargoX() {
+        return cargoXout;
     }
 
     public static boolean isCargoCentered() {

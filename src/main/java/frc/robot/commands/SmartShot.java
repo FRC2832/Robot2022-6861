@@ -109,7 +109,7 @@ public class SmartShot extends CommandBase {
         if(DriverStation.isAutonomous()) {
             SmartDashboard.putNumber("SmartShot Counts", counts);
             //50 counts = 1 second
-            return (counts > 120);
+            return (counts > 50);
         }
         else {
             return false;

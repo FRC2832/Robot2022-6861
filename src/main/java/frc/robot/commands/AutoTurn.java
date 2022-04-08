@@ -23,7 +23,7 @@ public class AutoTurn extends CommandBase {
 
     @Override
     public void execute() {
-        drive.drive(0, 0, 0.6 * sign, false);
+        drive.drive(0, 0, 0.4 * sign, false);
     }
 
     @Override

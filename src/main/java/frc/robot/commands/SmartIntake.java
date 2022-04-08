@@ -36,8 +36,14 @@ public class SmartIntake extends CommandBase{
     @Override
     public boolean isFinished() {
         if(DriverStation.isAutonomous()) {
-            return intake.getProxSensor();
+            return intake.intakeFull();
         }
         return false;
+    }
+
+    @Override
+    public void end(boolean cancelled) {
+        intake.setIntake(0);
+        intake.setUpMotor(0);
     }
 }

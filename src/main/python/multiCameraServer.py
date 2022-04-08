@@ -65,7 +65,7 @@ class CargoPipeline:
         self.find_contours_output = None
 
         self.__filter_contours_contours = self.find_contours_output
-        self.__filter_contours_min_area = 7000.0
+        self.__filter_contours_min_area = 5000.0
         self.__filter_contours_min_perimeter = 0.0
         self.__filter_contours_min_width = 0.0
         self.__filter_contours_max_width = 1000.0
@@ -745,7 +745,7 @@ class findCargo (threading.Thread):
             'hsl_sat': [88.86771938381499, 255.0], 
             'hsl_lum': [0.0, 255.0]
         }
-        table = NetworkTables.getTable('datatable')
+        table = NetworkTables.getTable('vision')
         cargo_proc = CargoPipeline(blue_pipeline)
         img = np.zeros(shape=(240, 320, 3), dtype=np.uint8) 
         lastAlliance = 'blue'
