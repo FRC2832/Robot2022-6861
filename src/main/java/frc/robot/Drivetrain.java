@@ -5,7 +5,9 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,7 +25,10 @@ public class Drivetrain extends SubsystemBase {
     private CANSparkMax motors[];
     private MecanumDrive m_robotDrive;
     private final PigeonIMU pigeon = new PigeonIMU(0);
-    
+    private BuiltInAccelerometer accelerometer;
+    private LinearFilter axFilter, ayFilter;
+    private double axValue, ayValue;
+
     public Drivetrain() {
         motors = new CANSparkMax[4];
         motors[FL] = new CANSparkMax(kFrontLeftChannel,MotorType.kBrushless);
@@ -43,6 +48,10 @@ public class Drivetrain extends SubsystemBase {
         }
         m_robotDrive = new MecanumDrive(motors[FL], motors[RL], motors[FR], motors[RR]);
         m_robotDrive.setSafetyEnabled(false);
+
+        accelerometer = new BuiltInAccelerometer();
+        axFilter = LinearFilter.movingAverage(10);
+        ayFilter = LinearFilter.movingAverage(10);
     }
 
     public void setBrakeMode(boolean brake) {
@@ -142,12 +151,33 @@ public class Drivetrain extends SubsystemBase {
         return motors[wheel].get() * RobotController.getBatteryVoltage();
     }
 
+    /**
+     * Returns the acceleration in the forwards/backwards direction of the robot
+     * @return Long accel/Ax of the robot
+     */
+    public double getAxFiltered() {
+        return axValue;
+    }
+
+    /**
+     * Returns the acceleration in the left/right direction of the robot
+     * @return Lat accel/Ay of the robot
+     */
+    public double getAyFiltered() {
+        return ayValue;
+    }
+
     @Override
     public void periodic() {
+        axValue = axFilter.calculate(accelerometer.getZ());
+        ayValue = ayFilter.calculate(accelerometer.getX());
+
         SmartDashboard.putNumber("Gyro Angle", getRotation().getDegrees());
         SmartDashboard.putNumber("Drive FL Encoder", getDistance(FL));
         SmartDashboard.putNumber("Drive FR Encoder", getDistance(FR));
         SmartDashboard.putNumber("Drive RL Encoder", getDistance(RL));
         SmartDashboard.putNumber("Drive RR Encoder", getDistance(RR));
+        SmartDashboard.putNumber("Ax Filtered", axValue);
+        SmartDashboard.putNumber("Ay Filtered", ayValue);
     }
 }

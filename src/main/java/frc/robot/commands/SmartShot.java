@@ -7,6 +7,7 @@ import frc.robot.*;
 import frc.robot.Intake.CargoColor;
 
 public class SmartShot extends CommandBase {
+    private final short STOPPED_TIME = 15;  //takes this many * 20ms to be considered stopped
     private Drivetrain drive;
     private Shooter shooter;
     private Pi pi;
@@ -15,6 +16,7 @@ public class SmartShot extends CommandBase {
     private byte counts;
     private short forceAutoShot;
     private boolean lastShot;
+    private short stoppedCounts;
 
     public SmartShot(Drivetrain drive, Shooter shooter, Pi pi, Intake intake, Turret turret) {
         this.drive = drive;
@@ -74,10 +76,18 @@ public class SmartShot extends CommandBase {
 
         //check for driving (0.15m/s == 6in/s)
         drive.driveMechanumTank(0, 0, 0, 0);
-        if(Math.abs(drive.getVelocity(0)) > 0.15) {
+        boolean isStopped = (Math.abs(drive.getVelocity(0)) < 0.15);
+        if(isStopped) {
+            stoppedCounts = (short)Math.min(stoppedCounts++,STOPPED_TIME + 3);  //add a 60ms buffer for noise
+        } else {
+            stoppedCounts = (short)Math.max(stoppedCounts--,0);
+        }
+        if (stoppedCounts < STOPPED_TIME) {
             error = String.join(error, "Driving ");
             //driving might be because of centering, so don't stop it
-        } 
+        } else {
+            //at counts, allow shot
+        }
 
         if(DriverStation.isAutonomous()) {
             forceAutoShot++;
