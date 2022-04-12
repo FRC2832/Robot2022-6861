@@ -36,7 +36,7 @@ public class SmartShot extends CommandBase {
         //get the FL wheel distance when we start
         counts = 0;
         forceAutoShot = 0;
-        Snapshot.TakeSnapshot("START");
+        Robot.snapHub("START");
     }
 
     public void execute() {
@@ -98,7 +98,7 @@ public class SmartShot extends CommandBase {
             intake.setIntake(intake.INTAKE_SPEED);
             intake.setUpMotor(intake.UP_SPEED);
             if(lastShot == false) {
-                Snapshot.TakeSnapshot("SHOT");
+            	Robot.snapHub("SHOT");
             }
             lastShot = true;
         } else {

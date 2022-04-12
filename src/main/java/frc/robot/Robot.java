@@ -41,12 +41,17 @@ public class Robot extends TimedRobot {
     private DataLogging datalog;
     private boolean lastLsPressed;
     private static boolean autoShotEnabled;
+    private static Snapshot snapHub;
+    private static Snapshot snapCargo;
 
     @Override
     public void robotInit() {
         GitVersion vers = GitVersion.loadVersion();
         vers.printVersions();
-        Snapshot.start("http://10.68.61.8:1181/stream.mjpg");
+        snapHub = new Snapshot();
+        snapHub.start("http://10.68.61.8:1181/stream.mjpg");
+        snapCargo = new Snapshot();
+        snapCargo.start("http://10.68.61.8:1182/stream.mjpg");
         SmartDashboard.putBoolean("Take Snapshot", false);
 
         ShooterConstants.LoadConstants();
@@ -219,7 +224,7 @@ public class Robot extends TimedRobot {
         boolean takeSnap = SmartDashboard.getBoolean("Take Snapshot", false);
         if(takeSnap) {
             SmartDashboard.putBoolean("Take Snapshot", false);
-            Snapshot.TakeSnapshot("MANUAL");
+            snapHub("MANUAL");
         }
 
         //run lights
@@ -294,5 +299,13 @@ public class Robot extends TimedRobot {
 
     public static void setAutoShootEnabled(boolean value) {
         autoShotEnabled = value;
+    }
+
+    public static void snapHub(String msg) {
+        snapHub.TakeSnapshot(msg);
+    }
+
+    public static void snapCargo(String msg) {
+        snapCargo.TakeSnapshot("C" + msg);
     }
 }

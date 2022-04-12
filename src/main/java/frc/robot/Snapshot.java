@@ -15,29 +15,29 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 
-public class Snapshot {
+public class Snapshot implements Runnable {
 
-    private static final Thread m_thread;
-    private static final ZoneId m_utc = ZoneId.of("UTC");
-    private static final DateTimeFormatter m_timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmssSSS")
+    private Thread m_thread;
+    private final ZoneId m_utc = ZoneId.of("UTC");
+    private final DateTimeFormatter m_timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmssSSS")
             .withZone(m_utc);
 
-    private static boolean isUsb = false;
-    private static boolean takeSnap = false;
-    private static String m_cameraPath = null;
-    private static String filePrefix = "FRC";
+    private boolean isUsb = false;
+    private boolean takeSnap = false;
+    private String m_cameraPath = null;
+    private String filePrefix = "FRC";
 
-    static {
-        m_thread = new Thread(Snapshot::logMain, "Snapshot");
+    public Snapshot() {
+        m_thread = new Thread(this);
         m_thread.setDaemon(true);
     }
 
-    public static synchronized void start(String cameraPath) {
+    public synchronized void start(String cameraPath) {
         m_thread.start();
         m_cameraPath = cameraPath;
     }
 
-    private static String makeLogDir(String dir) {
+    private String makeLogDir(String dir) {
         // from DataLogManager
         if (!dir.isEmpty()) {
             return dir;
@@ -63,7 +63,8 @@ public class Snapshot {
         return Filesystem.getOperatingDirectory().getAbsolutePath();
     }
 
-    private static void logMain() {
+    @Override
+    public void run() {
         ByteArrayOutputStream jpgOut = new ByteArrayOutputStream(100000);
 
         while (!Thread.interrupted()) {
@@ -122,11 +123,11 @@ public class Snapshot {
         }
     }
 
-    public static void TakeSnapshot() {
+    public void TakeSnapshot() {
         TakeSnapshot("FRC");
     }
 
-    public static void TakeSnapshot(String prefix) {
+    public void TakeSnapshot(String prefix) {
         takeSnap = true;
         filePrefix = prefix;
     }

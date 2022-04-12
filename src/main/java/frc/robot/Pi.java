@@ -117,10 +117,10 @@ public class Pi {
         //take time between snapshots
         if(lastSnap > MIN_SNAP_TIME) {
             if((max-min) > 300) {
-                Snapshot.TakeSnapshot("MAX");
+                Robot.snapHub("MAX");
                 lastSnap = 0;
             } else if(targetCenterYArray.length > 6) {
-                Snapshot.TakeSnapshot("COUNT");
+                Robot.snapHub("COUNT");
                 lastSnap = 0;
             } else {
                 //do nothing
