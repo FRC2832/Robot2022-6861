@@ -17,7 +17,11 @@ public class DriveTurret extends CommandBase{
     
     @Override
     public void execute() {
-        if(Robot.isAutoShootEnabled()) {
+        double driverSpeed = -operatorController.getLeftX();
+        
+        if(Math.abs(driverSpeed) > 0.13) {  //driver deadband
+            turret.setTurretSpeed(driverSpeed * 0.25);
+        } else if(Robot.isAutoShootEnabled()) {
             double turretAim = turret.getTurretAimAngle();
             if(turretAim > 0) {
                 turret.setTurretPosition(turretAim);
@@ -25,7 +29,7 @@ public class DriveTurret extends CommandBase{
                 turret.setTurretSpeed(0);
             }
         } else {
-            turret.setTurretSpeed(-operatorController.getLeftX() * 0.25);
+            turret.setTurretSpeed(0);
         }
     }
 }
