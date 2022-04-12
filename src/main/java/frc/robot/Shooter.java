@@ -46,6 +46,7 @@ public class Shooter extends SubsystemBase
         shooterFx.setInverted(false);
         hoodMotor = new TalonSRX(25);
         hoodMotor.setNeutralMode(NeutralMode.Brake);
+        hoodMotor.setInverted(false);
 
         TalonFXConfiguration config = new TalonFXConfiguration();
         //PID values from calibration on field, 6878 units/100ms = 32.3% power, 47.89% = 9892, 16.62%=3572 units=1046 rpm

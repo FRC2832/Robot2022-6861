@@ -266,7 +266,7 @@ class TargetPipeline:
         self.blur_output = None
 
         self.__hsv_threshold_input = self.blur_output
-        self.__hsv_threshold_hue = [61.20879415870291, 98.11339879632564]
+        self.__hsv_threshold_hue = [61.20879415870291, 136.11339879632564]
         self.__hsv_threshold_saturation = [41.875939546869965, 250.7070707070707]
         self.__hsv_threshold_value = [61.84701492537313, 255.0]
 
