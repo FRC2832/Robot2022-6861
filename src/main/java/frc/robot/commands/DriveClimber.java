@@ -47,9 +47,9 @@ public class DriveClimber extends CommandBase{
         
         //check if hood is in position
         boolean turretAtEnd = turret.resetClimber();
+        climber.setClimbRequested(false);
         if(newPosition!=position && turretAtEnd) {
-            //we asked to climb, but turret is not at right position, so move turret instead
-            turret.setTurretPosition(turret.SAFE_CLIMB_ANGLE + 3);
+            climber.setClimbRequested(true);
             Robot.setAutoShootEnabled(false);
         } else if(turretAtEnd) {
             //turret moved, but climber not in position, so we need to move climber

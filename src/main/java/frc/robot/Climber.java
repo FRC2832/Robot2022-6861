@@ -29,6 +29,7 @@ public class Climber extends SubsystemBase
     private SparkMaxPIDController pid;
 
     private static int currentCounts;
+    private boolean climbRequested;
 
     public Climber() {
         middleClimb = new CANSparkMax(32,MotorType.kBrushless);
@@ -52,6 +53,7 @@ public class Climber extends SubsystemBase
         //stall current 80a, run limit 20a
         middleClimb.setSmartCurrentLimit(80, 20);
         currentCounts = 0;
+        climbRequested = false;
 
         leftClimb = new CANSparkMax(33,MotorType.kBrushless);
         leftClimb.setIdleMode(IdleMode.kBrake);
@@ -102,5 +104,13 @@ public class Climber extends SubsystemBase
 
     public double getReachClimbPosition() {
         return leftClimb.getEncoder().getPosition();
+    }
+
+    public void setClimbRequested(boolean value) {
+        climbRequested = value;
+    }
+
+    public boolean climbRequested(){
+        return climbRequested;
     }
 }

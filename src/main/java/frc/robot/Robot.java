@@ -72,9 +72,9 @@ public class Robot extends TimedRobot {
         intake.setDefaultCommand(new DriveIntake(intake, shooter, operatorController));
         turret = new Turret(pi);
         turret.register();
-        turret.setDefaultCommand(new DriveTurret(turret,operatorController));
         climber = new Climber();
         climber.register();
+        turret.setDefaultCommand(new DriveTurret(turret,climber,operatorController));
         climber.setDefaultCommand(new DriveClimber(climber,turret,leftStick,rightStick));
 
         //Initialize a new PWM LightDrive
