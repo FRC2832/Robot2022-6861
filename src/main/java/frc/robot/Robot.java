@@ -110,14 +110,56 @@ public class Robot extends TimedRobot {
         //ParallelRace waits for FIRST to finish, 
         //Deadline waits for the specified command to finish
         SequentialCommandGroup backUpShoot = new SequentialCommandGroup(
-            new ParallelRaceGroup(
+            new ParallelDeadlineGroup(
                 new AutoDrive(drive,2.0),
                 new SmartIntake(intake),
-                new AutoTurret(turret, 120.)
+                new AutoTurret(turret, 70.)
             ),
-            new ParallelRaceGroup(
-                new AutoTurn(drive, -90),
-                new AutoTurret(turret, 120.)
+            new ParallelDeadlineGroup(
+                new AutoTurn(drive, -160),
+                new AutoTurret(turret, 70.)
+            ),
+            new SmartShot(drive,shooter,pi,intake,turret)
+        );
+
+        SequentialCommandGroup shortWall = new SequentialCommandGroup(
+            new ParallelDeadlineGroup(
+                new SlowDrive(drive,1.45),
+                new SmartIntake(intake),
+                new AutoTurret(turret, 70.)
+            ),
+            new SlowDrive(drive,-0.2),
+            new ParallelDeadlineGroup(
+                new AutoTurn(drive, -160),
+                new AutoTurret(turret, 70.),
+                new SmartIntake(intake)
+            ),
+            new SmartShot(drive,shooter,pi,intake,turret)
+        );
+
+        SequentialCommandGroup grab3 = new SequentialCommandGroup(
+            new ParallelDeadlineGroup(
+                new SlowDrive(drive,1.45),
+                new SmartIntake(intake),
+                new AutoTurret(turret, 20.)
+            ),
+            new SlowDrive(drive,-0.2),
+            new ParallelDeadlineGroup(
+                new AutoTurn(drive, 130),
+                new AutoTurret(turret, 20.),
+                new SmartIntake(intake)
+            ),
+            new SmartShot(drive,shooter,pi,intake,turret),
+            new AutoTurn(drive, -15),
+            new AutoDrive(drive, 1.0),
+            new ParallelDeadlineGroup(
+                new AimDrive(drive,pi,2.0),
+                new AutoTurret(turret, 30.),
+                new SmartIntake(intake)
+            ),
+            new ParallelDeadlineGroup(
+                new AutoTurn(drive, 120),
+                new SmartIntake(intake)
             ),
             new SmartShot(drive,shooter,pi,intake,turret)
         );
@@ -153,6 +195,8 @@ public class Robot extends TimedRobot {
 
         // Add commands to the autonomous command chooser
         m_chooser.setDefaultOption("Back Up and Shoot", backUpShoot);
+        m_chooser.addOption("Short Wall", shortWall);
+        m_chooser.addOption("Grab 3", grab3);
         m_chooser.addOption("Grab 4", grab4);
 
         // Put the chooser on the dashboard

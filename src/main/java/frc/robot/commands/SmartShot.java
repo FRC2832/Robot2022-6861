@@ -77,16 +77,8 @@ public class SmartShot extends CommandBase {
         //check for driving (0.15m/s == 6in/s)
         drive.driveMechanumTank(0, 0, 0, 0);
         boolean isStopped = (Math.abs(drive.getVelocity(0)) < 0.15);
-        if(isStopped) {
-            stoppedCounts = (short)Math.min(stoppedCounts++,STOPPED_TIME + 3);  //add a 60ms buffer for noise
-        } else {
-            stoppedCounts = (short)Math.max(stoppedCounts--,0);
-        }
-        if (stoppedCounts < STOPPED_TIME) {
-            error = String.join(error, "Driving ");
-            //driving might be because of centering, so don't stop it
-        } else {
-            //at counts, allow shot
+        if (!isStopped) {
+            error = String.join(error, "Driving "+ stoppedCounts + " ");
         }
 
         if(DriverStation.isAutonomous()) {
@@ -94,20 +86,26 @@ public class SmartShot extends CommandBase {
         }
 
         if(error.length() ==0 || forceAutoShot > 300) {
-            error += "SHOOT!!!";
-            intake.setIntake(intake.INTAKE_SPEED);
-            intake.setUpMotor(intake.UP_SPEED);
-            if(lastShot == false) {
-            	Robot.snapHub("SHOT");
+            stoppedCounts = (short)Math.min(stoppedCounts + 1,STOPPED_TIME + 3);  //add a 60ms buffer for noise
+            if (stoppedCounts < STOPPED_TIME) {
+                error += "WAITING";
+            } else {
+                error += "SHOOT!!!";
+                intake.setIntake(intake.INTAKE_SPEED);
+                intake.setUpMotor(intake.UP_SPEED);
+                if(lastShot == false) {
+                    Robot.snapHub("SHOT");
+                }
+                lastShot = true;
             }
-            lastShot = true;
         } else {
+            stoppedCounts = (short)Math.max(stoppedCounts - 1,0);
             lastShot = false;
         }
         SmartDashboard.putString("Auto Shoot Error", error);
 
         //count how long we are empty
-        if(intake.getColorSensor() == CargoColor.Unknown) {
+        if(intake.getColorSensor() == CargoColor.Unknown && intake.getProxSensor() == false) {
             counts++;
         } else {
             counts = 0;
