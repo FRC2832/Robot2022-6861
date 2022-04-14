@@ -32,9 +32,9 @@ public class Turret extends SubsystemBase {
         pid = turretMotor.getPIDController();
         // set PID coefficients
         pid.setP(0.012);
-        pid.setI(5e-6); //1e-4
-        pid.setD(0.20); //1
-        pid.setIZone(20);
+        pid.setI(2e-6); //1e-4
+        pid.setD(3); //1
+        pid.setIZone(45);
         pid.setFF(0);
         pid.setOutputRange(-0.3, 0.3);
 
