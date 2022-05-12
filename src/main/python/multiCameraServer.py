@@ -266,9 +266,9 @@ class TargetPipeline:
         self.blur_output = None
 
         self.__hsv_threshold_input = self.blur_output
-        self.__hsv_threshold_hue = [62.82749919467413, 117.93158061450748]
-        self.__hsv_threshold_saturation = [92.32557983463973, 255.0]
-        self.__hsv_threshold_value = [61.84701492537312, 242.12121212121212]
+        self.__hsv_threshold_hue = [61.20879415870291, 88.11339879632564]
+        self.__hsv_threshold_saturation = [41.875939546869965, 250.7070707070707]
+        self.__hsv_threshold_value = [61.84701492537313, 255.0]
 
         self.hsv_threshold_output = None
 
@@ -287,7 +287,7 @@ class TargetPipeline:
         self.__filter_contours_solidity = [0, 100]
         self.__filter_contours_max_vertices = 1000000.0
         self.__filter_contours_min_vertices = 0.0
-        self.__filter_contours_min_ratio = 0.5
+        self.__filter_contours_min_ratio = 0.0
         self.__filter_contours_max_ratio = 1000.0
 
         self.filter_contours_output = None
@@ -466,7 +466,7 @@ def extra_target_processing(pipeline):
 
     #filter data
     global configX,configY
-    centerX, configX = averageHubTargets(target_x_positions,configX)
+    centerX, configX = filterHubTargets(target_x_positions,configX)
     centerY, configY = filterHubTargets(target_y_positions,configY)
 
     # Publish to the '/vision/' network table
@@ -485,7 +485,7 @@ configX["maxFrames"] = 6
 configX["lastSeen"] = 0
 configX["lastCenter"] = 320
 configX["noiseStartPct"] = 0.6
-configX["pixelDist"] = 160
+configX["pixelDist"] = 80
 configX["filterMulti"] = 1.15
 configY = {}
 configY["maxFrames"] = 6
@@ -532,33 +532,6 @@ def filterHubTargets(target_positions, cfg):
         cfg["lastSeen"] = max(cfg["lastSeen"] - 1,0)
 
     return cfg["lastCenter"], cfg
-
-def averageHubTargets(target_positions, cfg):
-    #filter out random noise after seen for X frames
-    keep = []
-    if(cfg["lastSeen"] > (cfg["maxFrames"]*cfg["noiseStartPct"])):
-        for target in target_positions: 
-            if abs(target-cfg["lastCenter"]) < cfg["pixelDist"]:
-                keep.append(target)
-    else:
-        keep = target_positions
-
-    #if there is any data, change the average
-    if(len(keep) > 0):
-        #simple average
-        sum = 0
-        for target in keep:
-            sum = sum + target
-        centerX = sum/len(keep)
-        
-        cfg["lastCenter"] = centerX
-        cfg["lastSeen"] = min(cfg["lastSeen"] + 1,cfg["maxFrames"])
-    else:
-        #else keep last known value
-        cfg["lastSeen"] = max(cfg["lastSeen"] - 1,0)
-
-    return cfg["lastCenter"], cfg
-
 
 team = None
 server = False
