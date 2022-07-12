@@ -190,7 +190,7 @@ class CargoPipeline:
         else:
             mode = cv2.RETR_LIST
         method = cv2.CHAIN_APPROX_SIMPLE
-        im2, contours, hierarchy =cv2.findContours(input, mode=mode, method=method)
+        contours, hierarchy =cv2.findContours(input, mode=mode, method=method)
         return contours
 
     @staticmethod
@@ -260,15 +260,9 @@ class TargetPipeline:
         """initializes all values to presets or None if need to be set
         """
 
-        self.__blur_type = BlurType.Box_Blur
-        self.__blur_radius = 2.7027027027027026
-
-        self.blur_output = None
-
-        self.__hsv_threshold_input = self.blur_output
-        self.__hsv_threshold_hue = [61.20879415870291, 88.11339879632564]
-        self.__hsv_threshold_saturation = [41.875939546869965, 250.7070707070707]
-        self.__hsv_threshold_value = [61.84701492537313, 255.0]
+        self.__hsv_threshold_hue = [43.70503597122302, 99.69696969696967]
+        self.__hsv_threshold_saturation = [190.33273381294964, 255.0]
+        self.__hsv_threshold_value = [160.52158273381295, 255.0]
 
         self.hsv_threshold_output = None
 
@@ -278,7 +272,7 @@ class TargetPipeline:
         self.find_contours_output = None
 
         self.__filter_contours_contours = self.find_contours_output
-        self.__filter_contours_min_area = 50.0
+        self.__filter_contours_min_area = 74.0
         self.__filter_contours_min_perimeter = 0.0
         self.__filter_contours_min_width = 0.0
         self.__filter_contours_max_width = 50.0
@@ -287,7 +281,7 @@ class TargetPipeline:
         self.__filter_contours_solidity = [0, 100]
         self.__filter_contours_max_vertices = 1000000.0
         self.__filter_contours_min_vertices = 0.0
-        self.__filter_contours_min_ratio = 0.0
+        self.__filter_contours_min_ratio = 0.5
         self.__filter_contours_max_ratio = 1000.0
 
         self.filter_contours_output = None
@@ -297,12 +291,8 @@ class TargetPipeline:
         """
         Runs the pipeline and sets all outputs to new values.
         """
-        # Step Blur0:
-        self.__blur_input = source0
-        (self.blur_output) = self.__blur(self.__blur_input, self.__blur_type, self.__blur_radius)
-
         # Step HSV_Threshold0:
-        self.__hsv_threshold_input = self.blur_output
+        self.__hsv_threshold_input = source0
         (self.hsv_threshold_output) = self.__hsv_threshold(self.__hsv_threshold_input, self.__hsv_threshold_hue, self.__hsv_threshold_saturation, self.__hsv_threshold_value)
 
         # Step Find_Contours0:
@@ -313,28 +303,6 @@ class TargetPipeline:
         self.__filter_contours_contours = self.find_contours_output
         (self.filter_contours_output) = self.__filter_contours(self.__filter_contours_contours, self.__filter_contours_min_area, self.__filter_contours_min_perimeter, self.__filter_contours_min_width, self.__filter_contours_max_width, self.__filter_contours_min_height, self.__filter_contours_max_height, self.__filter_contours_solidity, self.__filter_contours_max_vertices, self.__filter_contours_min_vertices, self.__filter_contours_min_ratio, self.__filter_contours_max_ratio)
 
-
-    @staticmethod
-    def __blur(src, type, radius):
-        """Softens an image using one of several filters.
-        Args:
-            src: The source mat (numpy.ndarray).
-            type: The blurType to perform represented as an int.
-            radius: The radius for the blur as a float.
-        Returns:
-            A numpy.ndarray that has been blurred.
-        """
-        if(type is BlurType.Box_Blur):
-            ksize = int(2 * round(radius) + 1)
-            return cv2.blur(src, (ksize, ksize))
-        elif(type is BlurType.Gaussian_Blur):
-            ksize = int(6 * round(radius) + 1)
-            return cv2.GaussianBlur(src, (ksize, ksize), round(radius))
-        elif(type is BlurType.Median_Filter):
-            ksize = int(2 * round(radius) + 1)
-            return cv2.medianBlur(src, ksize)
-        else:
-            return cv2.bilateralFilter(src, -1, round(radius), round(radius))
 
     @staticmethod
     def __hsv_threshold(input, hue, sat, val):
@@ -364,7 +332,7 @@ class TargetPipeline:
         else:
             mode = cv2.RETR_LIST
         method = cv2.CHAIN_APPROX_SIMPLE
-        im2, contours, hierarchy =cv2.findContours(input, mode=mode, method=method)
+        contours, hierarchy =cv2.findContours(input, mode=mode, method=method)
         return contours
 
     @staticmethod
@@ -465,10 +433,11 @@ def extra_target_processing(pipeline):
         target_areas.append(w * h)
 
     #filter data
-    global configX,configY
+    global configX,configY,frameNum
     centerX, configX = filterHubTargets(target_x_positions,configX)
     centerY, configY = filterHubTargets(target_y_positions,configY)
-
+    frameNum = frameNum + 1
+    
     # Publish to the '/vision/' network table
     table = NetworkTables.getTable('vision')
     table.putNumberArray('targetX', target_x_positions)
@@ -478,8 +447,10 @@ def extra_target_processing(pipeline):
     table.putNumberArray('targetArea', target_areas)
     table.putNumber('centerX', centerX)
     table.putNumber('centerY', centerY)
+    table.putNumber('frameNum', frameNum)
     print(f"hub center: {centerX}, {centerY}")
 
+frameNum = 0
 configX = {}
 configX["maxFrames"] = 6
 configX["lastSeen"] = 0
@@ -768,6 +739,7 @@ class findCargo (threading.Thread):
             if ret:
                 cargo_proc.process(img)
                 extra_cargo_processing(cargo_proc)
+                NetworkTables.flush()
 
 if __name__ == "__main__":
     # outputStream = inst.putVideo("processed images", 1280, 720)

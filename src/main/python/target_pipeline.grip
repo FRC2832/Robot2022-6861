@@ -4,137 +4,215 @@
       <property name="address" value="http://10.68.61.8:1181/stream.mjpg"/>
     </grip:Camera>
     <grip:MultiImageFile>
-      <property name="path[21]" value="D:\SHOT_20220415_153455352.jpg"/>
-      <property name="path[24]" value="D:\SHOT_20220415_153609212.jpg"/>
-      <property name="path[27]" value="D:\SHOT_20220415_153640234.jpg"/>
-      <property name="path[40]" value="D:\START_20220415_153645895.jpg"/>
-      <property name="path[0]" value="D:\MAX_20220415_143940411.jpg"/>
-      <property name="path[11]" value="D:\SHOT_20220415_143919368.jpg"/>
-      <property name="path[3]" value="D:\MAX_20220415_144115088.jpg"/>
-      <property name="path[14]" value="D:\SHOT_20220415_143957410.jpg"/>
-      <property name="path[6]" value="D:\MAX_20220415_153529392.jpg"/>
-      <property name="path[17]" value="D:\SHOT_20220415_144026608.jpg"/>
-      <property name="path[9]" value="D:\MAX_20220415_153648333.jpg"/>
-      <property name="path[30]" value="D:\START_20220415_143952814.jpg"/>
-      <property name="path[33]" value="D:\START_20220415_144024867.jpg"/>
-      <property name="path[36]" value="D:\START_20220415_153555432.jpg"/>
-      <property name="path[39]" value="D:\START_20220415_153645293.jpg"/>
-      <property name="path[20]" value="D:\SHOT_20220415_153453751.jpg"/>
-      <property name="path[23]" value="D:\SHOT_20220415_153556771.jpg"/>
-      <property name="path[26]" value="D:\SHOT_20220415_153639392.jpg"/>
-      <property name="path[29]" value="D:\START_20220415_143938167.jpg"/>
-      <property name="path[10]" value="D:\MAX_20220415_153651412.jpg"/>
-      <property name="path[2]" value="D:\MAX_20220415_144103429.jpg"/>
-      <property name="path[13]" value="D:\SHOT_20220415_143938847.jpg"/>
-      <property name="path[5]" value="D:\MAX_20220415_153520356.jpg"/>
-      <property name="path[16]" value="D:\SHOT_20220415_144025807.jpg"/>
-      <property name="path[8]" value="D:\MAX_20220415_153549851.jpg"/>
-      <property name="path[19]" value="D:\SHOT_20220415_144056728.jpg"/>
-      <property name="path[32]" value="D:\START_20220415_144023128.jpg"/>
-      <property name="path[35]" value="D:\START_20220415_153452311.jpg"/>
-      <property name="path[38]" value="D:\START_20220415_153638492.jpg"/>
-      <property name="index" value="34"/>
-      <property name="path[22]" value="D:\SHOT_20220415_153555833.jpg"/>
-      <property name="path[25]" value="D:\SHOT_20220415_153610234.jpg"/>
-      <property name="path[28]" value="D:\START_20220415_143917927.jpg"/>
-      <property name="path[41]" value="D:\START_20220415_153646533.jpg"/>
-      <property name="path[1]" value="D:\MAX_20220415_144046848.jpg"/>
-      <property name="path[4]" value="D:\MAX_20220415_144143351.jpg"/>
-      <property name="path[12]" value="D:\SHOT_20220415_143920535.jpg"/>
-      <property name="path[7]" value="D:\MAX_20220415_153540831.jpg"/>
-      <property name="path[15]" value="D:\SHOT_20220415_143958288.jpg"/>
-      <property name="path[18]" value="D:\SHOT_20220415_144055888.jpg"/>
-      <property name="numImages" value="42"/>
-      <property name="path[31]" value="D:\START_20220415_143957148.jpg"/>
-      <property name="path[34]" value="D:\START_20220415_144054428.jpg"/>
-      <property name="path[37]" value="D:\START_20220415_153609051.jpg"/>
+      <property name="path[104]" value="C:\Users\racve\big_bang\SHOT_20220624_163205163.jpg"/>
+      <property name="path[26]" value="C:\Users\racve\big_bang\MAX_20220624_132829789.jpg"/>
+      <property name="path[75]" value="C:\Users\racve\big_bang\PAD_20220624_152810372.jpg"/>
+      <property name="path[10]" value="C:\Users\racve\big_bang\COUNT_20220624_130637183.jpg"/>
+      <property name="path[16]" value="C:\Users\racve\big_bang\COUNT_20220624_200930813.jpg"/>
+      <property name="path[65]" value="C:\Users\racve\big_bang\MAX_20220624_203514195.jpg"/>
+      <property name="path[5]" value="C:\Users\racve\big_bang\COUNT_20220624_130624004.jpg"/>
+      <property name="path[55]" value="C:\Users\racve\big_bang\MAX_20220624_163054265.jpg"/>
+      <property name="path[123]" value="C:\Users\racve\big_bang\START_20220624_183857698.jpg"/>
+      <property name="path[45]" value="C:\Users\racve\big_bang\MAX_20220624_160559122.jpg"/>
+      <property name="path[94]" value="C:\Users\racve\big_bang\PAD_20220624_213440317.jpg"/>
+      <property name="path[129]" value="C:\Users\racve\big_bang\START_20220624_213414697.jpg"/>
+      <property name="path[113]" value="C:\Users\racve\big_bang\SHOT_20220624_211538204.jpg"/>
+      <property name="path[35]" value="C:\Users\racve\big_bang\MAX_20220624_160447681.jpg"/>
+      <property name="path[84]" value="C:\Users\racve\big_bang\PAD_20220624_200858152.jpg"/>
+      <property name="path[119]" value="C:\Users\racve\big_bang\START_20220624_152639170.jpg"/>
+      <property name="path[103]" value="C:\Users\racve\big_bang\SHOT_20220624_160444961.jpg"/>
+      <property name="path[25]" value="C:\Users\racve\big_bang\MAX_20220624_132729208.jpg"/>
+      <property name="path[74]" value="C:\Users\racve\big_bang\PAD_20220624_152750171.jpg"/>
+      <property name="path[109]" value="C:\Users\racve\big_bang\SHOT_20220624_200823853.jpg"/>
+      <property name="path[15]" value="C:\Users\racve\big_bang\COUNT_20220624_185951175.jpg"/>
+      <property name="path[64]" value="C:\Users\racve\big_bang\MAX_20220624_203509634.jpg"/>
+      <property name="path[4]" value="C:\Users\racve\big_bang\COUNT_20220624_130613723.jpg"/>
+      <property name="path[54]" value="C:\Users\racve\big_bang\MAX_20220624_160805109.jpg"/>
+      <property name="path[122]" value="C:\Users\racve\big_bang\START_20220624_170842652.jpg"/>
+      <property name="path[44]" value="C:\Users\racve\big_bang\MAX_20220624_160546323.jpg"/>
+      <property name="path[93]" value="C:\Users\racve\big_bang\PAD_20220624_211649587.jpg"/>
+      <property name="path[128]" value="C:\Users\racve\big_bang\START_20220624_211536685.jpg"/>
+      <property name="path[112]" value="C:\Users\racve\big_bang\SHOT_20220624_204308502.jpg"/>
+      <property name="path[99]" value="C:\Users\racve\big_bang\SHOT_20220624_145741799.jpg"/>
+      <property name="path[34]" value="C:\Users\racve\big_bang\MAX_20220624_160445642.jpg"/>
+      <property name="path[83]" value="C:\Users\racve\big_bang\PAD_20220624_163349726.jpg"/>
+      <property name="path[118]" value="C:\Users\racve\big_bang\START_20220624_145900978.jpg"/>
+      <property name="path[102]" value="C:\Users\racve\big_bang\SHOT_20220624_152641609.jpg"/>
+      <property name="path[89]" value="C:\Users\racve\big_bang\PAD_20220624_204438805.jpg"/>
+      <property name="path[24]" value="C:\Users\racve\big_bang\MAX_20220624_130725775.jpg"/>
+      <property name="path[73]" value="C:\Users\racve\big_bang\PAD_20220624_152727710.jpg"/>
+      <property name="path[108]" value="C:\Users\racve\big_bang\SHOT_20220624_191625287.jpg"/>
+      <property name="path[79]" value="C:\Users\racve\big_bang\PAD_20220624_160524502.jpg"/>
+      <property name="path[14]" value="C:\Users\racve\big_bang\COUNT_20220624_163424747.jpg"/>
+      <property name="path[63]" value="C:\Users\racve\big_bang\MAX_20220624_200945515.jpg"/>
+      <property name="path[3]" value="C:\Users\racve\big_bang\COUNT_20220624_130603142.jpg"/>
+      <property name="path[69]" value="C:\Users\racve\big_bang\PAD_20220624_145930059.jpg"/>
+      <property name="path[53]" value="C:\Users\racve\big_bang\MAX_20220624_160755248.jpg"/>
+      <property name="path[9]" value="C:\Users\racve\big_bang\COUNT_20220624_130634423.jpg"/>
+      <property name="path[59]" value="C:\Users\racve\big_bang\MAX_20220624_184138849.jpg"/>
+      <property name="path[121]" value="C:\Users\racve\big_bang\START_20220624_163203543.jpg"/>
+      <property name="path[43]" value="C:\Users\racve\big_bang\MAX_20220624_160540944.jpg"/>
+      <property name="path[92]" value="C:\Users\racve\big_bang\PAD_20220624_204533926.jpg"/>
+      <property name="path[127]" value="C:\Users\racve\big_bang\START_20220624_204305442.jpg"/>
+      <property name="path[49]" value="C:\Users\racve\big_bang\MAX_20220624_160627283.jpg"/>
+      <property name="path[111]" value="C:\Users\racve\big_bang\SHOT_20220624_204307022.jpg"/>
+      <property name="path[98]" value="C:\Users\racve\big_bang\SHOT_20220624_145740957.jpg"/>
+      <property name="path[33]" value="C:\Users\racve\big_bang\MAX_20220624_160443521.jpg"/>
+      <property name="path[82]" value="C:\Users\racve\big_bang\PAD_20220624_163227644.jpg"/>
+      <property name="path[117]" value="C:\Users\racve\big_bang\START_20220624_145739361.jpg"/>
+      <property name="path[39]" value="C:\Users\racve\big_bang\MAX_20220624_160456481.jpg"/>
+      <property name="path[101]" value="C:\Users\racve\big_bang\SHOT_20220624_152640731.jpg"/>
+      <property name="path[88]" value="C:\Users\racve\big_bang\PAD_20220624_204333702.jpg"/>
+      <property name="path[23]" value="C:\Users\racve\big_bang\MAX_20220624_130717144.jpg"/>
+      <property name="path[72]" value="C:\Users\racve\big_bang\PAD_20220624_152716030.jpg"/>
+      <property name="path[107]" value="C:\Users\racve\big_bang\SHOT_20220624_191624447.jpg"/>
+      <property name="path[29]" value="C:\Users\racve\big_bang\MAX_20220624_133034308.jpg"/>
+      <property name="path[78]" value="C:\Users\racve\big_bang\PAD_20220624_160509382.jpg"/>
+      <property name="path[13]" value="C:\Users\racve\big_bang\COUNT_20220624_160258683.jpg"/>
+      <property name="path[62]" value="C:\Users\racve\big_bang\MAX_20220624_191810972.jpg"/>
+      <property name="path[2]" value="C:\Users\racve\big_bang\COUNT_20220624_130600505.jpg"/>
+      <property name="path[19]" value="C:\Users\racve\big_bang\MAX_20220624_130646743.jpg"/>
+      <property name="path[68]" value="C:\Users\racve\big_bang\PAD_20220624_145916448.jpg"/>
+      <property name="path[52]" value="C:\Users\racve\big_bang\MAX_20220624_160655646.jpg"/>
+      <property name="path[8]" value="C:\Users\racve\big_bang\COUNT_20220624_130631324.jpg"/>
+      <property name="path[58]" value="C:\Users\racve\big_bang\MAX_20220624_183916578.jpg"/>
+      <property name="path[120]" value="C:\Users\racve\big_bang\START_20220624_160442861.jpg"/>
+      <property name="path[42]" value="C:\Users\racve\big_bang\MAX_20220624_160507863.jpg"/>
+      <property name="path[91]" value="C:\Users\racve\big_bang\PAD_20220624_204524302.jpg"/>
+      <property name="path[126]" value="C:\Users\racve\big_bang\START_20220624_200822494.jpg"/>
+      <property name="path[48]" value="C:\Users\racve\big_bang\MAX_20220624_160610962.jpg"/>
+      <property name="path[110]" value="C:\Users\racve\big_bang\SHOT_20220624_200824732.jpg"/>
+      <property name="path[97]" value="C:\Users\racve\big_bang\PAD_20220624_213656701.jpg"/>
+      <property name="path[32]" value="C:\Users\racve\big_bang\MAX_20220624_152240360.jpg"/>
+      <property name="path[81]" value="C:\Users\racve\big_bang\PAD_20220624_160626564.jpg"/>
+      <property name="path[116]" value="C:\Users\racve\big_bang\SHOT_20220624_213417077.jpg"/>
+      <property name="path[38]" value="C:\Users\racve\big_bang\MAX_20220624_160454162.jpg"/>
+      <property name="path[100]" value="C:\Users\racve\big_bang\SHOT_20220624_145742557.jpg"/>
+      <property name="path[87]" value="C:\Users\racve\big_bang\PAD_20220624_201100738.jpg"/>
+      <property name="path[22]" value="C:\Users\racve\big_bang\MAX_20220624_130711264.jpg"/>
+      <property name="path[71]" value="C:\Users\racve\big_bang\PAD_20220624_152714791.jpg"/>
+      <property name="path[106]" value="C:\Users\racve\big_bang\SHOT_20220624_183913407.jpg"/>
+      <property name="path[28]" value="C:\Users\racve\big_bang\MAX_20220624_133031569.jpg"/>
+      <property name="path[77]" value="C:\Users\racve\big_bang\PAD_20220624_152838281.jpg"/>
+      <property name="path[12]" value="C:\Users\racve\big_bang\COUNT_20220624_152853293.jpg"/>
+      <property name="path[61]" value="C:\Users\racve\big_bang\MAX_20220624_191445346.jpg"/>
+      <property name="path[1]" value="C:\Users\racve\big_bang\COUNT_20220624_130554943.jpg"/>
+      <property name="path[18]" value="C:\Users\racve\big_bang\MAX_20220624_130644004.jpg"/>
+      <property name="path[67]" value="C:\Users\racve\big_bang\PAD_20220624_145838159.jpg"/>
+      <property name="path[51]" value="C:\Users\racve\big_bang\MAX_20220624_160631563.jpg"/>
+      <property name="path[7]" value="C:\Users\racve\big_bang\COUNT_20220624_130629284.jpg"/>
+      <property name="path[57]" value="C:\Users\racve\big_bang\MAX_20220624_183045769.jpg"/>
+      <property name="path[41]" value="C:\Users\racve\big_bang\MAX_20220624_160505721.jpg"/>
+      <property name="path[90]" value="C:\Users\racve\big_bang\PAD_20220624_204452064.jpg"/>
+      <property name="path[125]" value="C:\Users\racve\big_bang\START_20220624_191622888.jpg"/>
+      <property name="path[47]" value="C:\Users\racve\big_bang\MAX_20220624_160605082.jpg"/>
+      <property name="path[96]" value="C:\Users\racve\big_bang\PAD_20220624_213551978.jpg"/>
+      <property name="path[31]" value="C:\Users\racve\big_bang\MAX_20220624_144644526.jpg"/>
+      <property name="path[80]" value="C:\Users\racve\big_bang\PAD_20220624_160603343.jpg"/>
+      <property name="path[115]" value="C:\Users\racve\big_bang\SHOT_20220624_213416177.jpg"/>
+      <property name="path[37]" value="C:\Users\racve\big_bang\MAX_20220624_160451880.jpg"/>
+      <property name="path[86]" value="C:\Users\racve\big_bang\PAD_20220624_200956077.jpg"/>
+      <property name="path[21]" value="C:\Users\racve\big_bang\MAX_20220624_130708186.jpg"/>
+      <property name="path[70]" value="C:\Users\racve\big_bang\PAD_20220624_152711071.jpg"/>
+      <property name="path[105]" value="C:\Users\racve\big_bang\SHOT_20220624_163206884.jpg"/>
+      <property name="path[27]" value="C:\Users\racve\big_bang\MAX_20220624_133021706.jpg"/>
+      <property name="path[76]" value="C:\Users\racve\big_bang\PAD_20220624_152830952.jpg"/>
+      <property name="path[11]" value="C:\Users\racve\big_bang\COUNT_20220624_150125095.jpg"/>
+      <property name="path[60]" value="C:\Users\racve\big_bang\MAX_20220624_185939198.jpg"/>
+      <property name="numImages" value="130"/>
+      <property name="path[0]" value="C:\Users\racve\big_bang\COUNT_20220624_130525204.jpg"/>
+      <property name="path[17]" value="C:\Users\racve\big_bang\MAX_20220624_130640584.jpg"/>
+      <property name="path[66]" value="C:\Users\racve\big_bang\MAX_20220624_211143664.jpg"/>
+      <property name="path[50]" value="C:\Users\racve\big_bang\MAX_20220624_160629523.jpg"/>
+      <property name="path[6]" value="C:\Users\racve\big_bang\COUNT_20220624_130627223.jpg"/>
+      <property name="index" value="32"/>
+      <property name="path[56]" value="C:\Users\racve\big_bang\MAX_20220624_170948095.jpg"/>
+      <property name="path[40]" value="C:\Users\racve\big_bang\MAX_20220624_160459482.jpg"/>
+      <property name="path[124]" value="C:\Users\racve\big_bang\START_20220624_185906414.jpg"/>
+      <property name="path[46]" value="C:\Users\racve\big_bang\MAX_20220624_160603024.jpg"/>
+      <property name="path[95]" value="C:\Users\racve\big_bang\PAD_20220624_213545001.jpg"/>
+      <property name="path[30]" value="C:\Users\racve\big_bang\MAX_20220624_133120169.jpg"/>
+      <property name="path[114]" value="C:\Users\racve\big_bang\SHOT_20220624_211539684.jpg"/>
+      <property name="path[36]" value="C:\Users\racve\big_bang\MAX_20220624_160449742.jpg"/>
+      <property name="path[85]" value="C:\Users\racve\big_bang\PAD_20220624_200930564.jpg"/>
+      <property name="path[20]" value="C:\Users\racve\big_bang\MAX_20220624_130655785.jpg"/>
     </grip:MultiImageFile>
   </sources>
   <steps>
-    <grip:Step name="Blur">
+    <grip:Step name="HSV Threshold">
       <grip:Input step="0" socket="0"/>
       <grip:Input step="0" socket="1">
-        <value>BOX</value>
-      </grip:Input>
-      <grip:Input step="0" socket="2">
-        <value>2.7027027027027026</value>
-      </grip:Input>
-      <grip:Output step="0" socket="0" previewed="false"/>
-    </grip:Step>
-    <grip:Step name="HSV Threshold">
-      <grip:Input step="1" socket="0"/>
-      <grip:Input step="1" socket="1">
         <value>
-          <double>62.82749919467413</double>
-          <double>117.93158061450748</double>
+          <double>43.70503597122302</double>
+          <double>99.69696969696967</double>
         </value>
       </grip:Input>
-      <grip:Input step="1" socket="2">
+      <grip:Input step="0" socket="2">
         <value>
-          <double>92.32557983463973</double>
+          <double>190.33273381294964</double>
           <double>255.0</double>
         </value>
       </grip:Input>
-      <grip:Input step="1" socket="3">
+      <grip:Input step="0" socket="3">
         <value>
-          <double>61.84701492537312</double>
-          <double>242.12121212121212</double>
+          <double>160.52158273381295</double>
+          <double>255.0</double>
         </value>
+      </grip:Input>
+      <grip:Output step="0" socket="0" previewed="false"/>
+    </grip:Step>
+    <grip:Step name="Find Contours">
+      <grip:Input step="1" socket="0"/>
+      <grip:Input step="1" socket="1">
+        <value>false</value>
       </grip:Input>
       <grip:Output step="1" socket="0" previewed="false"/>
     </grip:Step>
-    <grip:Step name="Find Contours">
+    <grip:Step name="Filter Contours">
       <grip:Input step="2" socket="0"/>
       <grip:Input step="2" socket="1">
-        <value>false</value>
+        <value>74.0</value>
       </grip:Input>
-      <grip:Output step="2" socket="0" previewed="false"/>
-    </grip:Step>
-    <grip:Step name="Filter Contours">
-      <grip:Input step="3" socket="0"/>
-      <grip:Input step="3" socket="1">
+      <grip:Input step="2" socket="2">
+        <value>0.0</value>
+      </grip:Input>
+      <grip:Input step="2" socket="3">
+        <value>0.0</value>
+      </grip:Input>
+      <grip:Input step="2" socket="4">
         <value>50.0</value>
       </grip:Input>
-      <grip:Input step="3" socket="2">
+      <grip:Input step="2" socket="5">
         <value>0.0</value>
       </grip:Input>
-      <grip:Input step="3" socket="3">
-        <value>0.0</value>
-      </grip:Input>
-      <grip:Input step="3" socket="4">
-        <value>50.0</value>
-      </grip:Input>
-      <grip:Input step="3" socket="5">
-        <value>0.0</value>
-      </grip:Input>
-      <grip:Input step="3" socket="6">
+      <grip:Input step="2" socket="6">
         <value>30.0</value>
       </grip:Input>
-      <grip:Input step="3" socket="7">
+      <grip:Input step="2" socket="7">
         <value>
           <int>0</int>
           <int>100</int>
         </value>
       </grip:Input>
-      <grip:Input step="3" socket="8">
+      <grip:Input step="2" socket="8">
         <value>1000000.0</value>
       </grip:Input>
-      <grip:Input step="3" socket="9">
+      <grip:Input step="2" socket="9">
         <value>0.0</value>
       </grip:Input>
-      <grip:Input step="3" socket="10">
+      <grip:Input step="2" socket="10">
         <value>0.5</value>
       </grip:Input>
-      <grip:Input step="3" socket="11">
+      <grip:Input step="2" socket="11">
         <value>1000.0</value>
       </grip:Input>
-      <grip:Output step="3" socket="0" previewed="true"/>
+      <grip:Output step="2" socket="0" previewed="true"/>
     </grip:Step>
   </steps>
   <connections>
     <grip:Connection>
-      <grip:Output step="2" socket="0" previewed="false"/>
-      <grip:Input step="3" socket="0"/>
+      <grip:Output step="0" socket="0" previewed="false"/>
+      <grip:Input step="1" socket="0"/>
     </grip:Connection>
     <grip:Connection>
       <grip:Output source="1" socket="0" previewed="true"/>
@@ -143,10 +221,6 @@
     <grip:Connection>
       <grip:Output step="1" socket="0" previewed="false"/>
       <grip:Input step="2" socket="0"/>
-    </grip:Connection>
-    <grip:Connection>
-      <grip:Output step="0" socket="0" previewed="false"/>
-      <grip:Input step="1" socket="0"/>
     </grip:Connection>
   </connections>
   <settings>
