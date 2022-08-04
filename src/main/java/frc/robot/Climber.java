@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -27,11 +28,15 @@ public class Climber extends SubsystemBase
     private CANSparkMax leftClimb;
     private CANSparkMax rightClimb;
     private SparkMaxPIDController pid;
+    private XboxController operator;
 
     private static int currentCounts;
     private boolean climbRequested;
+    private double reachClimbRequest;
 
-    public Climber() {
+    public Climber(XboxController operator) {
+        this.operator = operator;
+
         middleClimb = new CANSparkMax(32,MotorType.kBrushless);
         middleClimb.setIdleMode(IdleMode.kBrake);
         middleClimb.setInverted(true);
@@ -54,9 +59,11 @@ public class Climber extends SubsystemBase
         middleClimb.setSmartCurrentLimit(80, 20);
         currentCounts = 0;
         climbRequested = false;
+        reachClimbRequest = 0;
 
         leftClimb = new CANSparkMax(33,MotorType.kBrushless);
         leftClimb.setIdleMode(IdleMode.kBrake);
+        leftClimb.getEncoder().setPositionConversionFactor(22.5/101.76);
 
         rightClimb = new CANSparkMax(22,MotorType.kBrushless);
         rightClimb.setIdleMode(IdleMode.kBrake);
@@ -64,9 +71,32 @@ public class Climber extends SubsystemBase
 
     @Override
     public void periodic() {
+        double leftClimbDist = Math.abs(getReachClimbPosition());
+        double reachPwr = 0;
+
         SmartDashboard.putNumber("Middle Climb Position", getMiddleClimbPosition());
         SmartDashboard.putNumber("Reach Climb Position", getReachClimbPosition());
 
+        //if operator overrites limits, allow the climb
+        if (operator.getRawButton(XboxController.Button.kRightStick.value)) {
+            reachPwr = reachClimbRequest;
+        }
+        else if (leftClimbDist > 23) {
+            //if we are fully extended, lock out the climber from moving to prevent grabbing hood
+            reachPwr = 0;
+        } 
+        else if (leftClimbDist > 12) {
+            //if the drivers made it to 12", force the climber to finish the climb all the way out
+            reachPwr = -REACH_CLIMB_SPEED;
+        }
+        else {
+            //climber is within 12", allow driver control
+            reachPwr = reachClimbRequest;
+        }
+        leftClimb.set(reachPwr);
+        rightClimb.set(-reachPwr);
+
+        //check if climber is overcurrent
         if (middleClimb.getOutputCurrent() > 6) {
             currentCounts++;
         }
@@ -100,8 +130,7 @@ public class Climber extends SubsystemBase
     }
 
     public void setReachClimbPower(double pct) {
-        leftClimb.set(pct);
-        rightClimb.set(-pct);
+        reachClimbRequest = pct;
     }
 
     public double getMiddleClimbPosition() {

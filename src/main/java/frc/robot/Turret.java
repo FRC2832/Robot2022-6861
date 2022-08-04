@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -17,9 +18,11 @@ public class Turret extends SubsystemBase {
     private Pi pi;
     private double aimAngle;
     public final double SAFE_CLIMB_ANGLE = 170;
+    private XboxController operator;
 
-    public Turret(Pi pi) {
+    public Turret(Pi pi, XboxController operator) {
         this.pi = pi;
+        this.operator = operator;
         turretMotor = new CANSparkMax(30,MotorType.kBrushless);
         turretMotor.getEncoder().setPositionConversionFactor(180./108.);
         turretMotor.getEncoder().setVelocityConversionFactor(1.0/31);
@@ -59,7 +62,7 @@ public class Turret extends SubsystemBase {
     }
 
     public boolean resetClimber() {
-        return getAngle() < SAFE_CLIMB_ANGLE;
+        return !((getAngle() > SAFE_CLIMB_ANGLE) || (operator.getRawButton(XboxController.Button.kRightStick.value)));
     }
 
     public void updateTurretAimAngle() {

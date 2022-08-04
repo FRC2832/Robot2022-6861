@@ -70,9 +70,9 @@ public class Robot extends TimedRobot {
         intake = new Intake();
         intake.register();
         intake.setDefaultCommand(new DriveIntake(intake, shooter, operatorController));
-        turret = new Turret(pi);
+        turret = new Turret(pi,operatorController);
         turret.register();
-        climber = new Climber();
+        climber = new Climber(operatorController);
         climber.register();
         turret.setDefaultCommand(new DriveTurret(turret,climber,operatorController));
         climber.setDefaultCommand(new DriveClimber(climber,turret,leftStick,rightStick));
