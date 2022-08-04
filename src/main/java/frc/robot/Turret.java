@@ -94,4 +94,8 @@ public class Turret extends SubsystemBase {
         SmartDashboard.putNumber("Turret Encoder", getAngle());
         SmartDashboard.putNumber("Turret Velocity", turretMotor.getEncoder().getVelocity());
     }
+
+    public void saveConfig() {
+        turretMotor.burnFlash();
+    }
 }

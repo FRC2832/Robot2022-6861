@@ -198,6 +198,7 @@ public class Robot extends TimedRobot {
         m_chooser.addOption("Short Wall", shortWall);
         m_chooser.addOption("Grab 3", grab3);
         m_chooser.addOption("Grab 4", grab4);
+        SmartDashboard.putBoolean("Save Motor Config", false);
 
         // Put the chooser on the dashboard
         SmartDashboard.putData(m_chooser);
@@ -269,6 +270,15 @@ public class Robot extends TimedRobot {
         if(takeSnap) {
             SmartDashboard.putBoolean("Take Snapshot", false);
             snapHub("MANUAL");
+        }
+
+        boolean saveConfig = SmartDashboard.getBoolean("Save Motor Config", false);
+        if(saveConfig) {
+            SmartDashboard.putBoolean("Save Motor Config", false);
+            climber.saveConfig();
+            drive.saveConfig();
+            intake.saveConfig();
+            turret.saveConfig();
         }
 
         //run lights

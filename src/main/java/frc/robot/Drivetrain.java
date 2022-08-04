@@ -180,4 +180,11 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("Ax Filtered", axValue);
         SmartDashboard.putNumber("Ay Filtered", ayValue);
     }
+
+    public void saveConfig() {
+        motors[FL].burnFlash();
+        motors[FR].burnFlash();
+        motors[RL].burnFlash();
+        motors[RR].burnFlash();
+    }
 }

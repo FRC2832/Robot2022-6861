@@ -72,6 +72,12 @@ public class Climber extends SubsystemBase
         }
     }
 
+    public void saveConfig() {
+        leftClimb.burnFlash();
+        rightClimb.burnFlash();
+        middleClimb.burnFlash();
+    }
+
     public void resetClimberWarning() {
         currentCounts = 0;
     }

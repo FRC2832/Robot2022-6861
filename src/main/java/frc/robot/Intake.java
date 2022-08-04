@@ -110,4 +110,9 @@ public class Intake extends SubsystemBase {
             SmartDashboard.putNumber("Sense Blue", color.blue);
         }
     }
+
+    public void saveConfig() {
+        upMotor.burnFlash();
+        intakeMotor.burnFlash();
+    }
 }
