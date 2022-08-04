@@ -18,6 +18,52 @@ from enum import Enum
 
 configFile = "/boot/frc.json"
 
+# GPIO Pin Manipulation
+# Note this library only does software PWM, 
+# so you may see flickering. So far it hasn't impacted
+# vision performance.
+# The alternate is to install and use the pigpio or RPIO libraries
+# for python, or some alternate mechanism which leverages
+# the Pi's hardware PWM to get more stable dimming.
+import RPi.GPIO as GPIO
+
+# Control how bright the LED's are set to
+# 0.0 = Off, 1.0 = full on.
+LED_BRIGHTNESS = 0.005
+
+######################################################################
+## Class to wrapper control of the Playing With Fusion IR pi Hat
+######################################################################
+class SnakeEyesBoardControl():
+    LED_PWM_DIM_PIN = 13 
+
+    def __init__(self):
+        self.pwmNormCMD = 0
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(self.LED_PWM_DIM_PIN, GPIO.OUT)
+        self.ledCtrl = GPIO.PWM(self.LED_PWM_DIM_PIN,800)
+        self.ledCtrl.start(0)
+
+    def _update(self):
+        if(self.pwmNormCMD > 1.0):
+            self.pwmNormCMD = 1.0
+        elif(self.pwmNormCMD < 0.0):
+            self.pwmNormCMD = 0.0
+        self.ledCtrl.ChangeDutyCycle(self.pwmNormCMD*100.0)
+
+    """ Public API to set the brightness of the LED Array. 
+        0.0 is off, 1.0 is full brightness.
+    """
+    def setBrightness(self, val):
+        self.pwmNormCMD = val
+        self._update()
+
+    def shutdown(self):
+        self.pwmNormCMD = 0
+        self._update()
+        self.ledCtrl.stop()
+        GPIO.cleanup()
+
 class CameraConfig: pass
 
 class CargoPipeline:
@@ -260,10 +306,10 @@ class TargetPipeline:
         """initializes all values to presets or None if need to be set
         """
 
-        self.__hsv_threshold_hue = [43.70503597122302, 99.69696969696967]
-        self.__hsv_threshold_saturation = [190.33273381294964, 255.0]
-        self.__hsv_threshold_value = [160.52158273381295, 255.0]
-
+        self.__hsv_threshold_hue = [80.93525179856115, 99.69696969696969]
+        self.__hsv_threshold_saturation = [178.86690647482015, 255.0]
+        self.__hsv_threshold_value = [143.09352517985613, 255.0]
+        
         self.hsv_threshold_output = None
 
         self.__find_contours_input = self.hsv_threshold_output
@@ -272,7 +318,7 @@ class TargetPipeline:
         self.find_contours_output = None
 
         self.__filter_contours_contours = self.find_contours_output
-        self.__filter_contours_min_area = 74.0
+        self.__filter_contours_min_area = 30.0
         self.__filter_contours_min_perimeter = 0.0
         self.__filter_contours_min_width = 0.0
         self.__filter_contours_max_width = 50.0
@@ -281,8 +327,8 @@ class TargetPipeline:
         self.__filter_contours_solidity = [0, 100]
         self.__filter_contours_max_vertices = 1000000.0
         self.__filter_contours_min_vertices = 0.0
-        self.__filter_contours_min_ratio = 0.5
-        self.__filter_contours_max_ratio = 1000.0
+        self.__filter_contours_min_ratio = 0.7
+        self.__filter_contours_max_ratio = 100.0
 
         self.filter_contours_output = None
 
@@ -492,8 +538,8 @@ def filterHubTargets(target_positions, cfg):
     #if there is any data, change the average
     if(len(keep) > 0):
         #constant changes based on how many frames we last saw an object
-        #const = cfg["lastSeen"] / (cfg["maxFrames"] * cfg["filterMulti"])
-        const = 0.75
+        const = cfg["lastSeen"] / (cfg["maxFrames"] * cfg["filterMulti"])
+        #const = 0.75
         #weighted average
         centerX = ((1-const) * np.average(keep)) + (const * cfg["lastCenter"])
         cfg["lastCenter"] = centerX
@@ -750,6 +796,11 @@ if __name__ == "__main__":
     # read configuration
     if not readConfig():
         sys.exit(1)
+
+    leds = SnakeEyesBoardControl()
+    leds.setBrightness(LED_BRIGHTNESS) 
+    import atexit
+    atexit.register(leds.shutdown) #Todo, this is very inelegant but maybe it'll work?
 
     # start NetworkTables
     ntinst = NetworkTablesInstance.getDefault()
