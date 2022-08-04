@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Servo;
@@ -50,6 +51,10 @@ public class Robot extends TimedRobot {
         vers.printVersions();
         snapHub = new Snapshot();
         snapHub.start("http://10.68.61.8:1181/stream.mjpg");
+
+		//start USB camera for driver station
+        CameraServer.startAutomaticCapture();
+        
         snapCargo = new Snapshot();
         snapCargo.start("http://10.68.61.8:1182/stream.mjpg");
         SmartDashboard.putBoolean("Take Snapshot", false);
