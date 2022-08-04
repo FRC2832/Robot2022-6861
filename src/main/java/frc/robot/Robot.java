@@ -121,7 +121,7 @@ public class Robot extends TimedRobot {
                 new AutoTurret(turret, 70.)
             ),
             new ParallelDeadlineGroup(
-                new AutoTurn(drive, -160),
+                new AutoTurn(drive, -180),
                 new AutoTurret(turret, 70.)
             ),
             new SmartShot(drive,shooter,pi,intake,turret)
