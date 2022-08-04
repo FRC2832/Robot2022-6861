@@ -19,6 +19,7 @@ public class Pi {
     private NetworkTableEntry targetCenterY;
     private NetworkTableEntry filterCenterX;
     private NetworkTableEntry filterCenterY;
+    private NetworkTableEntry frameNum;
     private Number[] targetCenterXArray;
     private Number[] targetCenterYArray;
     private Number[] targetWidthArray;
@@ -36,7 +37,8 @@ public class Pi {
     private int lastSnap;
     private final int MIN_SNAP_TIME = 100;  //50 loops per sec
     private double cargoXout;
-
+    private int frameCount;
+    private int missingLoops;
 
     public Pi() {
         netTableInstance = NetworkTableInstance.getDefault();
@@ -48,7 +50,9 @@ public class Pi {
         targetCenterY = table.getEntry("targetY");
         filterCenterX = table.getEntry("centerX");
         filterCenterY = table.getEntry("centerY");
+        frameNum = table.getEntry("frameNum");
         centerYOutput = -1;
+        missingLoops = 0;
     }
 
     // sends alliance color to the python code so it knows what color cargo to look for
@@ -58,6 +62,15 @@ public class Pi {
             allianceColor.setString("red");
         } else {
             allianceColor.setString("blue");
+        }
+
+        int newFrame = frameNum.getNumber(frameCount).intValue();
+        if (newFrame != frameCount) {
+            frameCount = newFrame;
+            missingLoops = 0;
+        }
+        else {
+            missingLoops++;
         }
     }
 
@@ -92,7 +105,7 @@ public class Pi {
 
         int size = targetCenterXArray.length;
         //check if vision saw a target
-        if (size == 0) {
+        if (size == 0 || piOn() == false) {
             targetMoveRight = false;
             targetMoveLeft = false;
             //centerYOutput = -1;  //leave last known Y value for autoshot
@@ -227,7 +240,7 @@ public class Pi {
     }
 
     public boolean piOn() {
-        return targetCenterX.exists();
+        return missingLoops < 10;
     }
 
     public boolean canSeeHub() {

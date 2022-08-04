@@ -304,7 +304,7 @@ public class Robot extends TimedRobot {
             output = Color.kPurple;
             msg = "BALL";
         } else if (pi.piOn() == false) {
-            output = Color.kChartreuse;
+            output = Color.kBlack;
             msg = " PI ";
         } else if (pi.canSeeHub() == false) {
             output = Color.kRed;
